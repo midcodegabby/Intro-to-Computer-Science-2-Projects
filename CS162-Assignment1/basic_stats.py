@@ -18,7 +18,6 @@ from statistics import mean, median, mode
 class Student:
     """Represents a student with a specified name and grade, in which both are private data members"""
 
-    #question... does this method satisfy the requirement of initializing the data members?
     def __init__(self, name, grade):
         """Creates a new student with the name and grade parameters passed in by the user and
         ensures they are private"""
@@ -53,13 +52,15 @@ def basic_stats(data_list):
     mode_students : mode of all student grades
     """
 
-    #initialize a list for grade allocation in the for-loop
+    #initialize an empty list for grade allocation in the for-loop
     grades = []
 
     #use a for-loop to allocate the grade object of each 'student' class in the data_list to the list 'grades' for later calculation
     for i in data_list:
 
-        i.get_grade()
+        """Comment below in the code line below retrieves the grade data member for each instance 'i' in the list of 
+        'Student' classes. The grades.append() part then appends this grade data member to the pre-initialized list 'grades'"""
+        #i.get_grade()
 
         grades.append(i.get_grade())
 
@@ -72,14 +73,6 @@ def basic_stats(data_list):
     return mean_students, median_students, mode_students
 
 
-
-s1 = Student("Kyoungmin", 10)
-s2 = Student("Mercedes", 10000)
-s3 = Student("Avanika", 1000)
-s4 = Student("Marta", 100)
-
-student_list = [s1, s2, s3, s4]
-print(basic_stats(student_list))  # should print a tuple of three values
 
 
 
