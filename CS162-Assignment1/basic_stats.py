@@ -41,6 +41,8 @@ class Student:
 def basic_stats(data_list):
     """This function takes a list of different student Class objects in class form, calculates the mean,
     median, and mode of the student's grades, and returns all three calculated values. This is done via the statistics module.
+    However, first, the function initializes a list for the class 'student' values to be inputted into, and only uses 'student'
+    grades as data in the calculations.
 
     Parameters:
     data_list : list of all student Classes information
@@ -51,17 +53,41 @@ def basic_stats(data_list):
     mode_students : mode of all student grades
     """
 
+    #generate index values for iteration
+    idx = range(len(data_list))
+
+    #subtract 1 from idx to find the number of elements in the data_list
+    n = len(data_list)
+
+    #initialize a list with the same number of elements as the data_list
+    b_list = [None]*n
+
+    #use a for-loop to allocate the grade object of each 'student' class in the data_list to the list for later calculation
+    for i in range(len(data_list)):
+
+        b_list[i] = Student.get_grade(i)
+
+
+
+
     #define all 3 calculated variables using the imported statistics modules mean, median, and mode
-    mean_students= mean(data_list)
-    median_students = median(data_list)
-    mode_students =  mode(data_list)
+    mean_students = mean(b_list)
+    median_students = median(b_list)
+    mode_students = mode(b_list)
 
     return mean_students, median_students, mode_students
 
 
 
+s1 = Student("Kyoungmin", 73)
+s2 = Student("Mercedes", 74)
+s3 = Student("Avanika", 78)
+s4 = Student("Marta", 74)
 
+student_list = [s1, s2, s3, s4]
+print(basic_stats(student_list))  # should print a tuple of three values
 
+print(s1._grade)
 
 
 
