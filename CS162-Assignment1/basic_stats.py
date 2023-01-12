@@ -63,7 +63,7 @@ def basic_stats(data_list):
     b_list = [None]*n
 
     #use a for-loop to allocate the grade object of each 'student' class in the data_list to the list for later calculation
-    for i in range(len(data_list)):
+    for i in range(len(data_list)): #or remove the range len part and it gives another error
 
         b_list[i] = Student.get_grade(i)
 
