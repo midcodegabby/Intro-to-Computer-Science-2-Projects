@@ -38,7 +38,31 @@ class Student:
         return self._grade
 
 #create the basic_stats function
-#def basic_stats():
+def basic_stats(data_list):
+    """This function takes a list of different student Class objects in class form, calculates the mean,
+    median, and mode of the student's grades, and returns all three calculated values. This is done via the statistics module.
+
+    Parameters:
+    data_list : list of all student Classes information
+
+    Returns:
+    mean_students : mean of all student grades
+    median_students : median of all student grades
+    mode_students : mode of all student grades
+    """
+
+    #define all 3 calculated variables using the imported statistics modules mean, median, and mode
+    mean_students= mean(data_list)
+    median_students = median(data_list)
+    mode_students =  mode(data_list)
+
+    return mean_students, median_students, mode_students
+
+
+
+
+
+
 
 
 
