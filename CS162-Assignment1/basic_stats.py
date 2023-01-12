@@ -66,13 +66,13 @@ def basic_stats(data_list):
 
 
     #define all 3 calculated variables using the imported statistics modules mean, median, and mode
+    #mean() calculates the mean of the list 'grades', median() calculates the median of the list 'grades',
+    #and mode() calculates the mode of the list 'grades'. Then these values are assigned to 3 different variables to be returned.
     mean_students = mean(grades)
     median_students = median(grades)
     mode_students = mode(grades)
 
     return mean_students, median_students, mode_students
-
-
 
 
 
