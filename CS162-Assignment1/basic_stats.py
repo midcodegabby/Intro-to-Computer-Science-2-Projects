@@ -1,8 +1,8 @@
 """
-Author: Gabriel Rodgers
-GitHub Username: trashcoder8
-Date: 1/11/23
-Description:
+Author : Gabriel Rodgers
+GitHub Username : trashcoder8
+Date : 1/11/23
+Description :
 This program is supposed to get me a passing grade on the first assignment in this CS 162 Class by
 demonstrating competent use of classes and separating interface from implementation. For an overview,
 this program should contain a function 'basic_stats' and a class 'Student' (containing 2 private data
