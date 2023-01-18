@@ -40,19 +40,19 @@ class SalesForDay:
     and a (dictionary) containing the (keys) names of sold items and the (values) number of each respective item sold"""
 
     # initialize data member objects in the class
-    def __init__(self, number_of_days, sales_dictionary):
+    def __init__(self, days, sales_dict):
         """creates a new sales for day class with 2 private data members"""
-        self._number_of_days = number_of_days
-        self._sales_dictionary = sales_dictionary
+        self._days = days
+        self._sales_dict = sales_dict
 
     #create get methods for both data members
-    def get_number_of_days(self):
-        """retrieves the private data member number_of_days"""
-        return self._number_of_days
+    def get_days(self):
+        """retrieves the private data member days"""
+        return self._days
 
-    def get_sales_dictionary(self):
-        """retrieves the private data member sales_dictionary"""
-        return self._sales_dictionary
+    def get_sales_dict(self):
+        """retrieves the private data member sales_dict"""
+        return self._sales_dict
 
 #create LemonadeStand class
 class LemonadeStand:
@@ -61,3 +61,52 @@ class LemonadeStand:
     corresponding MenuItem objects, and a (list) of SalesForDay objects"""
 
     #initialize data member objects for the class
+    def __init__(self,name):
+        """initializes 4 variables: the name of the (class) LemonadeStand to the passed in parameter,
+        the current day (integer) to zero, the (dictionary) of MenuItems to be empty, and the (list)
+        SalesForDay to an empty list"""
+        self._name = name
+
+        #initialize current day to zero
+        day = 0
+
+        #initialize the menu to an empty dictionary:
+        menu_dict = {}
+
+        #initalize the sales_record list
+        sales_record = []
+
+    #define a function to retrieve the private data member name of lemonade stand
+    def get_name(self):
+        """retrieves the private data member name (of the LemonadeStand)"""
+        return self._name
+
+    def add_menu_item(self, menu_item):
+        """This function should take a MenuItem object and add it to the menu_dict, with the key being
+        the MenuItem's name, and the corresponding value being the MenuItem object itself."""
+        menu_dict[menu_item._name] = menu_item
+
+    def enter_sales_for_today(self, sales_dict):
+        """This function should take a user-inputted dictionary of (keys) names of items sold and
+        (corresponding values) how many of the item were sold, and """
+
+    def sales_of_menu_item_today(self, day, menu_item):
+        """This function should retrieve """
+
+    def total_sales_for_menu_item(self, menu_item):
+        """This function should take the name of a menu item and return the total number of that item
+        sold over the history of the stand. This method should use sales_of_menu_item_today to find the
+        required value"""
+
+        return #value
+
+    def total_profit_for_menu_item(self, menu_item):
+        """This method should take the name of a menu_item and return the total profit on that item
+        over the history of the stand. Should use total_sales_for_menu_item method"""
+
+    def total_profit_for_stand(self):
+
+
+
+
+
