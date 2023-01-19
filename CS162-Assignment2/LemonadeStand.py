@@ -10,9 +10,6 @@ class InvalidSalesItemError(Exception):
     """user defined exception for an inputted sales item that does not exist in the menu_dict"""
     pass
 
-class InvalidSalesNumberError(Exception):
-    pass
-
 #create MenuItem class
 class MenuItem:
     """represents a menu class, with 3 private parameters/data members: name (string),
@@ -71,8 +68,8 @@ class LemonadeStand:
     #initialize data member objects for the class
     def __init__(self,name):
         """initializes 4 variables: the name of the (class) LemonadeStand to the passed in parameter,
-        the current day (integer) to zero, the (dictionary) of MenuItems to be empty, and the (list)
-        SalesForDay to an empty list"""
+        the current day (integer) to zero, the (dictionary) of MenuItems to be empty, and the (list) of
+        SalesForDay objects to an empty list"""
         self._name = name
 
         #initialize current day to zero
@@ -83,7 +80,6 @@ class LemonadeStand:
 
         #initalize the sales_record list:
         self._sales_record = []
-
 
     #define a function to retrieve the private data member name of lemonade stand
     def get_name(self):
@@ -97,9 +93,7 @@ class LemonadeStand:
 
     def enter_sales_for_today(self, sales_dict):
         """This method should take a user-inputted dictionary of (keys) names of sold_items and
-        (corresponding values) how many of each of the sold_items were sold. Then, this method should ensure
-        that if a menu_item name is missing from sales_dict, then the method will automatically assign a
-        value of zero sells for that item. This method should also raise an InvalidSalesItemError exception
+        (corresponding values) how many of each of the sold_items were sold. This method should also raise an InvalidSalesItemError exception
         if a key in the sales_dict does not match any of the menu_item names. If the menu_item name is valid and
         in the inputted sales_dict, then the method should create a new SalesForDay object using the current day
         and the sales_dict, add that new SalesForDay object to the sales_record list, and then increment the current
@@ -118,26 +112,27 @@ class LemonadeStand:
             # create elif statement to add the sales_dict to a new SalesForDay class
             if key in self._menu_dict:
 
-                sales_for_day_x = SalesForDay(self._day, self._sales_dict)
+                new_sales_for_day = SalesForDay(self._day, self._sales_dict)
 
-                self._sales_record.append(sales_for_day_x)
+                self._sales_record.append(new_sales_for_day)
 
             #create elif statement to deal with sales_dict keys that are not in the menu_dict keys
             elif key not in self._menu_dict:
 
                 raise InvalidSalesItemError
 
-            """ pretty much useless // delete if not needed
-            #create elif statement to automatically set unsold menu items number of items sold to zero if not found in
-            #sales_dict
-            #elif self._menu_dict.keys() not in self._sales_dict:
-                #exclude the missing menu item from the SalesForDay object or set it to zero?
-                #print("That item was not sold today")
-            """
+        self._day = self._day + 1
+
+    def sales_of_menu_item_for_day(self, day, menu_item):
+        """This method should retrieve and return the number of the menu_item sold for a particular day (both
+        parameters being inputted)."""
+
+        """using the day parameter, get the sales_dict for that day from the corresponding SalesForDay object in
+        the sales_record list."""
+
+        for day in self._sales_record:
 
 
-    def sales_of_menu_item_today(self, day, menu_item):
-        """This method should retrieve """
 
     def total_sales_for_menu_item(self, menu_item):
         """This method should take the name of a menu item and return the total number of that item
@@ -169,8 +164,13 @@ l.add_menu_item(item1)
 item2 = MenuItem("lemonade", .5, 3)
 l.add_menu_item(item2)
 
-print(l._menu_dict)
 
+#print(l._menu_dict)
+
+l.enter_sales_for_today(day_0_sales)
+#print(l.sales_for_day_x)
+
+"""
 ar = {
     "bastard" : 4,
     "lemonade" : 6
@@ -186,7 +186,7 @@ for key in ar:
         print(l._menu_dict.keys())
         print(ar.get(key))
         print(ar.keys())
-
+"""
 
 """
 for key in l._menu_dict:
