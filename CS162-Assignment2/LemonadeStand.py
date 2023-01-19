@@ -129,7 +129,7 @@ class LemonadeStand:
 
         """using the day parameter, get the sales_dict for that day from the corresponding SalesForDay object in
         the sales_record list."""
-
+#maybe use while loop so while day = day???
         for day in self._sales_record:
 
 
