@@ -5,6 +5,14 @@ Date : 1/18/23
 Description :
 """
 
+#create exception
+class InvalidSalesItemError(Exception):
+    """user defined exception for an inputted sales item that does not exist in the menu_dict"""
+    pass
+
+class InvalidSalesNumberError(Exception):
+    pass
+
 #create MenuItem class
 class MenuItem:
     """represents a menu class, with 3 private parameters/data members: name (string),
@@ -36,19 +44,19 @@ class MenuItem:
 
 #create SalesForDay class
 class SalesForDay:
-    """represents a sale day class with 2 private data members: days the stand has been open for (integer)
+    """represents a sale day class with 2 private data members: current day (integer)
     and a (dictionary) containing the (keys) names of sold items and the (values) number of each respective item sold"""
 
     # initialize data member objects in the class
-    def __init__(self, days, sales_dict):
+    def __init__(self, day, sales_dict):
         """creates a new sales for day class with 2 private data members"""
-        self._days = days
+        self._day = day
         self._sales_dict = sales_dict
 
     #create get methods for both data members
-    def get_days(self):
+    def get_day(self):
         """retrieves the private data member days"""
-        return self._days
+        return self._day
 
     def get_sales_dict(self):
         """retrieves the private data member sales_dict"""
@@ -68,13 +76,14 @@ class LemonadeStand:
         self._name = name
 
         #initialize current day to zero
-        day = 0
+        self._day = 0
 
         #initialize the menu to an empty dictionary:
-        menu_dict = {}
+        self._menu_dict = {}
 
-        #initalize the sales_record list
-        sales_record = []
+        #initalize the sales_record list:
+        self._sales_record = []
+
 
     #define a function to retrieve the private data member name of lemonade stand
     def get_name(self):
@@ -82,19 +91,56 @@ class LemonadeStand:
         return self._name
 
     def add_menu_item(self, menu_item):
-        """This function should take a MenuItem object and add it to the menu_dict, with the key being
+        """This method should take a MenuItem object and add it to the menu_dict, with the key being
         the MenuItem's name, and the corresponding value being the MenuItem object itself."""
-        menu_dict[menu_item._name] = menu_item
+        self._menu_dict[menu_item._name] = menu_item
 
     def enter_sales_for_today(self, sales_dict):
-        """This function should take a user-inputted dictionary of (keys) names of items sold and
-        (corresponding values) how many of the item were sold, and """
+        """This method should take a user-inputted dictionary of (keys) names of sold_items and
+        (corresponding values) how many of each of the sold_items were sold. Then, this method should ensure
+        that if a menu_item name is missing from sales_dict, then the method will automatically assign a
+        value of zero sells for that item. This method should also raise an InvalidSalesItemError exception
+        if a key in the sales_dict does not match any of the menu_item names. If the menu_item name is valid and
+        in the inputted sales_dict, then the method should create a new SalesForDay object using the current day
+        and the sales_dict, add that new SalesForDay object to the sales_record list, and then increment the current
+        day by 1."""
+
+        """create if statements to make sure that if an inputted sold_item (in sales_dict) does not exist, then
+        the InvalidSalesItemError is raised. Lastly, to make sure that if an inputted sold_item corresponds to a 
+        menu_item._name in menu_dict, then a new SalesForDay object is created."""
+
+        #privatize sales_dict dictionary
+        self._sales_dict = sales_dict
+
+        #create for loop to loop through all keys in the sales_dict dictionary
+        for key in self._sales_dict:
+
+            # create elif statement to add the sales_dict to a new SalesForDay class
+            if key in self._menu_dict:
+
+                sales_for_day_x = SalesForDay(self._day, self._sales_dict)
+
+                self._sales_record.append(sales_for_day_x)
+
+            #create elif statement to deal with sales_dict keys that are not in the menu_dict keys
+            elif key not in self._menu_dict:
+
+                raise InvalidSalesItemError
+
+            """ pretty much useless // delete if not needed
+            #create elif statement to automatically set unsold menu items number of items sold to zero if not found in
+            #sales_dict
+            #elif self._menu_dict.keys() not in self._sales_dict:
+                #exclude the missing menu item from the SalesForDay object or set it to zero?
+                #print("That item was not sold today")
+            """
+
 
     def sales_of_menu_item_today(self, day, menu_item):
-        """This function should retrieve """
+        """This method should retrieve """
 
     def total_sales_for_menu_item(self, menu_item):
-        """This function should take the name of a menu item and return the total number of that item
+        """This method should take the name of a menu item and return the total number of that item
         sold over the history of the stand. This method should use sales_of_menu_item_today to find the
         required value"""
 
@@ -105,8 +151,48 @@ class LemonadeStand:
         over the history of the stand. Should use total_sales_for_menu_item method"""
 
     def total_profit_for_stand(self):
+        x = 1
+        return x
 
 
 
+#create test dictionary
+day_0_sales = {
+    "lemonade" : 5,
+    "cookies" : 3
+}
+
+l = LemonadeStand("Gabe's Lemonade Stand")
+
+item1 = MenuItem("cookies", 1, 2)
+l.add_menu_item(item1)
+item2 = MenuItem("lemonade", .5, 3)
+l.add_menu_item(item2)
+
+print(l._menu_dict)
+
+ar = {
+    "bastard" : 4,
+    "lemonade" : 6
+
+}
+
+for key in ar:
+
+    if key in l._menu_dict.keys():
+        print("yes")
+    else:
+        print("no")
+        print(l._menu_dict.keys())
+        print(ar.get(key))
+        print(ar.keys())
 
 
+"""
+for key in l._menu_dict:
+
+    if type(l._menu_dict[key]) == str:
+        print("valid")
+    else:
+        print(type(l._menu_dict.values()))
+"""
