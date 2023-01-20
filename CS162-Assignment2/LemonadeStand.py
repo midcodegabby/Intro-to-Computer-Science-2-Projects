@@ -130,8 +130,10 @@ class LemonadeStand:
         """using the day parameter, get the sales_dict for that day from the corresponding SalesForDay object in
         the sales_record list."""
 
-        #must initialize new dictionary to retrive data using day parameter
-        sales_on_that_day = self._sales_record[day].get_salesdict()
+        #must initialize new dictionary to retrieve data using day parameter
+        sales_on_that_day = self._sales_record[day].get_sales_dict() #may need to write .get_self._sales_dict()
+
+        #compare the newly initialized sales_on_that_day dictionary holding the sales_dict of that day to a
 
 
 
@@ -169,8 +171,13 @@ l.add_menu_item(item2)
 
 #print(l._menu_dict)
 
+list = [5,6,7,8,9]
+
+sales_list = list[3]
+print(sales_list)
+
 l.enter_sales_for_today(day_0_sales)
-#print(l.sales_for_day_x)
+
 
 """
 ar = {
