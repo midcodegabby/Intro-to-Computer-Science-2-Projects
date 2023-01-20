@@ -130,7 +130,9 @@ class LemonadeStand:
         """using the day parameter, get the sales_dict for that day from the corresponding SalesForDay object in
         the sales_record list."""
 
-        for day in self._sales_record:
+        #must initialize new dictionary to retrive data using day parameter
+        sales_on_that_day = self._sales_record[day].get_salesdict()
+
 
 
 
