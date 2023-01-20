@@ -114,14 +114,17 @@ class LemonadeStand:
 
                 new_sales_for_day = SalesForDay(self._day, self._sales_dict)
 
-                self._sales_record.append(new_sales_for_day)
+
 
             #create elif statement to deal with sales_dict keys that are not in the menu_dict keys
             elif key not in self._menu_dict:
 
                 raise InvalidSalesItemError
 
+        self._sales_record.append(new_sales_for_day)
+        #somehow need to make it so that the actual day values are in order :(
         self._day = self._day + 1
+
 
     def sales_of_menu_item_for_day(self, day, menu_item):
         """This method should retrieve and return the number of the menu_item sold for a particular day (both
@@ -133,9 +136,14 @@ class LemonadeStand:
         #must initialize new dictionary to retrieve data using day parameter
         sales_on_that_day = self._sales_record[day].get_sales_dict() #may need to write .get_self._sales_dict()
 
-        #compare the newly initialized sales_on_that_day dictionary holding the sales_dict of that day to a
+        #create if statement to retrieve the value portion of the key (menu_item) if the menu_item exists in the sales_on_that_day_dictionary
+        if menu_item in sales_on_that_day:
 
+            print(sales_on_that_day.get(menu_item))
 
+        else:
+            print("That item had zero sales for that day!")
+            #figure out a way to input the day into the print statement
 
 
     def total_sales_for_menu_item(self, menu_item):
@@ -155,10 +163,22 @@ class LemonadeStand:
 
 
 
-#create test dictionary
+#create test dictionaries
 day_0_sales = {
     "lemonade" : 5,
     "cookies" : 3
+}
+
+day_1_sales = {
+    "lemonade" : 10,
+    "cookies" : 12,
+    "apples" : 4
+}
+
+day_2_sales = {
+    "lemonade" : 1,
+    "cookies" : 9,
+    "apples" : 7
 }
 
 l = LemonadeStand("Gabe's Lemonade Stand")
@@ -167,17 +187,17 @@ item1 = MenuItem("cookies", 1, 2)
 l.add_menu_item(item1)
 item2 = MenuItem("lemonade", .5, 3)
 l.add_menu_item(item2)
+item3 = MenuItem("apples", 1, 3)
+l.add_menu_item(item3)
 
-
-#print(l._menu_dict)
-
-list = [5,6,7,8,9]
-
-sales_list = list[3]
-print(sales_list)
-
+#test enter_sales_for_today method
 l.enter_sales_for_today(day_0_sales)
+l.enter_sales_for_today(day_1_sales)
+l.enter_sales_for_today(day_2_sales)
 
+#test sales_of_menu_item_for_day method
+l.sales_of_menu_item_for_day(0, "apples")
+l.sales_of_menu_item_for_day(2, "apples")
 
 """
 ar = {
