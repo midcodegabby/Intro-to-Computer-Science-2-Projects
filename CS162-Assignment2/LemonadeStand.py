@@ -157,12 +157,27 @@ class LemonadeStand:
         for i in range(self._day):
             total_sales_of_item = total_sales_of_item + self.sales_of_menu_item_for_day(i, menu_item)
 
-        #print final value of total_sales_of_item
-        print(total_sales_of_item)
+        #return final value of total_sales_of_item
+        return total_sales_of_item
 
     def total_profit_for_menu_item(self, menu_item):
         """This method should take the name of a menu_item and return the total profit on that item
         over the history of the stand. Should use total_sales_for_menu_item method"""
+
+        """first part of the multiplicative expression retrieves the total amount of sales for the passed in menu_item.
+        second part of the multiplicative expression retrieves the value (actual MenuItem class) associated with the
+        menu_item key in the menu_dict, then retrieves the MenuItem class' wholesale_cost."""
+        total_item_wholesale_cost = self.total_sales_for_menu_item(menu_item)*self._menu_dict.get(menu_item)._wholesale_cost
+
+        """first part of the multiplicative expression retrieves the total amount of sales for the passed in menu_item.
+        second part of the multiplicative expression retrieves the value (actual MenuItem class) associated with the
+        menu_item key in the menu_dict, then retrieves the MenuItem class' selling_price."""
+        total_item_selling_price = self.total_sales_for_menu_item(menu_item) * self._menu_dict.get(menu_item)._selling_price
+
+        #finally, to get the total profit for the menu-item we subtract the total_item_wholesale_cost from the total_item_selling_price
+        total_item_profit = total_item_selling_price - total_item_wholesale_cost
+
+        return total_item_profit
 
     def total_profit_for_stand(self):
         x = 1
@@ -185,7 +200,7 @@ day_1_sales = {
 day_2_sales = {
     "lemonade" : 1,
     "cookies" : 9,
-    "apples" : 1000
+    "apples" : 6
 }
 
 l = LemonadeStand("Gabe's Lemonade Stand")
@@ -194,7 +209,7 @@ item1 = MenuItem("cookies", 1, 2)
 l.add_menu_item(item1)
 item2 = MenuItem("lemonade", .5, 3)
 l.add_menu_item(item2)
-item3 = MenuItem("apples", 1, 3)
+item3 = MenuItem("apples", .4, 3)
 l.add_menu_item(item3)
 
 #test enter_sales_for_today method
@@ -202,8 +217,10 @@ l.enter_sales_for_today(day_0_sales)
 l.enter_sales_for_today(day_1_sales)
 l.enter_sales_for_today(day_2_sales)
 
-#test total_sales_for_menu_item method
-l.total_sales_for_menu_item("apples")
+#test total_profit_for_menu_item method
+l.total_profit_for_menu_item("lemonade")
+
+
 
 
 
