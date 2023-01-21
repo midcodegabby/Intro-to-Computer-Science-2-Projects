@@ -211,8 +211,8 @@ def main():
         "lemonade" : 24,
         "cookies" : 5,
         "apples" : 12,
-        #"raisins" : 128,
-        #"butternut squash" : 6
+        "raisins" : 128,
+        "butternut squash" : 6
     }
 
     #use try/except block to handle exceptions when adding sales dictionary to lemonhead's sales record list
