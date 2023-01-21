@@ -114,8 +114,6 @@ class LemonadeStand:
 
                 new_sales_for_day = SalesForDay(self._day, self._sales_dict)
 
-
-
             #create elif statement to deal with sales_dict keys that are not in the menu_dict keys
             elif key not in self._menu_dict:
 
@@ -124,8 +122,7 @@ class LemonadeStand:
         #outside of for loop, append the new_sales_for_day class into the sales_record list
         self._sales_record.append(new_sales_for_day)
         #add an increment of 1 day to the day after appending the above
-        self._day = self._day + 1
-
+        self._day += 1
 
     def sales_of_menu_item_for_day(self, day, menu_item):
         """This method should retrieve and return the number of the menu_item sold for a particular day (both
@@ -140,11 +137,11 @@ class LemonadeStand:
         #create if statement to retrieve the value portion of the key (menu_item) if the menu_item exists in the sales_on_that_day_dictionary
         if menu_item in sales_on_that_day:
 
-            print(sales_on_that_day.get(menu_item))
+            return sales_on_that_day.get(menu_item)
 
+        #create else statement to handle situations where the item was not sold at all for that day
         else:
-            print("That item had zero sales for that day!")
-
+            return 0
 
     def total_sales_for_menu_item(self, menu_item):
         """This method should take the name of a menu item and return the total number of that item
@@ -152,14 +149,16 @@ class LemonadeStand:
         required value."""
 
         #initialize the returned value
-        self._total_sales_of_item = 0
+        total_sales_of_item = 0
 
-        #create for loop to iterate through the sales_record to do stuff
-        #how to iterate through the
-        for self._sales_dict in self._sales_record:
-            self._total_sales_of_item = self._total_sales_of_item + self.sales_of_menu_item_for_day(self._day, menu_item)
-            #i think the issue is that I have to retrieve the day from the _sales_record somehow?
+        """create for loop to iterate through the amount of days inputted and add the value of the number of menu_items sold on that day
+        (using the sales_of_menu_item_for_day method) to the initialized total_sales_of_item variable"""
 
+        for i in range(self._day):
+            total_sales_of_item = total_sales_of_item + self.sales_of_menu_item_for_day(i, menu_item)
+
+        #print final value of total_sales_of_item
+        print(total_sales_of_item)
 
     def total_profit_for_menu_item(self, menu_item):
         """This method should take the name of a menu_item and return the total profit on that item
@@ -186,7 +185,7 @@ day_1_sales = {
 day_2_sales = {
     "lemonade" : 1,
     "cookies" : 9,
-    "apples" : 7
+    "apples" : 1000
 }
 
 l = LemonadeStand("Gabe's Lemonade Stand")
@@ -203,12 +202,10 @@ l.enter_sales_for_today(day_0_sales)
 l.enter_sales_for_today(day_1_sales)
 l.enter_sales_for_today(day_2_sales)
 
-#test sales_of_menu_item_for_day method
-l.sales_of_menu_item_for_day(0, "apples")
-l.sales_of_menu_item_for_day(2, "apples")
-
 #test total_sales_for_menu_item method
 l.total_sales_for_menu_item("apples")
+
+
 
 """
 ar = {
