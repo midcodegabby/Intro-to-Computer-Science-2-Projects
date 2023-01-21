@@ -1,7 +1,7 @@
 """
 Author : Gabriel Rodgers
 GitHub Username : trashcoder8
-Date : 1/18/23
+Date : 1/20/23
 Description : This program's purpose is to perform calculations and handle errors in user input on user-inputted
 information. The calculations/tasks this program is made to handle include holding and categorizing user-inputted
 dictionaries of sales of particular items, storing item information (including item name, wholesale price, and
