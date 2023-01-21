@@ -2,7 +2,7 @@
 Author : Gabriel Rodgers
 GitHub Username : trashcoder8
 Date : 1/18/23
-Description :
+Description : This program
 """
 
 #create exception
@@ -86,10 +86,10 @@ class LemonadeStand:
         """retrieves the private data member name (of the LemonadeStand)"""
         return self._name
 
-    def add_menu_item(self, menu_item):
+    def add_menu_item(self, menu_item_class):
         """This method should take a MenuItem object and add it to the menu_dict, with the key being
         the MenuItem's name, and the corresponding value being the MenuItem object itself."""
-        self._menu_dict[menu_item._name] = menu_item
+        self._menu_dict[menu_item_class._name] = menu_item_class
 
     def enter_sales_for_today(self, sales_dict):
         """This method should take a user-inputted dictionary of (keys) names of sold_items and
