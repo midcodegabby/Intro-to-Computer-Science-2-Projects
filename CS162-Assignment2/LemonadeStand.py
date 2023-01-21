@@ -2,20 +2,26 @@
 Author : Gabriel Rodgers
 GitHub Username : trashcoder8
 Date : 1/18/23
-Description : This program
+Description : This program's purpose is to perform calculations and handle errors in user input on user-inputted
+information. The calculations/tasks this program is made to handle include holding and categorizing user-inputted
+dictionaries of sales of particular items, storing item information (including item name, wholesale price, and
+selling price), calculating profits on any day and calculating profits over an indeterminate time period of recorded
+sales dictionaries, in the hopes of simulating a lemonade stand. This program is able to use user-inputted items
+in a menu class and compare those to user-inputted items in a sales dictionary. If a sale item is inputted into a
+sales dictionary that is not one of the previously inputted menu items, then this program is able to handle invalid
+sale item input by raising errors and excepting them in a main function. This program uses user-inputs of
+day, menu items, sale items, menu item wholesale and selling cost, and names in several different object forms
+(including classes, dictionaries, and integers) to perform the previously stated calculations.
 """
 
-#create exception
 class InvalidSalesItemError(Exception):
     """user defined exception for an inputted sales item that does not exist in the menu_dict"""
     pass
 
-#create MenuItem class
 class MenuItem:
     """represents a menu class, with 3 private parameters/data members: name (string),
     wholesale_cost (float), and selling_price (float)"""
 
-    #initialize data member objects in the class
     def __init__(self, name, wholesale_cost, selling_price):
         """creates a new MenuItem class with a name, cost, and price inputted by the user,
         while keeping all the data members private."""
@@ -39,12 +45,11 @@ class MenuItem:
         and its other objects by keeping the parameter private"""
         return self._selling_price
 
-#create SalesForDay class
 class SalesForDay:
     """represents a sale day class with 2 private data members: current day (integer)
-    and a (dictionary) containing the (keys) names of sold items and the (values) number of each respective item sold"""
+    and a (dictionary) containing the (keys) names of sold items and the (values) number of each
+    respective item sold"""
 
-    # initialize data member objects in the class
     def __init__(self, day, sales_dict):
         """creates a new sales for day class with 2 private data members"""
         self._day = day
@@ -59,14 +64,12 @@ class SalesForDay:
         """retrieves the private data member sales_dict"""
         return self._sales_dict
 
-#create LemonadeStand class
 class LemonadeStand:
-    """represents a lemonade stand class with 4 private data members: name of stand (string), current day (integer),
-    a (dictionary) of MenuItem objects (retrieved using get_ methods) where the keys are names of items and the values are
-    corresponding MenuItem objects, and a (list) of SalesForDay objects"""
+    """represents a lemonade stand class with 4 private data members: name of stand (string), current day
+    (integer), a (dictionary) of MenuItem objects (retrieved using get_ methods) where the keys are names
+    of items and the values are corresponding MenuItem objects, and a (list) of SalesForDay objects"""
 
-    #initialize data member objects for the class
-    def __init__(self,name):
+    def __init__(self, name):
         """initializes 4 variables: the name of the (class) LemonadeStand to the passed in parameter,
         the current day (integer) to zero, the (dictionary) of MenuItems to be empty, and the (list) of
         SalesForDay objects to an empty list"""
@@ -89,30 +92,27 @@ class LemonadeStand:
     def add_menu_item(self, menu_item_class):
         """This method should take a MenuItem object and add it to the menu_dict, with the key being
         the MenuItem's name, and the corresponding value being the MenuItem object itself."""
-        self._menu_dict[menu_item_class._name] = menu_item_class
+        self._menu_dict[menu_item_class.get_name()] = menu_item_class
 
     def enter_sales_for_today(self, sales_dict):
         """This method should take a user-inputted dictionary of (keys) names of sold_items and
-        (corresponding values) how many of each of the sold_items were sold. This method should also raise an InvalidSalesItemError exception
-        if a key in the sales_dict does not match any of the menu_item names. If the menu_item name is valid and
-        in the inputted sales_dict, then the method should create a new SalesForDay object using the current day
-        and the sales_dict, add that new SalesForDay object to the sales_record list, and then increment the current
-        day by 1."""
+        (corresponding values) how many of each of the sold_items were sold. This method should also raise an
+        InvalidSalesItemError exception if a key in the sales_dict does not match any of the menu_item names.
+        If the menu_item name is valid and in the inputted sales_dict, then the method should create a new
+        SalesForDay object using the current day and the sales_dict, add that new SalesForDay object
+        to the sales_record list, and then increment the current day by 1."""
 
         """create if statements to make sure that if an inputted sold_item (in sales_dict) does not exist, then
         the InvalidSalesItemError is raised. Lastly, to make sure that if an inputted sold_item corresponds to a 
         menu_item._name in menu_dict, then a new SalesForDay object is created."""
 
-        #privatize sales_dict dictionary
-        self._sales_dict = sales_dict
-
         #create for loop to loop through all keys in the sales_dict dictionary
-        for key in self._sales_dict:
+        for key in sales_dict:
 
             # create elif statement to add the sales_dict to a new SalesForDay class
             if key in self._menu_dict:
 
-                new_sales_for_day = SalesForDay(self._day, self._sales_dict)
+                new_sales_for_day = SalesForDay(self._day, sales_dict)
 
             #create elif statement to deal with sales_dict keys that are not in the menu_dict keys
             elif key not in self._menu_dict:
@@ -129,12 +129,11 @@ class LemonadeStand:
         parameters being inputted)."""
 
         """using the day parameter, get the sales_dict for that day from the corresponding SalesForDay object in
-        the sales_record list.
-        
-        must initialize new dictionary to retrieve data using day parameter first though"""
+        the sales_record list; must initialize new dictionary to retrieve data using day parameter first though"""
         sales_on_that_day = self._sales_record[day].get_sales_dict()
 
-        #create if statement to retrieve the value portion of the key (menu_item) if the menu_item exists in the sales_on_that_day_dictionary
+        """create if statement to retrieve the value portion of the key (menu_item) if the menu_item exists 
+        in the sales_on_that_day_dictionary"""
         if menu_item in sales_on_that_day:
 
             return sales_on_that_day.get(menu_item)
@@ -151,49 +150,50 @@ class LemonadeStand:
         #initialize the returned value
         total_sales_of_item = 0
 
-        """create for loop to iterate through the amount of days inputted and add the value of the number of menu_items sold on that day
-        (using the sales_of_menu_item_for_day method) to the initialized total_sales_of_item variable"""
+        """create for loop to iterate through the amount of days inputted and add the value of the number 
+        of menu_items sold on that day (using the sales_of_menu_item_for_day method) to the initialized 
+        total_sales_of_item variable"""
+        for index in range(self._day):
+            total_sales_of_item = total_sales_of_item + self.sales_of_menu_item_for_day(index, menu_item)
 
-        for i in range(self._day):
-            total_sales_of_item = total_sales_of_item + self.sales_of_menu_item_for_day(i, menu_item)
-
-        #return final value of total_sales_of_item
         return total_sales_of_item
 
     def total_profit_for_menu_item(self, menu_item):
         """This method should take the name of a menu_item and return the total profit on that item
         over the history of the stand. Should use total_sales_for_menu_item method"""
 
-        """retrieve the selling_price and wholesale_cost from the MenuItem class value corresponding to the menu_item key in
-        the menu_dict, then subtract the wholesale_cost from the selling_price to calculate the item_profit_margin"""
-        item_profit_margin = self._menu_dict.get(menu_item)._selling_price - self._menu_dict.get(menu_item)._wholesale_cost
+        """retrieve the selling_price and wholesale_cost from the MenuItem class value corresponding to the 
+        menu_item key in the menu_dict, then subtract the wholesale_cost from the selling_price to calculate 
+        the item_profit_margin"""
+        item_profit_margin = self._menu_dict.get(menu_item).get_selling_price() - self._menu_dict.get(menu_item).get_wholesale_cost()
 
-        #multiply the item_profit_margin by the total sales of the menu item (found by calling the total_sales_for_menu_item method)
+        """multiply the item_profit_margin by the total sales of the menu item (found by calling the 
+        total_sales_for_menu_item method)"""
         total_item_profit = self.total_sales_for_menu_item(menu_item)*item_profit_margin
 
-        #return total_item_profit
         return total_item_profit
 
     def total_profit_for_stand(self):
-        """This method should take no parameters and return the total profit on all items sold over the entire history of the stand,
-        and should use the total_profit_for_menu_item method"""
+        """This method should take no parameters and return the total profit on all items sold over the
+        entire history of the stand, and should use the total_profit_for_menu_item method"""
 
         #initalize total_profit variable
         total_profit = 0
 
-        #create a for loop to loop through all keys in menu_dict, calculate the profits for each key, then add them all together
+        """create a for loop to loop through all keys in menu_dict, calculate the profits for each key, 
+        then add them all together"""
         for key in self._menu_dict:
             total_profit = total_profit + self.total_profit_for_menu_item(key)
 
         return total_profit
 
-#create main() function
 def main():
-    """This function will create a LemonadeStand object, create more than 1 MenuItem objects and add them to the LemonadeStand's menu,
-    create a dictionary of sales for the day that includes sales of at least one item that is not in the menu, pass that dictionary into
-    the enter_sales_for_today method, and handle any InvalidSalesItemError exceptions with a try/except block"""
+    """This function will create a LemonadeStand object, create more than 1 MenuItem objects and add them to
+    the LemonadeStand's menu, create a dictionary of sales for the day that includes sales of at least one item
+    that is not in the menu, pass that dictionary into the enter_sales_for_today method, and handle any
+    InvalidSalesItemError exceptions with a try/except block"""
 
-    #create LemonadeStand object
+    #create LemonStand object
     lemonhead = LemonadeStand("Lemonhead's Lemonade Stand")
 
     #create MenuItem objects
@@ -211,8 +211,8 @@ def main():
         "lemonade" : 24,
         "cookies" : 5,
         "apples" : 12,
-        "raisins" : 128,
-        "butternut squash" : 6
+        #"raisins" : 128,
+        #"butternut squash" : 6
     }
 
     #use try/except block to handle exceptions when adding sales dictionary to lemonhead's sales record list
@@ -229,7 +229,7 @@ def main():
 
 
 
-"""run the program, but include code that makes sure that the main() function only executes once if the program is ran
-as a script or as an imported module"""
+"""run the program, but include code that makes sure that the main() function only executes once 
+if the program is ran as a script or as an imported module"""
 if __name__ == '__main__':
     main()
