@@ -164,19 +164,14 @@ class LemonadeStand:
         """This method should take the name of a menu_item and return the total profit on that item
         over the history of the stand. Should use total_sales_for_menu_item method"""
 
-        """first part of the multiplicative expression retrieves the total amount of sales for the passed in menu_item.
-        second part of the multiplicative expression retrieves the value (actual MenuItem class) associated with the
-        menu_item key in the menu_dict, then retrieves the MenuItem class' wholesale_cost."""
-        total_item_wholesale_cost = self.total_sales_for_menu_item(menu_item)*self._menu_dict.get(menu_item)._wholesale_cost
+        """retrieve the selling_price and wholesale_cost from the MenuItem class value corresponding to the menu_item key in
+        the menu_dict, then subtract the wholesale_cost from the selling_price to calculate the item_profit_margin"""
+        item_profit_margin = self._menu_dict.get(menu_item)._selling_price - self._menu_dict.get(menu_item)._wholesale_cost
 
-        """first part of the multiplicative expression retrieves the total amount of sales for the passed in menu_item.
-        second part of the multiplicative expression retrieves the value (actual MenuItem class) associated with the
-        menu_item key in the menu_dict, then retrieves the MenuItem class' selling_price."""
-        total_item_selling_price = self.total_sales_for_menu_item(menu_item) * self._menu_dict.get(menu_item)._selling_price
+        #multiply the item_profit_margin by the total sales of the menu item (found by calling the total_sales_for_menu_item method)
+        total_item_profit = self.total_sales_for_menu_item(menu_item)*item_profit_margin
 
-        #finally, to get the total profit for the menu-item we subtract the total_item_wholesale_cost from the total_item_selling_price
-        total_item_profit = total_item_selling_price - total_item_wholesale_cost
-
+        #return total_item_profit
         return total_item_profit
 
     def total_profit_for_stand(self):
@@ -218,7 +213,7 @@ l.enter_sales_for_today(day_1_sales)
 l.enter_sales_for_today(day_2_sales)
 
 #test total_profit_for_menu_item method
-l.total_profit_for_menu_item("lemonade")
+l.total_profit_for_menu_item("cookies")
 
 
 
