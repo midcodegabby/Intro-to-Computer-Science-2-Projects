@@ -175,8 +175,20 @@ class LemonadeStand:
         return total_item_profit
 
     def total_profit_for_stand(self):
-        x = 1
-        return x
+        """This method should take no parameters and return the total profit on all items sold over the entire history of the stand,
+        and should use the total_profit_for_menu_item method"""
+
+        #initalize total_profit variable
+        total_profit = 0
+
+        #create a for loop to loop through all keys in menu_dict, calculate the profits for each key, then add them all together
+        for key in self._menu_dict:
+            total_profit = total_profit + self.total_profit_for_menu_item(key)
+
+        return total_profit
+
+
+
 
 
 
@@ -202,9 +214,9 @@ l = LemonadeStand("Gabe's Lemonade Stand")
 
 item1 = MenuItem("cookies", 1, 2)
 l.add_menu_item(item1)
-item2 = MenuItem("lemonade", .5, 3)
+item2 = MenuItem("lemonade", 1, 3)
 l.add_menu_item(item2)
-item3 = MenuItem("apples", .4, 3)
+item3 = MenuItem("apples", .4, 100)
 l.add_menu_item(item3)
 
 #test enter_sales_for_today method
@@ -213,8 +225,10 @@ l.enter_sales_for_today(day_1_sales)
 l.enter_sales_for_today(day_2_sales)
 
 #test total_profit_for_menu_item method
-l.total_profit_for_menu_item("cookies")
+#l.total_profit_for_menu_item("cookies")
 
+#test total_profit_for_stand method
+print(l.total_profit_for_stand())
 
 
 
