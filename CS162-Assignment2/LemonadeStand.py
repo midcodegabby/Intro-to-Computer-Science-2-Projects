@@ -121,8 +121,9 @@ class LemonadeStand:
 
                 raise InvalidSalesItemError
 
+        #outside of for loop, append the new_sales_for_day class into the sales_record list
         self._sales_record.append(new_sales_for_day)
-        #somehow need to make it so that the actual day values are in order :(
+        #add an increment of 1 day to the day after appending the above
         self._day = self._day + 1
 
 
@@ -131,10 +132,10 @@ class LemonadeStand:
         parameters being inputted)."""
 
         """using the day parameter, get the sales_dict for that day from the corresponding SalesForDay object in
-        the sales_record list."""
-
-        #must initialize new dictionary to retrieve data using day parameter
-        sales_on_that_day = self._sales_record[day].get_sales_dict() #may need to write .get_self._sales_dict()
+        the sales_record list.
+        
+        must initialize new dictionary to retrieve data using day parameter first though"""
+        sales_on_that_day = self._sales_record[day].get_sales_dict()
 
         #create if statement to retrieve the value portion of the key (menu_item) if the menu_item exists in the sales_on_that_day_dictionary
         if menu_item in sales_on_that_day:
@@ -143,15 +144,22 @@ class LemonadeStand:
 
         else:
             print("That item had zero sales for that day!")
-            #figure out a way to input the day into the print statement
 
 
     def total_sales_for_menu_item(self, menu_item):
         """This method should take the name of a menu item and return the total number of that item
-        sold over the history of the stand. This method should use sales_of_menu_item_today to find the
-        required value"""
+        sold over the history of the stand. This method should use sales_of_menu_item_for_day to find the
+        required value."""
 
-        return #value
+        #initialize the returned value
+        self._total_sales_of_item = 0
+
+        #create for loop to iterate through the sales_record to do stuff
+        #how to iterate through the
+        for self._sales_dict in self._sales_record:
+            self._total_sales_of_item = self._total_sales_of_item + self.sales_of_menu_item_for_day(self._day, menu_item)
+            #i think the issue is that I have to retrieve the day from the _sales_record somehow?
+
 
     def total_profit_for_menu_item(self, menu_item):
         """This method should take the name of a menu_item and return the total profit on that item
@@ -198,6 +206,9 @@ l.enter_sales_for_today(day_2_sales)
 #test sales_of_menu_item_for_day method
 l.sales_of_menu_item_for_day(0, "apples")
 l.sales_of_menu_item_for_day(2, "apples")
+
+#test total_sales_for_menu_item method
+l.total_sales_for_menu_item("apples")
 
 """
 ar = {
