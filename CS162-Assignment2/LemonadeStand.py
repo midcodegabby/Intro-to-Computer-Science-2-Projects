@@ -220,7 +220,7 @@ def main():
         lemonhead.enter_sales_for_today(day_0_sales)
 
     except InvalidSalesItemError:
-        print("One of the items in day_0_sales is not in Lemonhead's Lemonade Stand's menu!")
+        print("One of the items in the sales dictionary is not in Lemonhead's Lemonade Stand's menu!")
 
     else:
         #print the total profit of the stand, which only executes if the InvalidSalesItemError is not raised

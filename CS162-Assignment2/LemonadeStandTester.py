@@ -79,7 +79,8 @@ class TestingLemonadeStand(unittest.TestCase):
         self.assertAlmostEqual(261.00001, lem.total_profit_for_menu_item("blueberries"), 3)
 
     def test_5(self):
-        """"Testing the enter_sales_for_today method in the LemonadeStand class to raise the InvalidSaleItemError"""
+        """"Testing the enter_sales_for_today method in the LemonadeStand class to raise the
+        InvalidSaleItemError"""
 
         # create lemonadestand class
         lem = LemonadeStand("lalalala")
