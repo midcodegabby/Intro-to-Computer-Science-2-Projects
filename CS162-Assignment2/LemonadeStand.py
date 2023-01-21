@@ -187,75 +187,49 @@ class LemonadeStand:
 
         return total_profit
 
+#create main() function
+def main():
+    """This function will create a LemonadeStand object, create more than 1 MenuItem objects and add them to the LemonadeStand's menu,
+    create a dictionary of sales for the day that includes sales of at least one item that is not in the menu, pass that dictionary into
+    the enter_sales_for_today method, and handle any InvalidSalesItemError exceptions with a try/except block"""
 
+    #create LemonadeStand object
+    lemonhead = LemonadeStand("Lemonhead's Lemonade Stand")
 
+    #create MenuItem objects
+    item1 = MenuItem("cookies", 1, 4)
+    item2 = MenuItem("lemonade", .75, 2)
+    item3 = MenuItem("apples", .5, 2)
 
+    #add MenuItem objects to lemonhead's menu dictionary
+    lemonhead.add_menu_item(item1)
+    lemonhead.add_menu_item(item2)
+    lemonhead.add_menu_item(item3)
 
+    #create a dictionary of sales for the day that includes an item that is not on lemonhead's menu dictionary
+    day_0_sales = {
+        "lemonade" : 24,
+        "cookies" : 5,
+        "apples" : 12,
+        "raisins" : 128,
+        "butternut squash" : 6
+    }
 
-#create test dictionaries
-day_0_sales = {
-    "lemonade" : 5,
-    "cookies" : 3
-}
+    #use try/except block to handle exceptions when adding sales dictionary to lemonhead's sales record list
+    try:
+        lemonhead.enter_sales_for_today(day_0_sales)
 
-day_1_sales = {
-    "lemonade" : 10,
-    "cookies" : 12,
-    "apples" : 4
-}
+    except InvalidSalesItemError:
+        print("One of the items in day_0_sales is not in Lemonhead's Lemonade Stand's menu!")
 
-day_2_sales = {
-    "lemonade" : 1,
-    "cookies" : 9,
-    "apples" : 6
-}
-
-l = LemonadeStand("Gabe's Lemonade Stand")
-
-item1 = MenuItem("cookies", 1, 2)
-l.add_menu_item(item1)
-item2 = MenuItem("lemonade", 1, 3)
-l.add_menu_item(item2)
-item3 = MenuItem("apples", .4, 100)
-l.add_menu_item(item3)
-
-#test enter_sales_for_today method
-l.enter_sales_for_today(day_0_sales)
-l.enter_sales_for_today(day_1_sales)
-l.enter_sales_for_today(day_2_sales)
-
-#test total_profit_for_menu_item method
-#l.total_profit_for_menu_item("cookies")
-
-#test total_profit_for_stand method
-print(l.total_profit_for_stand())
-
-
-
-
-"""
-ar = {
-    "bastard" : 4,
-    "lemonade" : 6
-
-}
-
-for key in ar:
-
-    if key in l._menu_dict.keys():
-        print("yes")
     else:
-        print("no")
-        print(l._menu_dict.keys())
-        print(ar.get(key))
-        print(ar.keys())
-"""
+        #print the total profit of the stand, which only executes if the InvalidSalesItemError is not raised
+        print(lemonhead.total_profit_for_stand())
 
-"""
-for key in l._menu_dict:
 
-    if type(l._menu_dict[key]) == str:
-        print("valid")
-    else:
-        print(type(l._menu_dict.values()))
-"""
+
+
+"""run the program, but include code that makes sure that the main() function only executes once if the program is ran
+as a script or as an imported module"""
+if __name__ == '__main__':
+    main()
