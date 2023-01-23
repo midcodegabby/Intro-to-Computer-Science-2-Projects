@@ -2,7 +2,7 @@
 #GitHub Username : trashcoder8
 #Date : 1/20/23
 #Description : This project is supposed to simulate a library, having multiple classes
-#that inherit from each other to create a connected environment. a
+#that inherit from each other to create a connected environment. a big nose :)
 
 class LibraryItem:
 
