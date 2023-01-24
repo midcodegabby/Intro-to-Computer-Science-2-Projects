@@ -107,8 +107,8 @@ class Patron:
         self._fine_amount = 0
 
         #checked_out_items will be a list of LibraryItems
-        #initialize a list of checked_out_items
-        self._checked_out_items = []
+        #initialize a dictionary of checked_out_items
+        self._checked_out_items = {}
 
     def get_fine_amount(self):
         """returns the fine_amount"""
@@ -127,14 +127,15 @@ class Patron:
         return self._checked_out_items
 
     def add_library_item(self, library_item):
-        """this method adds a specified library item to the checked_out_items list"""
-        self._checked_out_items.append(library_item)
+        """this method adds a specified library item to the checked_out_items dictionary, with the key being
+        the library_item's id, and its corresponding value being the library_item object"""
+        self._checked_out_items[library_item.get_library_item_id()] = library_item
 
     def remove_library_item(self, library_item):
         """this method removes a specified library item from the checked_out_items list and returns an InvalidLibraryItem
         error if no such item exists in the checked_out_items list"""
-        if library_item in self._checked_out_items:
-            self._checked_out_items.remove(library_item)
+        if library_item.get_library_id in self._checked_out_items:
+            del self._checked_out_items[library_item.get_library_id]
 
         else:
             raise InvalidLibraryItemError
@@ -156,26 +157,26 @@ class Library:
     updated every time a LibraryItem or one of its sub-classes are checked out to the parameter date_checked_out"""
 
     def __init__(self):
-        self._holdings = []
-        self._members = []
+        self._holdings = {}
+        self._members = {}
         self._current_date = 0
 
     def add_library_item(self, library_item):
         """"this method adds a LibraryItem to the holdings of the library"""
-        self._holdings.append(library_item)
+        self._holdings[library_item.get_library_item_id()] = library_item
 
     def add_patron(self, patron):
         """this method adds a patron to the members of the library"""
-        self._members.append(patron)
+        self._members[patron.get_patron_id()] = patron
 
     def lookup_library_item_from_id(self, library_item_id):
         """this method returns the LibraryItem object corresponding to the passed in library_item_id, or None if
         the library_item_id does not exist in the holdings"""
-        if library_item_id in self._holdings[].get
+        if library_item_id in self._holdings:
+            return self._holdings.get(library_item_id) #returns the value associated with the library_item_id key
 
-
-
-
+        else:
+            raise InvalidLibraryItemError
 
 
 
