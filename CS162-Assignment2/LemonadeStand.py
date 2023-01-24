@@ -200,11 +200,14 @@ def main():
     item1 = MenuItem("cookies", 1, 4)
     item2 = MenuItem("lemonade", .75, 2)
     item3 = MenuItem("apples", .5, 2)
+    item4 = MenuItem("raisins", 1, 300)
 
     #add MenuItem objects to lemonhead's menu dictionary
     lemonhead.add_menu_item(item1)
     lemonhead.add_menu_item(item2)
     lemonhead.add_menu_item(item3)
+    lemonhead.add_menu_item(item4)
+
 
     #create a dictionary of sales for the day that includes an item that is not on lemonhead's menu dictionary
     day_0_sales = {
@@ -212,12 +215,22 @@ def main():
         "cookies" : 5,
         "apples" : 12,
         "raisins" : 128,
-        "butternut squash" : 6
+        #"butternut squash" : 6
     }
+
+    day_1_sales = {
+        "lemonade": 27,
+        "cookies": 9,
+        "apples": 2390,
+        "raisins": 12,
+        #"butternut squash": 0
+    }
+
 
     #use try/except block to handle exceptions when adding sales dictionary to lemonhead's sales record list
     try:
         lemonhead.enter_sales_for_today(day_0_sales)
+        lemonhead.enter_sales_for_today(day_1_sales)
 
     except InvalidSalesItemError:
         print("One of the items in the sales dictionary is not in Lemonhead's Lemonade Stand's menu!")
@@ -229,7 +242,9 @@ def main():
 
 
 
+
 """run the program, but include code that makes sure that the main() function only executes once 
 if the program is ran as a script or as an imported module"""
+main()
 if __name__ == '__main__':
     main()

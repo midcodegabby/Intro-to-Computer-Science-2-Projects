@@ -188,7 +188,35 @@ class Library:
             return None
 
     def check_out_library_item(self, patron_id, library_item_id):
-        print("x")
+        """this method takes a patron_id and a library_id and returns "patron not found" if the patron is not
+        in the library members dictionary, "item not found" if the libraryitem is not in the library holdings
+        dictionary, "item already checked out" if the libraryitem is already checked out, or "item on hold by other
+        patron" if the library item is already on hold. If none of the above situations apply, then this method
+        updates the LibraryItem's checked_out_by, date_checked_out, and location data members. If the libraryitem was
+        alreaady requested by the patron, then the libraryitem's requested_by data member is also updated. Lastly, this
+        method will update the patron's dictionary of checked_out_items."""
+
+        if patron_id not in self._members:
+            return "patron not found"
+
+        elif library_item_id not in self._holdings:
+            return "item not found"
+
+        elif patron_id in self._members and library_item_id in self._holdings:
+
+            #check if any other patron has requested or checked out the library item:
+            if self._holdings.get(library_item_id).get_checked_out_by() != None:
+                return "item already checked out"
+
+            elif self._holdings.get(library_item_id).get_requested_by() != None or self._holdings.get(patron_id):
+                return "item on hold by other patron"
+
+            elif self._holdings.get(library_item_id).get_requested_by() == None or self._holdings.get(patron_id):
+                #update location, checked_out_by, and  date_checked_out
+                self._holdings.get(library_item_id).get_checked_out_by() = self._members.get(patron_id).get_patron
+
+
+
 
 
 
