@@ -48,6 +48,19 @@ class LibraryItem:
         """This method retrieves the LibraryItem's date of check out"""
         return self._date_checked_out
 
+    #create set methods ASK IF ALLOWED
+    def set_location(self, new_location):
+        """this method sets the location data member of the LibraryItem object to a new passed in location"""
+        self._location = new_location
+
+    def set_requested_by(self, new_patron):
+        """this methods sets the requested_by data member to a new_patron parameter"""
+        self._requested_by = new_patron
+
+    def set_checked_out_by(self, new_patron):
+        """this methods sets the requested_by data member to a new_patron parameter"""
+        self._checked_out_by = new_patron
+
 #create 3 subclasses of LibraryItem:
 class Book(LibraryItem):
     """This subclass of LibraryItem represents a Book LibraryItem, that has the same 6 data members as LibraryItem
@@ -161,6 +174,9 @@ class Library:
         self._members = {}
         self._current_date = 0
 
+        #initialize a compostional class to use elsewhere:
+
+
     def add_library_item(self, library_item):
         """"this method adds a LibraryItem to the holdings of the library"""
         self._holdings[library_item.get_library_item_id()] = library_item
@@ -211,9 +227,55 @@ class Library:
             elif self._holdings.get(library_item_id).get_requested_by() != None or self._holdings.get(patron_id):
                 return "item on hold by other patron"
 
+            #case for when no one has requested the library item:
             elif self._holdings.get(library_item_id).get_requested_by() == None or self._holdings.get(patron_id):
-                #update location, checked_out_by, and  date_checked_out
-                self._holdings.get(library_item_id).get_checked_out_by() = self._members.get(patron_id).get_patron
+
+                #update location, checked_out_by, and date_checked_out
+                patron_from_id = self._members.get(patron_id)
+                checked_patron = self._holdings.get(library_item_id).get_checked_out_by()
+                checked_patron = patron_from_id #maybe use composition to update the value of the data members:
+
+
+                #update location somehow
+                new_location = "CHECKED_OUT"
+
+            #case for when the patron checking the libraryitem out already requested the libraryitem: must change
+            #the requested_by data member in the libraryitem object to None, unless possible in the above case
+            #elif self._holdings.get(library_item_id).get_requested_by() == self._holdings.get(patron_id):
+
+
+
+
+
+
+
+lib = Library()
+
+b1 = Book(123, "Great Gatsby", "richard")
+a1 = Album(312, "blah", "mark")
+m1 = Movie(436, "terminator", "dawkins")
+
+p1 = Patron(967, "gabe")
+p2 = Patron(926, "sasha")
+
+lib.add_patron(p1)
+lib.add_patron(p2)
+
+lib.add_library_item(b1)
+lib.add_library_item(a1)
+lib.add_library_item(m1)
+
+lib.lookup_patron_from_id(967)
+lib.lookup_library_item_from_id(312)
+
+lib.check_out_library_item(967, 312)
+
+print(a1.get_checked_out_by())
+
+
+
+
+
 
 
 
