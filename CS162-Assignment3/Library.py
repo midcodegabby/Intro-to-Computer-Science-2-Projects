@@ -231,13 +231,8 @@ class Library:
             elif self._holdings.get(library_item_id).get_requested_by() != None and self._members.get(patron_id):
                 return "item on hold by other patron"
 
-            #case for when no one has requested the library item:
+            #case for when no one has requested the library item or the patron themself has requested the item:
             elif self._holdings.get(library_item_id).get_requested_by() == None or self._members.get(patron_id):
-
-                #update location, checked_out_by, and date_checked_out
-                #patron_from_id = self._members.get(patron_id)
-                #checked_patron = self._holdings.get(library_item_id).get_checked_out_by()
-                #checked_patron = patron_from_id
 
                 #update requested_by LibraryItem data member to None (in the case of the patron checking the item out
                 #being the same patron that requested the item)
@@ -255,7 +250,10 @@ class Library:
                 #add library_item to patron's dictionary of checked out items
                 self._members.get(patron_id).add_library_item(self._holdings.get(library_item_id))
 
+                return "check out successful"
 
+    def return_library_item(self, library_item_id):
+        """this method """
 
 
 
@@ -282,7 +280,9 @@ lib.lookup_library_item_from_id(312)
 
 lib.check_out_library_item(967, 312)
 
-print(a1.get_checked_out_by())
+
+
+
 
 
 
