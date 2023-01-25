@@ -214,7 +214,7 @@ class Library:
         patron" if the library item is already on hold. If none of the above situations apply, then this method
         updates the LibraryItem's checked_out_by, date_checked_out, and location data members. If the libraryitem was
         alreaady requested by the patron, then the libraryitem's requested_by data member is also updated. Lastly, this
-        method will update the patron's dictionary of checked_out_items."""
+        method will update the patron's dictionary of checked_out_items and return "check out successful."""
 
         if patron_id not in self._members:
             return "patron not found"
@@ -253,7 +253,26 @@ class Library:
                 return "check out successful"
 
     def return_library_item(self, library_item_id):
-        """this method """
+        """this method takes a library_item_id and returns the libraryitem associated with it back to the library.
+        If the libraryitem does not exist in the library's holdings, then the method returns "item not found". If the
+        libraryitem is not checked out, then the method returns "item already in library". If the library_item_id is
+        checked out and exists, then the method updates the patron's (that is returning the libraryitem)
+        checked_out_items dictionary. This method also updates the libraryitem's location depending on whether or not
+        another patron has requested the item. This method also updates the libraryitem's checked_out_by data member,
+        and finally returns "return successful"."""
+
+        #create if statements to filter out invalid parameters
+        if library_item_id not in self._holdings:
+            return "item not found"
+
+        #this if statement handles libaryitems that are not checked out:
+        elif self._holdings(library_item_id).get_checked_out_by() == None:
+            return "item already in library"
+
+        #this if statement handles library items that are checked out and therefore will be returned:
+        elif self._holdings(library_item_id).get_checked_out_by() != None:
+            print(3)
+
 
 
 
