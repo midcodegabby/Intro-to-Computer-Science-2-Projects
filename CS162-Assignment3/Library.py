@@ -48,7 +48,7 @@ class LibraryItem:
         """This method retrieves the LibraryItem's date of check out"""
         return self._date_checked_out
 
-    #create set methods ASK IF ALLOWED
+    #create set methods
     def set_location(self, new_location):
         """this method sets the location data member of the LibraryItem object to a new passed in location"""
         self._location = new_location
@@ -60,6 +60,10 @@ class LibraryItem:
     def set_checked_out_by(self, new_patron):
         """this methods sets the requested_by data member to a new_patron parameter"""
         self._checked_out_by = new_patron
+
+    def set_date_checked_out(self, check_out_date):
+        """this method sets the date_checked_out to a new_date parameter"""
+        self._date_checked_out = check_out_date
 
 #create 3 subclasses of LibraryItem:
 class Book(LibraryItem):
@@ -224,24 +228,32 @@ class Library:
             if self._holdings.get(library_item_id).get_checked_out_by() != None:
                 return "item already checked out"
 
-            elif self._holdings.get(library_item_id).get_requested_by() != None or self._holdings.get(patron_id):
+            elif self._holdings.get(library_item_id).get_requested_by() != None and self._members.get(patron_id):
                 return "item on hold by other patron"
 
             #case for when no one has requested the library item:
-            elif self._holdings.get(library_item_id).get_requested_by() == None or self._holdings.get(patron_id):
+            elif self._holdings.get(library_item_id).get_requested_by() == None or self._members.get(patron_id):
 
                 #update location, checked_out_by, and date_checked_out
-                patron_from_id = self._members.get(patron_id)
-                checked_patron = self._holdings.get(library_item_id).get_checked_out_by()
-                checked_patron = patron_from_id #maybe use composition to update the value of the data members:
+                #patron_from_id = self._members.get(patron_id)
+                #checked_patron = self._holdings.get(library_item_id).get_checked_out_by()
+                #checked_patron = patron_from_id
 
+                #update requested_by LibraryItem data member to None (in the case of the patron checking the item out
+                #being the same patron that requested the item)
+                self._holdings.get(library_item_id).set_requested_by(None)
 
-                #update location somehow
-                new_location = "CHECKED_OUT"
+                #update checked_out_by LibraryItem data member to the patron object
+                self._holdings.get(library_item_id).set_checked_out_by(self._members.get(patron_id))
 
-            #case for when the patron checking the libraryitem out already requested the libraryitem: must change
-            #the requested_by data member in the libraryitem object to None, unless possible in the above case
-            #elif self._holdings.get(library_item_id).get_requested_by() == self._holdings.get(patron_id):
+                #update date_checked_out LibraryItem data member to the date of checkout
+                self._holdings.get(library_item_id).set_date_checked_out(self._current_date)
+
+                #update location LibraryItem data member to "CHECKED_OUT"
+                self._holdings.get(library_item_id).set_location("CHECKED_OUT")
+
+                #add library_item to patron's dictionary of checked out items
+                self._members.get(patron_id).add_library_item(self._holdings.get(library_item_id))
 
 
 
