@@ -271,7 +271,7 @@ class Library:
 
         #this if statement handles library items that are checked out and therefore will be returned:
         elif self._holdings(library_item_id).get_checked_out_by() != None:
-            print(3)
+            print(4)
 
 
 
