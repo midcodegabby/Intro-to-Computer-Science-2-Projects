@@ -123,7 +123,6 @@ class Patron:
         self._name = name
         self._fine_amount = 0
 
-        #checked_out_items will be a list of LibraryItems
         #initialize a dictionary of checked_out_items
         self._checked_out_items = {}
 
@@ -149,20 +148,17 @@ class Patron:
         self._checked_out_items[library_item.get_library_item_id()] = library_item
 
     def remove_library_item(self, library_item):
-        """this method removes a specified library item from the checked_out_items list and returns an InvalidLibraryItem
+        """this method removes a specified library item from the patron's checked_out_items dictionary and returns an InvalidLibraryItem
         error if no such item exists in the checked_out_items list"""
-        if library_item.get_library_id in self._checked_out_items:
-            del self._checked_out_items[library_item.get_library_id]
+        if library_item.get_library_item_id in self._checked_out_items:
+            del self._checked_out_items[library_item.get_library_item_id]
 
         else:
             raise InvalidLibraryItemError
 
     def amend_fine(self, money):
         """this method allows changes to happen to the fine_amount (either pay it off or allow it to increase in debt"""
-        if money > 0:
-            return self._fine_amount + money
-
-        elif money < 0:
+        if money > 0 or money < 0:
             return self._fine_amount + money
 
         else:
@@ -225,30 +221,30 @@ class Library:
         elif patron_id in self._members and library_item_id in self._holdings:
 
             #check if any other patron has requested or checked out the library item:
-            if self._holdings.get(library_item_id).get_checked_out_by() != None:
+            if self.lookup_library_item_from_id(library_item_id).get_checked_out_by() != None:
                 return "item already checked out"
 
-            elif self._holdings.get(library_item_id).get_requested_by() != None and self._members.get(patron_id):
+            elif self.lookup_library_item_from_id(library_item_id).get_requested_by() != None and self.lookup_patron_from_id(patron_id):
                 return "item on hold by other patron"
 
             #case for when no one has requested the library item or the patron themself has requested the item:
-            elif self._holdings.get(library_item_id).get_requested_by() == None or self._members.get(patron_id):
+            elif self.lookup_library_item_from_id(library_item_id).get_requested_by() == None or self.lookup_patron_from_id(patron_id):
 
                 #update requested_by LibraryItem data member to None (in the case of the patron checking the item out
                 #being the same patron that requested the item)
-                self._holdings.get(library_item_id).set_requested_by(None)
+                self.lookup_library_item_from_id(library_item_id).set_requested_by(None)
 
                 #update checked_out_by LibraryItem data member to the patron object
-                self._holdings.get(library_item_id).set_checked_out_by(self._members.get(patron_id))
+                self.lookup_library_item_from_id(library_item_id).set_checked_out_by(self.lookup_patron_from_id(patron_id))
 
                 #update date_checked_out LibraryItem data member to the date of checkout
-                self._holdings.get(library_item_id).set_date_checked_out(self._current_date)
+                self.lookup_library_item_from_id(library_item_id).set_date_checked_out(self._current_date)
 
                 #update location LibraryItem data member to "CHECKED_OUT"
-                self._holdings.get(library_item_id).set_location("CHECKED_OUT")
+                self.lookup_library_item_from_id(library_item_id).set_location("CHECKED_OUT")
 
                 #add library_item to patron's dictionary of checked out items
-                self._members.get(patron_id).add_library_item(self._holdings.get(library_item_id))
+                self.lookup_patron_from_id(patron_id).add_library_item(self.lookup_library_item_from_id(library_item_id))
 
                 return "check out successful"
 
@@ -266,12 +262,93 @@ class Library:
             return "item not found"
 
         #this if statement handles libaryitems that are not checked out:
-        elif self._holdings(library_item_id).get_checked_out_by() == None:
+        elif self.lookup_library_item_from_id(library_item_id).get_checked_out_by() == None:
             return "item already in library"
 
         #this if statement handles library items that are checked out and therefore will be returned:
-        elif self._holdings(library_item_id).get_checked_out_by() != None:
-            print(4)
+        elif self.lookup_library_item_from_id(library_item_id).get_checked_out_by() != None:
+
+            #update Patron's checked_out_items dictionary
+            self.lookup_library_item_from_id(library_item_id).get_checked_out_by().remove_library_item(self.lookup_library_item_from_id(library_item_id))
+
+            #update LibraryItem location depending on whether or not another patron has checked out the item
+            if self.lookup_library_item_from_id(library_item_id).get_requested_by() == None:
+                self.lookup_library_item_from_id(library_item_id).set_location("ON_SHELF")
+
+            elif self.lookup_library_item_from_id(library_item_id).get_requested_by() != None:
+                self.lookup_library_item_from_id(library_item_id).set_location("ON_HOLD_SHELF")
+
+            #update the LibraryItem's checked_out_by data member
+            self.lookup_library_item_from_id(library_item_id).set_checked_out_by(None)
+
+            return "return successful"
+
+    def request_library_item(self, patron_id, library_item_id):
+        """this method allows a patron to request a LibraryItem by id. If the specified patron (by id) is not
+          in the library's members, this method returns "patron not found". If the library_item_id has no LibraryItem
+          attached to it or is not in the Library's holdings, then this method returns "item not found".
+          This method allows only one patron to request a specific LibraryItem at a time; if a patron tries to request
+          an item that has already been requested by another patron this method returns "item already on hold". If the
+          above situations are not triggered and a LibraryItem is allowed to be requested, then this method sets the
+          patron to the LibraryItem's requested_by data member, sets the LibraryItem's location to "ON_HOLD_SHELF"
+          (only if the LibraryItem's location previously was "ON_SHELF"), and returns the string "request successful"
+          """
+
+        #create if statements to filter out invalid parameters
+        if patron_id not in self._members:
+            return "patron not found"
+
+        elif library_item_id not in self._holdings:
+            return "item not found"
+
+        #if statement to handle situation where another patron has already requested the LibraryItem
+        elif self.lookup_library_item_from_id(library_item_id).get_requested_by() != None:
+            return "item already on hold"
+
+        #this if statement handles a valid request
+        elif self.lookup_library_item_from_id(library_item_id).get_requested_by() == None:
+
+            #update LibraryItem's requested_by data member to the patron
+            self.lookup_library_item_from_id(library_item_id).set_requested_by(self.lookup_patron_from_id(patron_id))
+
+            #update LibraryItem's location
+            if self.lookup_library_item_from_id(library_item_id).get_location == "ON_SHELF":
+                self.lookup_library_item_from_id(library_item_id).set_location("ON_HOLD_SHELF")
+
+            else:
+                return "the library item  is not on the shelf???"
+
+            return "request successsful"
+
+    def pay_fine(self, patron_id, payment):
+        """this method takes a patron_id and a payment and changes the patron's fine_amount using the payment."""
+
+        #use if statements to filter out invalid inputs
+        if patron_id not in self._members:
+            return "patron not found"
+
+        #use if statement to deal with amending fines
+        elif patron_id in self._members:
+            self.lookup_patron_from_id(patron_id).amend_fine(payment)
+
+            return "payement successful"
+
+    def increment_current_date(self):
+        """this method increments the current date and increases each Patron's fines by 10 cents for every overdue
+        LibraryItem they have checked out"""
+
+        #increment current date:
+        self._current_date = self._current_date + 1
+
+        #handle Patron fines:
+
+
+
+
+
+
+
+
 
 
 
@@ -297,11 +374,11 @@ lib.add_library_item(m1)
 lib.lookup_patron_from_id(967)
 lib.lookup_library_item_from_id(312)
 
-lib.check_out_library_item(967, 312)
+print(lib.check_out_library_item(967, 312))
 
-
-
-
+print(lib.return_library_item(312))
+print(lib.lookup_library_item_from_id(312).get_location())
+print(lib.lookup_patron_from_id(967).get_checked_out_items().get(312))
 
 
 
