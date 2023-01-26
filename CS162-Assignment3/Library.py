@@ -312,13 +312,13 @@ class Library:
             self.lookup_library_item_from_id(library_item_id).set_requested_by(self.lookup_patron_from_id(patron_id))
 
             #update LibraryItem's location
-            if self.lookup_library_item_from_id(library_item_id).get_location == "ON_SHELF":
+            if self.lookup_library_item_from_id(library_item_id).get_location() == "ON_SHELF":
                 self.lookup_library_item_from_id(library_item_id).set_location("ON_HOLD_SHELF")
 
-            else:
-                return "the library item  is not on the shelf???"
+            elif self.lookup_library_item_from_id(library_item_id).get_location() == "CHECKED_OUT":
+                self.lookup_library_item_from_id(library_item_id).set_location("CHECKED_OUT")
 
-            return "request successsful"
+            return "request successful"
 
     def pay_fine(self, patron_id, payment):
         """this method takes a patron_id and a payment and changes the patron's fine_amount using the payment."""
@@ -331,7 +331,7 @@ class Library:
         elif patron_id in self._members:
             self.lookup_patron_from_id(patron_id).amend_fine(payment)
 
-            return "payement successful"
+            return "payment successful"
 
     def increment_current_date(self):
         """this method increments the current date and increases each Patron's fines by 10 cents for every overdue
@@ -375,8 +375,11 @@ lib.lookup_patron_from_id(967)
 lib.lookup_library_item_from_id(312)
 
 print(lib.check_out_library_item(967, 312))
-
+print(lib.lookup_library_item_from_id(312).get_location())
 print(lib.return_library_item(312))
+
+
+print(lib.request_library_item(926, 312))
 print(lib.lookup_library_item_from_id(312).get_location())
 
 
