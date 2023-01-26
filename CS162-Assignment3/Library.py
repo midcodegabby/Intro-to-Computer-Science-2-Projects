@@ -4,10 +4,6 @@
 #Description : This project is supposed to simulate a library, having multiple classes
 #that inherit from each other to create a connected environment. a big nose :)
 
-#create exception for invalid library item:
-class InvalidLibraryItemError(Exception):
-    pass
-
 class LibraryItem:
     """A LibraryItem object represents a library item that a Patron can check out of the library.
     its 6 data members are its (unique) library_item_id, its (non-unique) title, its location (ON_SHELF, ON_HOLD_SHELF,
@@ -148,13 +144,13 @@ class Patron:
         self._checked_out_items[library_item.get_library_item_id()] = library_item
 
     def remove_library_item(self, library_item):
-        """this method removes a specified library item from the patron's checked_out_items dictionary and returns an InvalidLibraryItem
-        error if no such item exists in the checked_out_items list"""
+        """this method removes a specified library item from the patron's checked_out_items dictionary and returns an
+        InvalidLibraryItem error if no such item exists in the checked_out_items list"""
         if library_item.get_library_item_id() in self._checked_out_items:
             del self._checked_out_items[library_item.get_library_item_id()]
 
         else:
-            raise InvalidLibraryItemError
+            return "the patron has not checked that item out"
 
     def amend_fine(self, money):
         """this method allows changes to happen to the fine_amount (either pay it off or allow it to increase in debt"""
@@ -340,10 +336,25 @@ class Library:
         #increment current date:
         self._current_date = self._current_date + 1
 
-        #handle Patron fines by looping through patrons in the member dictionary
+        #loop through all patrons in the Library's members dictionary
         for key in self._members:
-            #create if statement to handle patrons that have overdue LibraryItems
-            if self.lookup_patron_from_id(key).get_checked_out_items()
+            print(1)
+            #create variable to be used in lower code/simplify lower code
+            patron = self.lookup_patron_from_id(key)
+
+            #loop through all LibraryItems in each patron's checked_out_items dictionary
+            for key in self.lookup_patron_from_id(key).get_checked_out_items():
+
+                #create if statements to handle fines for if the time since checking the LibraryItem out is
+                #equal to, less than, or greater than the LibraryItem's checkout length
+                if self._current_date - self.lookup_library_item_from_id(key).get_date_checked_out() <= self.lookup_library_item_from_id(key).get_check_out_length():
+                    return "item is not late so no fine given"
+
+                elif self._current_date - self.lookup_library_item_from_id(key).get_date_checked_out() > self.lookup_library_item_from_id(key).get_check_out_length():
+                    patron.amend_fine(-0.1)
+
+
+
 
 
 
@@ -361,8 +372,8 @@ class Library:
 lib = Library()
 
 b1 = Book(123, "Great Gatsby", "richard")
-a1 = Album(312, "blah", "mark")
-m1 = Movie(436, "terminator", "dawkins")
+a1 = Album(312, "Calvacade", "mark")
+m1 = Movie(436, "Terminator", "dawkins")
 
 p1 = Patron(967, "gabe")
 p2 = Patron(926, "sasha")
@@ -378,12 +389,15 @@ lib.lookup_patron_from_id(967)
 lib.lookup_library_item_from_id(312)
 
 print(lib.check_out_library_item(967, 312))
+print(lib.check_out_library_item(926, 123))
 print(lib.lookup_library_item_from_id(312).get_location())
-print(lib.return_library_item(312))
+#print(lib.return_library_item(312))
 
 
 print(lib.request_library_item(926, 312))
 print(lib.lookup_library_item_from_id(312).get_location())
+print(lib.increment_current_date())
+
 
 
 
