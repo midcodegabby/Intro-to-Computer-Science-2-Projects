@@ -340,7 +340,10 @@ class Library:
         #increment current date:
         self._current_date = self._current_date + 1
 
-        #handle Patron fines:
+        #handle Patron fines by looping through patrons in the member dictionary
+        for key in self._members:
+            #create if statement to handle patrons that have overdue LibraryItems
+            if self.lookup_patron_from_id(key).get_checked_out_items()
 
 
 
