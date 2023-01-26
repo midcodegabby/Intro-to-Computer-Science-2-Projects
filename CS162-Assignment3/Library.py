@@ -155,7 +155,8 @@ class Patron:
     def amend_fine(self, money):
         """this method allows changes to happen to the fine_amount (either pay it off or allow it to increase in debt"""
         if money > 0 or money < 0:
-            return self._fine_amount + money
+            self._fine_amount = self._fine_amount + money
+            return self._fine_amount
 
         else:
             return self._fine_amount
@@ -348,12 +349,10 @@ class Library:
             for key in self.lookup_patron_from_id(key).get_checked_out_items():
 
                 #create if statements to handle fines for if the time since checking the LibraryItem out is
-                #equal to, less than, or greater than the LibraryItem's checkout length
-                if self._current_date - self.lookup_library_item_from_id(key).get_date_checked_out() <= self.lookup_library_item_from_id(key).get_check_out_length():
-                    continue
+                #greater than the LibraryItem's checkout length
+                if self._current_date - self.lookup_library_item_from_id(key).get_date_checked_out() > self.lookup_library_item_from_id(key).get_check_out_length():
+                    patron.amend_fine(-0.10)
 
-                elif self._current_date - self.lookup_library_item_from_id(key).get_date_checked_out() > self.lookup_library_item_from_id(key).get_check_out_length():
-                    patron.amend_fine(4)
 
 
 
@@ -411,16 +410,6 @@ for x in range(50):
 print(lib.get_current_date())
 print(lib.lookup_patron_from_id(967).get_fine_amount())
 print(lib.lookup_patron_from_id(926).get_fine_amount())
-
-
-for i in [4]:
-    if i > 2:
-
-        continue
-
-    elif i < 2:
-        print(1)
-
 
 
 
