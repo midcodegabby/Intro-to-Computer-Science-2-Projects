@@ -150,8 +150,8 @@ class Patron:
     def remove_library_item(self, library_item):
         """this method removes a specified library item from the patron's checked_out_items dictionary and returns an InvalidLibraryItem
         error if no such item exists in the checked_out_items list"""
-        if library_item.get_library_item_id in self._checked_out_items:
-            del self._checked_out_items[library_item.get_library_item_id]
+        if library_item.get_library_item_id() in self._checked_out_items:
+            del self._checked_out_items[library_item.get_library_item_id()]
 
         else:
             raise InvalidLibraryItemError
@@ -378,7 +378,7 @@ print(lib.check_out_library_item(967, 312))
 
 print(lib.return_library_item(312))
 print(lib.lookup_library_item_from_id(312).get_location())
-print(lib.lookup_patron_from_id(967).get_checked_out_items().get(312))
+
 
 
 
