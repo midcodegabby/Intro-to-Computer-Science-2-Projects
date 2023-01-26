@@ -172,6 +172,8 @@ class Library:
 
         #initialize a compostional class to use elsewhere:
 
+    def get_current_date(self):
+        return self._current_date
 
     def add_library_item(self, library_item):
         """"this method adds a LibraryItem to the holdings of the library"""
@@ -338,7 +340,7 @@ class Library:
 
         #loop through all patrons in the Library's members dictionary
         for key in self._members:
-            print(1)
+
             #create variable to be used in lower code/simplify lower code
             patron = self.lookup_patron_from_id(key)
 
@@ -348,10 +350,14 @@ class Library:
                 #create if statements to handle fines for if the time since checking the LibraryItem out is
                 #equal to, less than, or greater than the LibraryItem's checkout length
                 if self._current_date - self.lookup_library_item_from_id(key).get_date_checked_out() <= self.lookup_library_item_from_id(key).get_check_out_length():
-                    return "item is not late so no fine given"
+                    continue
 
                 elif self._current_date - self.lookup_library_item_from_id(key).get_date_checked_out() > self.lookup_library_item_from_id(key).get_check_out_length():
-                    patron.amend_fine(-0.1)
+                    patron.amend_fine(4)
+
+
+
+
 
 
 
@@ -390,21 +396,30 @@ lib.lookup_library_item_from_id(312)
 
 print(lib.check_out_library_item(967, 312))
 print(lib.check_out_library_item(926, 123))
+print(lib.check_out_library_item(967, 436))
 print(lib.lookup_library_item_from_id(312).get_location())
 #print(lib.return_library_item(312))
 
 
 print(lib.request_library_item(926, 312))
 print(lib.lookup_library_item_from_id(312).get_location())
-print(lib.increment_current_date())
+
+for x in range(50):
+
+    lib.increment_current_date() #50 days pass
+
+print(lib.get_current_date())
+print(lib.lookup_patron_from_id(967).get_fine_amount())
+print(lib.lookup_patron_from_id(926).get_fine_amount())
 
 
+for i in [4]:
+    if i > 2:
 
+        continue
 
-
-
-
-
+    elif i < 2:
+        print(1)
 
 
 
