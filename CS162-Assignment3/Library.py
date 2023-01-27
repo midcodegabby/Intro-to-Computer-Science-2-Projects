@@ -380,36 +380,3 @@ class Library:
                 #greater than the LibraryItem's checkout length
                 if self._current_date - self.lookup_library_item_from_id(key).get_date_checked_out() > self.lookup_library_item_from_id(key).get_check_out_length():
                     patron.amend_fine(-0.10)
-
-
-b1 = Book(345, "Phantom Tollbooth", "Juster")
-a1 = Album(456, "...And His Orchestra", "The Fastbacks")
-m1 = Movie(567, "Laputa", "Miyazaki")
-m2 = Movie(678, "Terminator", "Orson")
-print(b1.get_author())
-print(a1.get_artist())
-print(m1.get_director())
-print(m2.get_director())
-
-p1 = Patron(1, "Felicity")
-p2 = Patron(2, "Waldo")
-p3 = Patron(3, "Mark")
-
-lib = Library()
-lib.add_library_item(b1)
-lib.add_library_item(a1)
-lib.add_library_item(m2)
-lib.add_library_item(m1)
-lib.add_patron(p1)
-lib.add_patron(p2)
-lib.add_patron(p3)
-
-print(lib.check_out_library_item(2, 456))
-print(lib.request_library_item(3, 456))
-print(lib.return_library_item(456))
-print(lib.lookup_library_item_from_id(456).get_location())
-print(lib.check_out_library_item(3,456))
-
-
-
-
