@@ -165,11 +165,7 @@ class Patron:
         in debt)"""
 
         if money > 0 or money < 0:
-            self._fine_amount = self._fine_amount + money
-            return self._fine_amount
-
-        else:
-            return self._fine_amount
+            self._fine_amount = self._fine_amount - money
 
 class Library:
     """This class represents a Library, which has 3 data members: holdings, or a dictionary of LibraryItems that belong
