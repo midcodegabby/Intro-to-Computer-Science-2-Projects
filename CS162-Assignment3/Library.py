@@ -160,7 +160,7 @@ class Patron:
             return None
 
     def amend_fine(self, money):
-        """this method allows changes to happen to the fine_amount (either pay it off or allow it to increase \
+        """this method allows changes to happen to the fine_amount (either pay it off or allow it to increase
         in debt)"""
         if money > 0 or money < 0:
             self._fine_amount = self._fine_amount + money
