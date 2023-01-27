@@ -231,16 +231,35 @@ class Library:
             if self.lookup_library_item_from_id(library_item_id).get_checked_out_by() != None:
                 return "item already checked out"
 
-            #case for when someone has requested the libraryitem and it is not the patron checking it out:
-            elif self.lookup_patron_from_id(patron_id) != self.lookup_library_item_from_id(library_item_id).get_requested_by():
-                return "item on hold by other patron"
+            #make if statements for handling a checkout in which the patron checking out the item is either the
+            #patron that requested the item or is not the one that requested the item
+            elif self.lookup_library_item_from_id(library_item_id).get_requested_by() != None:
+
+                if self.lookup_library_item_from_id(library_item_id).get_requested_by() == self.lookup_patron_from_id(patron_id):
+
+                    # update requested_by LibraryItem data member to None (in the case of the patron checking the item out
+                    # being the same patron that requested the item)
+                    self.lookup_library_item_from_id(library_item_id).set_requested_by(None)
+
+                    # update checked_out_by LibraryItem data member to the patron object
+                    self.lookup_library_item_from_id(library_item_id).set_checked_out_by(self.lookup_patron_from_id(patron_id))
+
+                    # update date_checked_out LibraryItem data member to the date of checkout
+                    self.lookup_library_item_from_id(library_item_id).set_date_checked_out(self._current_date)
+
+                    # update location LibraryItem data member to "CHECKED_OUT"
+                    self.lookup_library_item_from_id(library_item_id).set_location("CHECKED_OUT")
+
+                    # add library_item to patron's dictionary of checked out items
+                    self.lookup_patron_from_id(patron_id).add_library_item(self.lookup_library_item_from_id(library_item_id))
+
+                    return "check out successful"
+
+                else:
+                    return "item on hold by other patron"
 
             #case for when no one has requested the library item or the patron themself has requested the item:
-            elif self.lookup_library_item_from_id(library_item_id).get_requested_by() == None or self.lookup_patron_from_id(patron_id):
-
-                #update requested_by LibraryItem data member to None (in the case of the patron checking the item out
-                #being the same patron that requested the item)
-                self.lookup_library_item_from_id(library_item_id).set_requested_by(None)
+            elif self.lookup_library_item_from_id(library_item_id).get_requested_by() == None: # or self.lookup_patron_from_id(patron_id):
 
                 #update checked_out_by LibraryItem data member to the patron object
                 self.lookup_library_item_from_id(library_item_id).set_checked_out_by(self.lookup_patron_from_id(patron_id))
@@ -361,5 +380,36 @@ class Library:
                 #greater than the LibraryItem's checkout length
                 if self._current_date - self.lookup_library_item_from_id(key).get_date_checked_out() > self.lookup_library_item_from_id(key).get_check_out_length():
                     patron.amend_fine(-0.10)
+
+
+b1 = Book(345, "Phantom Tollbooth", "Juster")
+a1 = Album(456, "...And His Orchestra", "The Fastbacks")
+m1 = Movie(567, "Laputa", "Miyazaki")
+m2 = Movie(678, "Terminator", "Orson")
+print(b1.get_author())
+print(a1.get_artist())
+print(m1.get_director())
+print(m2.get_director())
+
+p1 = Patron(1, "Felicity")
+p2 = Patron(2, "Waldo")
+p3 = Patron(3, "Mark")
+
+lib = Library()
+lib.add_library_item(b1)
+lib.add_library_item(a1)
+lib.add_library_item(m2)
+lib.add_library_item(m1)
+lib.add_patron(p1)
+lib.add_patron(p2)
+lib.add_patron(p3)
+
+print(lib.check_out_library_item(2, 456))
+print(lib.request_library_item(3, 456))
+print(lib.return_library_item(456))
+print(lib.lookup_library_item_from_id(456).get_location())
+print(lib.check_out_library_item(3,456))
+
+
 
 
