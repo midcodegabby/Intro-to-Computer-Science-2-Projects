@@ -160,7 +160,8 @@ class Patron:
             return None
 
     def amend_fine(self, money):
-        """this method allows changes to happen to the fine_amount (either pay it off or allow it to increase in debt"""
+        """this method allows changes to happen to the fine_amount (either pay it off or allow it to increase \
+        in debt)"""
         if money > 0 or money < 0:
             self._fine_amount = self._fine_amount + money
             return self._fine_amount
@@ -170,10 +171,10 @@ class Patron:
 
 class Library:
     """This class represents a Library, which has 3 data members: holdings, or a dictionary of LibraryItems that belong
-    to the library (keys are LibraryItem ids, values are corresponding LibraryItem objects, members, or a dictionary of the
-    Patrons that are members of the Library (keys being patron ids and values being corresponding patron objects), and
-    current_date, which is updated every time a LibraryItem or one of its sub-classes are checked out to the
-    parameter date_checked_out"""
+    to the library (keys are LibraryItem ids, values are corresponding LibraryItem objects, members, or a dictionary
+    of the Patrons that are members of the Library (keys being patron ids and values being corresponding patron
+    objects), and current_date, which is updated every time a LibraryItem or one of its sub-classes are checked out
+    to the parameter date_checked_out"""
 
     def __init__(self):
         self._holdings = {}
@@ -235,10 +236,11 @@ class Library:
             #patron that requested the item or is not the one that requested the item
             elif self.lookup_library_item_from_id(library_item_id).get_requested_by() != None:
 
+                #this if statement handles the case where the item requester is the patron attempting check out
                 if self.lookup_library_item_from_id(library_item_id).get_requested_by() == self.lookup_patron_from_id(patron_id):
 
-                    # update requested_by LibraryItem data member to None (in the case of the patron checking the item out
-                    # being the same patron that requested the item)
+                    # update requested_by LibraryItem data member to None (in the case of the patron checking the
+                    # item out being the same patron that requested the item)
                     self.lookup_library_item_from_id(library_item_id).set_requested_by(None)
 
                     # update checked_out_by LibraryItem data member to the patron object
@@ -255,11 +257,13 @@ class Library:
 
                     return "check out successful"
 
+                #this else statement handles cases where the patron trying to check the LibraryItem out is not
+                #the patron that has requested the LibraryItem
                 else:
                     return "item on hold by other patron"
 
             #case for when no one has requested the library item or the patron themself has requested the item:
-            elif self.lookup_library_item_from_id(library_item_id).get_requested_by() == None: # or self.lookup_patron_from_id(patron_id):
+            elif self.lookup_library_item_from_id(library_item_id).get_requested_by() == None:
 
                 #update checked_out_by LibraryItem data member to the patron object
                 self.lookup_library_item_from_id(library_item_id).set_checked_out_by(self.lookup_patron_from_id(patron_id))
