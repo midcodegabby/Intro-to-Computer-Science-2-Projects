@@ -223,7 +223,8 @@ class Library:
             if self.lookup_library_item_from_id(library_item_id).get_checked_out_by() != None:
                 return "item already checked out"
 
-            elif self.lookup_library_item_from_id(library_item_id).get_requested_by() != None and self.lookup_patron_from_id(patron_id):
+            #case for when someone has requested the libraryitem and it is not the patron checking it out:
+            elif self.lookup_patron_from_id(patron_id) != self.lookup_library_item_from_id(library_item_id).get_requested_by():
                 return "item on hold by other patron"
 
             #case for when no one has requested the library item or the patron themself has requested the item:
@@ -246,6 +247,9 @@ class Library:
                 self.lookup_patron_from_id(patron_id).add_library_item(self.lookup_library_item_from_id(library_item_id))
 
                 return "check out successful"
+
+
+            #self.lookup_library_item_from_id(library_item_id).get_requested_by
 
     def return_library_item(self, library_item_id):
         """this method takes a library_item_id and returns the libraryitem associated with it back to the library.
@@ -352,66 +356,5 @@ class Library:
                 #greater than the LibraryItem's checkout length
                 if self._current_date - self.lookup_library_item_from_id(key).get_date_checked_out() > self.lookup_library_item_from_id(key).get_check_out_length():
                     patron.amend_fine(-0.10)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-lib = Library()
-
-b1 = Book(123, "Great Gatsby", "richard")
-a1 = Album(312, "Calvacade", "mark")
-m1 = Movie(436, "Terminator", "dawkins")
-
-p1 = Patron(967, "gabe")
-p2 = Patron(926, "sasha")
-
-lib.add_patron(p1)
-lib.add_patron(p2)
-
-lib.add_library_item(b1)
-lib.add_library_item(a1)
-lib.add_library_item(m1)
-
-lib.lookup_patron_from_id(967)
-lib.lookup_library_item_from_id(312)
-
-print(lib.check_out_library_item(967, 312))
-print(lib.check_out_library_item(926, 123))
-print(lib.check_out_library_item(967, 436))
-print(lib.lookup_library_item_from_id(312).get_location())
-#print(lib.return_library_item(312))
-
-
-print(lib.request_library_item(926, 312))
-print(lib.lookup_library_item_from_id(312).get_location())
-
-for x in range(50):
-
-    lib.increment_current_date() #50 days pass
-
-print(lib.get_current_date())
-print(lib.lookup_patron_from_id(967).get_fine_amount())
-print(lib.lookup_patron_from_id(926).get_fine_amount())
-
-
-
 
 
