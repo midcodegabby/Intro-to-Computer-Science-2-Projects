@@ -153,6 +153,7 @@ class Patron:
     def remove_library_item(self, library_item):
         """this method removes a specified library item from the patron's checked_out_items dictionary and returns None
          if no such item exists in the patron's checked_out_items list"""
+
         if library_item.get_library_item_id() in self._checked_out_items:
             del self._checked_out_items[library_item.get_library_item_id()]
 
@@ -162,6 +163,7 @@ class Patron:
     def amend_fine(self, money):
         """this method allows changes to happen to the fine_amount (either pay it off or allow it to increase
         in debt)"""
+
         if money > 0 or money < 0:
             self._fine_amount = self._fine_amount + money
             return self._fine_amount
@@ -196,6 +198,7 @@ class Library:
     def lookup_library_item_from_id(self, library_item_id):
         """this method returns the LibraryItem object corresponding to the passed in library_item_id, or None if
         the library_item_id does not exist in the holdings of the library"""
+
         if library_item_id in self._holdings:
             return self._holdings.get(library_item_id) #returns the value associated with the library_item_id key
 
@@ -205,6 +208,7 @@ class Library:
     def lookup_patron_from_id(self, patron_id):
         """this method returns the Patron object corresponding to the passed in patron_id, or None if the patron_id
         does not exist in the members of the library"""
+
         if patron_id in self._members:
             return self._members.get(patron_id) #returns the value associated with the patron_id key
 
