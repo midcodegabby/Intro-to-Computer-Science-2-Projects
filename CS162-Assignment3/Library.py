@@ -157,9 +157,6 @@ class Patron:
         if library_item.get_library_item_id() in self._checked_out_items:
             del self._checked_out_items[library_item.get_library_item_id()]
 
-        else:
-            return None
-
     def amend_fine(self, money):
         """this method allows changes to happen to the fine_amount (either pay it off or allow it to increase
         in debt)"""
