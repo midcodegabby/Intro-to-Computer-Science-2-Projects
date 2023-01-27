@@ -2,7 +2,12 @@
 #GitHub Username : trashcoder8
 #Date : 1/20/23
 #Description : This project is supposed to simulate a library, having multiple classes
-#that inherit from each other to create a connected environment. a big nose :)
+#that inherit from each other to create a connected environment. The class LibraryItem is a superclass for
+#the subclasses Book, Movie, and Album. This simultated library is able to store an item's location, the amount of time
+#since it has been checked out, and all of its data members (see docstring under LibraryItem for complete explanation).
+#This simulated library also is able to give fines out to members (patrons) for late items, allow members to pay their
+#fine back, and also find relevant data members of different objects from their id, including a LibraryItem's title
+#or the name of a patron.
 
 class LibraryItem:
     """A LibraryItem object represents a library item that a Patron can check out of the library.
@@ -112,7 +117,9 @@ class Movie(LibraryItem):
 
 class Patron:
     """This class represents a Patron of the library that has 4 private data members: (unique) patron_id, (non_unique)
-    name, a list of the Patron's checked_out_items, and the amount of debt a Patron has, in the form of fine_amount."""
+    name, a dictionary of the Patron's checked_out_items (keys being the ids of checked out library items and the
+    corresponding values being the attached libraryitems), and the amount of debt a Patron has, in the form of
+    fine_amount."""
 
     def __init__(self, patron_id, name):
         self._patron_id = patron_id
@@ -144,13 +151,13 @@ class Patron:
         self._checked_out_items[library_item.get_library_item_id()] = library_item
 
     def remove_library_item(self, library_item):
-        """this method removes a specified library item from the patron's checked_out_items dictionary and returns an
-        InvalidLibraryItem error if no such item exists in the checked_out_items list"""
+        """this method removes a specified library item from the patron's checked_out_items dictionary and returns None
+         if no such item exists in the patron's checked_out_items list"""
         if library_item.get_library_item_id() in self._checked_out_items:
             del self._checked_out_items[library_item.get_library_item_id()]
 
         else:
-            return "the patron has not checked that item out"
+            return None
 
     def amend_fine(self, money):
         """this method allows changes to happen to the fine_amount (either pay it off or allow it to increase in debt"""
@@ -162,18 +169,19 @@ class Patron:
             return self._fine_amount
 
 class Library:
-    """This class represents a Library, which has 3 data members: holdings, or a list of LibraryItems that belong to
-    the library, members, or a list of the Patrons that are members of the Library, and current_date, which is
-    updated every time a LibraryItem or one of its sub-classes are checked out to the parameter date_checked_out"""
+    """This class represents a Library, which has 3 data members: holdings, or a dictionary of LibraryItems that belong
+    to the library (keys are LibraryItem ids, values are corresponding LibraryItem objects, members, or a dictionary of the
+    Patrons that are members of the Library (keys being patron ids and values being corresponding patron objects), and
+    current_date, which is updated every time a LibraryItem or one of its sub-classes are checked out to the
+    parameter date_checked_out"""
 
     def __init__(self):
         self._holdings = {}
         self._members = {}
         self._current_date = 0
 
-        #initialize a compostional class to use elsewhere:
-
     def get_current_date(self):
+        """this method returns the current date of the library"""
         return self._current_date
 
     def add_library_item(self, library_item):
@@ -247,9 +255,6 @@ class Library:
                 self.lookup_patron_from_id(patron_id).add_library_item(self.lookup_library_item_from_id(library_item_id))
 
                 return "check out successful"
-
-
-            #self.lookup_library_item_from_id(library_item_id).get_requested_by
 
     def return_library_item(self, library_item_id):
         """this method takes a library_item_id and returns the libraryitem associated with it back to the library.
