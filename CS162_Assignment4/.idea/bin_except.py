@@ -41,5 +41,5 @@ def binary_search(a_list, target):
 
 list = [0, 4, 8, 13, 45, 83, 98, 293, 393, 585, 959, 1000]
 
-binary_search(list, 4)
+binary_search(list, 1000)
 
