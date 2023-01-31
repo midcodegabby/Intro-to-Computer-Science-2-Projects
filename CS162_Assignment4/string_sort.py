@@ -11,25 +11,26 @@
 def string_sort(string_list):
     """This function takes as a parameter a list of strings and sorts the strings in alphabetical order using insertion
     sort. If the first two letters of two strings are the same, then the function will sort them alphabetically with
-    their following letters."""
+    their following letters. To ignore case, this function uses the built-in method str.casefold(), which returns a
+    lowercase form of the string, therefore trivializing the use of cases."""
 
-    #create for loop to loop through the indices of the box_list, starting from index 1 instead of 0.
+    #create for loop to loop through the indices of the string_list, starting from index 1 instead of 0.
     for index in range(1, len(string_list)):
 
-        #assign the Box object associated with the index in box_list to the variable 'value'
+        #assign the string associated with the index in string_list to the variable 'value'
         value = string_list[index]
 
-        #create an index for the value to the left of the box object being pulled
+        #create an index for the value to the left of the string being pulled
         pos = index - 1
 
-        #create while loop to continue sorting the list in descending order
-        while pos >= 0 and string_list[pos] < value:
+        #create while loop to continue sorting the list in descending order, using the .casefold() method to trivialize
+        #string cases
+        while pos >= 0 and string_list[pos].casefold() > value.casefold():
 
             #reassigns the value of the left value to the 'value' index
             string_list[pos + 1] = string_list[pos]
 
-            #the following two lines of code assign the higher 'value' to the left index
+            #the following two lines of code assign the lower 'value' to the left index
             pos -= 1
 
         string_list[pos + 1] = value
-
