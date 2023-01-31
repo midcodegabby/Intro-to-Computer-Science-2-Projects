@@ -1,7 +1,9 @@
 #Author : Gabriel Rodgers
 #GitHub Username : trashcoder8
 #Date : 1/11/23
-#Description : This program is a
+#Description : This program allows the user to create a Box object that has a specified length, width, height, and
+#calculates the resulting volume for that box. This program then allows the user to create a list of Box objects
+#and by calling the box_sort function, sorts the box objects in the list in descending order of box volumes.
 
 class Box:
     """this class represents a box with parameters of length, width, and height of the box (this class
@@ -43,20 +45,19 @@ def box_sort(box_list):
     #create for loop to loop through the indices of the box_list, starting from index 1 instead of 0.
     for index in range(1, len(box_list)):
 
-        #assign the volume associated with the indexed box in box_list to the variable 'volume'
+        #assign the Box object associated with the index in box_list to the variable 'value'
         value = box_list[index]
 
-        #create an index for the value to the left of the volume being pulled
+        #create an index for the value to the left of the box object being pulled
         pos = index - 1
 
         #create while loop to continue sorting the list in descending order
         while pos >= 0 and box_list[pos].volume() < value.volume():
 
-            #reassigns the value of the left value to the volume's index
+            #reassigns the value of the left value to the 'value' index
             box_list[pos + 1] = box_list[pos]
 
-            #the following two lines of code assigns the higher 'value' to the left index
+            #the following two lines of code assign the higher 'value' to the left index
             pos -= 1
 
         box_list[pos + 1] = value
-
