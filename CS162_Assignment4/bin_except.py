@@ -2,7 +2,8 @@
 #GitHub Username : trashcoder8
 #Date : 1/11/23
 #Description : This program is a modification of the basic binary search function that returns a TargetNotFound
-#exception instead of a -1 when the target value is not in the list.
+#exception instead of a -1 when the target value is not in the list. When the target is found, the target's index
+#is returned.
 
 class TargetNotFound(Exception):
     pass
@@ -39,7 +40,7 @@ def binary_search(a_list, target):
     #only raised if the target is never found in the list
     raise TargetNotFound
 
-list = [0, 4, 8, 13, 45, 83, 98, 293, 393, 585, 959, 1000]
 
-binary_search(list, 1000)
+
+
 
