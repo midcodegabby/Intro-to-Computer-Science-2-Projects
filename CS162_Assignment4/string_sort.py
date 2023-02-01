@@ -7,13 +7,11 @@
 #same first letter the same way in regards to their second letter and etcetera for even more matching letters in
 #different strings.
 
-#modify to not use casefold()!!!!!!!
-
 #basic insertion sort function:
 def string_sort(string_list):
     """This function takes as a parameter a list of strings and sorts the strings in alphabetical order using insertion
     sort. If the first two letters of two strings are the same, then the function will sort them alphabetically with
-    their following letters. To ignore case, this function uses the built-in method str.casefold(), which returns a
+    their following letters. To ignore case, this function uses the built-in method str.lower(), which returns a
     lowercase form of the string, therefore trivializing the use of cases."""
 
     #create for loop to loop through the indices of the string_list, starting from index 1 instead of 0.
@@ -25,9 +23,9 @@ def string_sort(string_list):
         #create an index for the value to the left of the string being pulled
         pos = index - 1
 
-        #create while loop to continue sorting the list in descending order, using the .casefold() method to trivialize
+        #create while loop to continue sorting the list in descending order, using the .lower() method to trivialize
         #string cases
-        while pos >= 0 and string_list[pos].casefold() > value.casefold():
+        while pos >= 0 and string_list[pos].lower() > value.lower():
 
             #reassigns the value of the left value to the 'value' index
             string_list[pos + 1] = string_list[pos]
