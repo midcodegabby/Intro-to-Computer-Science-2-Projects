@@ -7,6 +7,8 @@
 #same first letter the same way in regards to their second letter and etcetera for even more matching letters in
 #different strings.
 
+#modify to not use casefold()!!!!!!!
+
 #basic insertion sort function:
 def string_sort(string_list):
     """This function takes as a parameter a list of strings and sorts the strings in alphabetical order using insertion
