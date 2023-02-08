@@ -1,7 +1,11 @@
 #Author : Gabriel Rodgers
 #GitHub Username : trashcoder8
 #Date : 2/7/23
-#Description :
+#Description : This program contains a class SatData, which is able to read and load the data in a JSON file
+#(containing data on 2010 SAT results in New York City) onto a private data member. The class SatData also has
+#an additional method, save_as_csv that allows the user to input a list of DBNs (district bureau numbers), to which
+#the program writes the corresponding DBN data found in the json file (but stored in the newly created private data
+#member) to a new output.csv file with column headers.
 
 import json
 
@@ -21,6 +25,30 @@ class SatData:
         associated with those DBNs to a new output file called output.csv in a format of including column headers
         and the DBN-specific information, in ascending DBN order."""
 
-        #create with statement to write the data to the output.csv file
+        #create list for output.csv column headers
+        column_header = ["DBN", "School Name", "Number of Test Takers", "Critical Reading Mean", "Mathematics Mean",
+        "Writing Mean"]
+
+        #create a with statement to hardcode the column headers for the output.csv file
         with open('output.csv', 'w') as outfile:
-            print()
+            for column in column_header:
+                outfile.write(column + ',')
+
+            #create new outfile.write() statement to move to next line after inputting all relevant data
+            outfile.write("\n")
+
+        #create for loop to iterate through list of data in the sat_file
+        for index in self._sat_file["data"]:
+
+            #create if statement to focus on data with DBNs corresponding to the dbn_list parameter
+            if index[8] in dbn_list: #where index represents a list of data associated with a single DBN
+
+                #create with statement to append the specified data from the sat_file to the output.csv file
+                with open('output.csv', 'a') as outfile:
+
+                    #create for loop to iterate through the needed data in the specified DBN list
+                    for idx in range(8, len(index)):
+                        outfile.write(str(index[idx]) + ',')  #the ',' puts a comma between each written index value
+
+                    #create new outfile.write() statement to move to next line after inputting all relevant data
+                    outfile.write('\n')
