@@ -48,7 +48,11 @@ class SatData:
 
                     #create for loop to iterate through the needed data in the specified DBN list
                     for idx in range(8, len(index)):
-                        outfile.write(str(index[idx]) + ',')  #the ',' puts a comma between each written index value
+                        outfile.write(str(index[idx])+',')  #the ',' puts a comma between each written index value
 
                     #create new outfile.write() statement to move to next line after inputting all relevant data
                     outfile.write('\n')
+
+sd = SatData()
+dbns = ["02M303", "02M294", "01M450", "02M418"]
+sd.save_as_csv(dbns)
