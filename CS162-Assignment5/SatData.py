@@ -32,27 +32,32 @@ class SatData:
         #create a with statement to hardcode the column headers for the output.csv file
         with open('output.csv', 'w') as outfile:
             for column in column_header:
-                outfile.write(column + ',')
+                outfile.write(column)
+
+                #use if statement for comma seperation
+                if column_header.index(column) < 5:
+                    outfile.write(',')
 
             #create new outfile.write() statement to move to next line after inputting all relevant data
             outfile.write("\n")
 
         #create for loop to iterate through list of data in the sat_file
-        for index in self._sat_file["data"]:
+        for idx_0 in self._sat_file["data"]:
 
             #create if statement to focus on data with DBNs corresponding to the dbn_list parameter
-            if index[8] in dbn_list: #where index represents a list of data associated with a single DBN
+            if idx_0[8] in dbn_list: #where idx_0 represents a list of data associated with a single DBN
 
                 #create with statement to append the specified data from the sat_file to the output.csv file
                 with open('output.csv', 'a') as outfile:
 
                     #create for loop to iterate through the needed data in the specified DBN list
-                    for idx in range(8, len(index)):
-                        outfile.write(str(index[idx])+',')  #the ',' puts a comma between each written index value
+                    for idx_1 in range(8, len(idx_0)):
+                        outfile.write(str(idx_0[idx_1]))
+
+                        #create if statement for comma seperation
+                        if idx_1 < 13:
+                            outfile.write(',')
 
                     #create new outfile.write() statement to move to next line after inputting all relevant data
                     outfile.write('\n')
 
-sd = SatData()
-dbns = ["02M303", "02M294", "01M450", "02M418"]
-sd.save_as_csv(dbns)
