@@ -1,7 +1,12 @@
 #Author : Gabriel Rodgers
 #GitHub Username : trashcoder8
-#Date : 2/6/23
-#Description :
+#Date : 2/8/23
+#Description : This program is able to use a class NeighborhoodPets to add pets with associated species and owners to
+#a private data member (pet dictionary, pet_dict), delete pets off of that dictionary, raise an exception when the
+#user tries to add a pet to the dictionary that already has that pet's name, write the pet_dict to a new JSON file
+#with a specified file name, retrieve the owner of a specific pet in the pet_dict, load another JSON file containing
+#pet information into the pet_dict, thereby replacing the previous pet_dict information with the loaded JSON file
+#information, and return a python set of all the species of pets in the pet_dict.
 
 import json
 
@@ -54,18 +59,32 @@ class NeighborhoodPets:
             return self._pet_dict[pet_name][1]
 
     def save_as_json(self, file_name):
-        """This method takes as parameter the name of a file and saves the file in JSON format with the name,
-        file_name.json (saves the file as its name .json)"""
+        """This method takes as parameter the name of a file, and writes the pet_dict to the newly created JSON file
+        created with the file name."""
 
-        #create with statement to write the file_name data into a json file with the same name
-        with open(file_name.json, 'w') as outfile:
-            json.dump(file_name)
+        #create with statement to write the pet_dict into a JSON file with the same name as the passed in file
+        with open(file_name, 'w') as outfile:
+            json.dump(self._pet_dict, outfile)
 
 
     def read_json(self, file_name):
         """This method takes as parameter the name of a file to read and loads that file into the pet_dict, thereby
         replacing all current data in the pet_dict."""
 
-        #use save_as_json method to
+        #use with statement to load the file_name data into the pet_dict
+        with open(file_name, 'r') as infile:
+            self._pet_dict = json.load(infile)
 
+    def get_all_species(self):
+        """This method returns a python set of the species of all pets in the pet_dict."""
 
+        #initialize empty python set
+        pet_set = set()
+
+        #loop through all pet_names in the pet_dict
+        for key in self._pet_dict:
+
+            #add the 0th indexed value (the pet species) of the list associated with the key in the pet_dict to the set
+            pet_set.add(self._pet_dict[key][0])
+
+        return pet_set
