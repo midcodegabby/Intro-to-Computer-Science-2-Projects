@@ -5,7 +5,9 @@
 #highest value in the list (returns it). This program assumes the list contains at least one element.
 
 def list_max(a_list, pos=0, high=0):
-    """This recursive function takes as parameter a list of numbers and returns the maximum value in the list."""
+    """This recursive function takes as parameter a list of numbers and returns the maximum value in the list. The
+    pos default argument refers to the index being checked in the function, and the high default argument refers to
+    the highest value in the list so far into the recursion."""
 
     # create case for when the length of the list is 1
     if len(a_list) == 1:
