@@ -25,12 +25,9 @@ class LinkedList:
         """This method returns the first Node object in the LinkedList"""
         return self._head
 
-    def add(self, val):
-        """recursive add helper method"""
-        self.rec_add(val, self._head)
-
     def rec_add(self, val, current=None):
-        """This method recursively adds a Node that contains val to the end of the LinkedList"""
+        """This method recursively adds a Node that contains val to the end of the LinkedList, using a current
+        default parameter that acts as the current node being checked"""
 
         #if statement to handle adding a Node to an empty LinkedList
         if self._head == None:
@@ -44,23 +41,67 @@ class LinkedList:
             else:
                 return self.rec_add(val, current.next)
 
-    def display(self):
-        """This method recursively prints out the values in the LinkedList"""
+    def add(self, val):
+        """recursive add helper method"""
+        self.rec_add(val, self._head)
 
     def rec_display(self, a_node):
-        """recursive display method"""
+        """This method recursively prints out the values in the LinkedList"""
+
+        #if statement to handle empty LinkedList and act as base case
         if a_node is None:
-            return
-        print(a_node.data, end=" ")
-        self.rec_display(a_node.next)
+            #print a new line
+            print()
+
+        else:
+            #print the current node's data
+            print(a_node.data, end=" ")
+
+            #recursively call the next node to print data
+            self.rec_display(a_node.next)
 
     def display(self):
         """recursive display helper method"""
         self.rec_display(self._head)
 
-    def remove(self, val):
-        """This method recursively removes the node containing the parameter val from the LinkedList"""
+    def rec_remove(self, val, current=None):
+        """This method recursively removes the node containing the parameter val from the LinkedList, and has a
+        default parameter current that keeps track of the current node being checked"""
 
+        #if statement to handle an empty LinkedList
+        if self._head is None:
+            return
+
+        #if statement for case where the value to be removed is in the first node
+        if self._head.data == val:
+
+            #shift the node after the head node to be the new head node, thereby removing the node containing the val
+            self._head = self._head.next
+
+        #else statement handles cases where the val to be removed is not in the first node
+        else:
+
+            #create variables to hold the current node and the next node
+            previous = current
+            current = current.next
+
+            #create base case for when the value is not in the LinkedList
+            if previous.next == None:
+                return
+
+            #create base case that terminates the recursion when the current node holds the val parameter
+            elif current.data == val:
+
+                #splice out the current node
+                previous.next = current.next
+
+            else:
+                #recursive step
+                return self.rec_remove(val, current)
+
+    def remove(self, val):
+        """recursive remove helper method"""
+        self.rec_remove(val, self._head)
 
     def is_empty(self):
         """This method returns True if the LinkedList is empty and False otherwise"""
@@ -96,4 +137,7 @@ lst.add(1)
 lst.add(2)
 lst.add(3)
 lst.add("beta")
+lst.add(4)
+lst.display()
+#lst.remove("beta")
 lst.display()
