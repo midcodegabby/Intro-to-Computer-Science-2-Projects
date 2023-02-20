@@ -26,12 +26,37 @@ class LinkedList:
         return self._head
 
     def add(self, val):
+        """recursive add helper method"""
+        self.rec_add(val, self._head)
+
+    def rec_add(self, val, current=None):
         """This method recursively adds a Node that contains val to the end of the LinkedList"""
 
+        #if statement to handle adding a Node to an empty LinkedList
+        if self._head == None:
+            self._head = Node(val)
+
+        else:
+            #create base case for recursion, where the recursion ends when the recursion gets to the last Node
+            if current.next is None:
+                current.next = Node(val)  # adds a node to the end of the LinkedList
+
+            else:
+                return self.rec_add(val, current.next)
 
     def display(self):
         """This method recursively prints out the values in the LinkedList"""
 
+    def rec_display(self, a_node):
+        """recursive display method"""
+        if a_node is None:
+            return
+        print(a_node.data, end=" ")
+        self.rec_display(a_node.next)
+
+    def display(self):
+        """recursive display helper method"""
+        self.rec_display(self._head)
 
     def remove(self, val):
         """This method recursively removes the node containing the parameter val from the LinkedList"""
@@ -63,3 +88,12 @@ class LinkedList:
         """This method recursively reverses the order of the LinkedList by modifying each Node's next data member and
         does not change the data values of any Nodes."""
 
+
+
+lst = LinkedList()
+lst.add(0)
+lst.add(1)
+lst.add(2)
+lst.add(3)
+lst.add("beta")
+lst.display()
