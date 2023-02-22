@@ -25,6 +25,10 @@ class LinkedList:
         """This method returns the first Node object in the LinkedList"""
         return self._head
 
+    def is_empty(self):
+        """This method returns True if the LinkedList is empty and False otherwise"""
+        return self._head is None
+
     def rec_add(self, val, current=None):
         """This method recursively adds a Node that contains val to the end of the LinkedList, using a current
         default parameter that acts as the current node being checked"""
@@ -103,15 +107,28 @@ class LinkedList:
         """recursive remove helper method"""
         self.rec_remove(val, self._head)
 
-    def is_empty(self):
-        """This method returns True if the LinkedList is empty and False otherwise"""
-        return self._head is None
+    def rec_to_plain_list(self, current, result=None):
+        """This method recursively returns a regular python list of the data in each Node of the LinkedList
+        in correct order, with the current parameter signifying the current Node being added to a python
+        regular list, which is a default argument called result"""
 
+        #initialize a python list
+        if result == None:
+            result = []
+
+        #create base case to terminate recursion
+        if current == None:
+            return result
+
+        else:
+            #add the current Node to the result python list
+            result += [current.data]
+
+            return self.rec_to_plain_list(current.next, result) #recursive step
 
     def to_plain_list(self):
-        """This method recursively returns a regular python list of the data in each Node of the LinkedList
-        in correct order"""
-
+        """recursive to_plain_list helper method"""
+        return self.rec_to_plain_list(self._head)
 
     def contains(self, val):
         """This method recursively takes a value as parameter and returns True if the value is in one of the Nodes in
@@ -132,6 +149,7 @@ class LinkedList:
 
 
 lst = LinkedList()
+link = LinkedList()
 lst.add(0)
 lst.add(1)
 lst.add(2)
@@ -139,5 +157,7 @@ lst.add(3)
 lst.add("beta")
 lst.add(4)
 lst.display()
-#lst.remove("beta")
+lst.remove(4)
 lst.display()
+print(lst.to_plain_list())
+
