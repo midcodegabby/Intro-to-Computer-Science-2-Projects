@@ -130,9 +130,26 @@ class LinkedList:
         """recursive to_plain_list helper method"""
         return self.rec_to_plain_list(self._head)
 
-    def contains(self, val):
+
+
+    def rec_contains(self, val, current):
         """This method recursively takes a value as parameter and returns True if the value is in one of the Nodes in
-        the LinkedList and False otherwise"""
+        the LinkedList and False otherwise. This function also takes as parameter the current node being checked."""
+
+        #create base cases to terminate recursion
+        if current == None:
+            return False
+
+        elif current.data == val:
+            return True
+
+        else:
+            #recursive step
+            return self.rec_contains(val, current.next)
+
+    def contains(self, val):
+        """recursive contains helper method"""
+        return self.rec_contains(val, self._head)
 
 
     def insert(self, val, pos):
@@ -157,7 +174,9 @@ lst.add(3)
 lst.add("beta")
 lst.add(4)
 lst.display()
-lst.remove(4)
+#lst.remove(4)
 lst.display()
-print(lst.to_plain_list())
+#print(lst.to_plain_list())
+
+
 
