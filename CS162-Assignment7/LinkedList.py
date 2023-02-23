@@ -11,7 +11,8 @@
 #one of the node inside the LinkedList and False otherwise, the insert method inserts a node containing a value passed
 #in at a specific point in the LinkedList, which is specified by a parameter. Lastly, the reverse method reverses the
 #order of the LinkedList without changing any of the nodal data. This program allows the user to manipulate,
-#create, and print out a LinkedList.
+#create, and print out a LinkedList. All of the recursive methods in this program use helper methods to simplify the
+#program interface.
 
 class Node:
     """represents a node in a linked list"""
