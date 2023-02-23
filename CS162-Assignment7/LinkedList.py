@@ -212,3 +212,38 @@ class LinkedList:
         """recursive reverse helper method"""
         self.rec_reverse(self._head)
 
+    def rec_display(self, a_node):
+        """This method recursively prints out the values in the LinkedList"""
+
+        # if statement to handle empty LinkedList and act as base case
+        if a_node is None:
+            # print a new line
+            print()
+
+        else:
+            # print the current node's data
+            print(a_node.data, end=" ")
+
+            # recursively call the next node to print data
+            self.rec_display(a_node.next)
+
+    def display(self):
+        """recursive display helper method"""
+        self.rec_display(self._head)
+
+pos_lst = LinkedList()
+neg_lst = LinkedList()
+pos_lst.add(0)
+pos_lst.add(1)
+pos_lst.add(2)
+pos_lst.add(3)
+pos_lst.add("beta")
+pos_lst.add(4)
+pos_lst.display()
+#lst.remove(4)
+pos_lst.insert(8,1)
+pos_lst.display()
+pos_lst.reverse()
+pos_lst.display()
+
+
