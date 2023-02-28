@@ -1,6 +1,6 @@
 #Author : Gabriel Rodgers
 #GitHub Username : trashcoder8
-#Date : 2/13/23
+#Date : 2/28/23
 #Description : This program contains a generator function that generates a sequence of strings. This sequence of
 #strings is in the following format: 2, 12, 1112, 3112, 132112, 1113122112, 31131122112, etc. To get the next value
 #in the sequence, the function counts how many of each digit are in the previous term.
