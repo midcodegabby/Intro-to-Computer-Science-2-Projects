@@ -5,38 +5,42 @@
 #strings is in the following format: 2, 12, 1112, 3112, 132112, 1113122112, 31131122112, etc. To get the next value
 #in the sequence, the function counts how many of each digit are in the previous term.
 
-def count_seq(limit=1000):
+def count_seq():
     """This generator function takes no arguments and generates a sequence in the following format:
     2, 12, 1112, 3112, 132112, 1113122112, 31131122112, etc. To get the next value in the sequence, the function
     counts how many of each digit are in the previous term. The yielded sequence is a sequence of strings and not
     integers."""
 
-    #create first term in the sequence and an empty string to reassign to the num var
-    num = '2'
+
+    num = ''
     next_num = ''
 
-    #initialize iterator
+    #initialize iterator and number counter
     index = 0
-
-    #initialize number counters
-    val= 0
+    val = 1
 
     l = 0
 
-    #create while loop
-    while l < limit:
+    #create indefinite while loop
+    while l < 30:
 
-        #if statement for handling first term of sequence
-        if num == '2':
+        #if statement for first term
+        if num == '':
 
-            #create second term
+            #create first term and assign it to num, then yield
+            num = '2'
+            yield num
+
+        #if statement for second term
+        elif num == '2':
+
+            #create second term and assign it to num, then yield
             num = '1' + num
-
             yield num
 
         else:
 
-            #while loop to iterate through the number without running out of indices
+            #while loop to iterate through num without raising IndexError
             while index + 1 != len(num):
 
                 #if statement handles a case where the currently indexed value is the same as the next one
@@ -49,151 +53,112 @@ def count_seq(limit=1000):
                     if index + 1 != len(num):
                         index += 1
 
-                    #if statement handles a case where the end of the string is reached or the next number in the
-                    #string is not equal to the current number
-                    if index + 1 == len(num) or num[index] != num[index + 1]:
 
-                        #assign to the next term of the sequence the val (number of times the current number has been
-                        #repeated concatenated with the current number
+                #if statement handles a case where the currently indexed value is not the same as the next one or
+                #the currently indexed value is the last value in num
+                if num[index] != num[index + 1] or index + 1 == len(num):
+
+                    #assign to the next term of the sequence itself concatenated with the val (number of times the
+                    #current number has been repeated) concatenated with the current value indexed
+                    next_num += str(val) + num[index]
+
+                    #reset the val to be one
+                    val = 1
+
+                    #if statement moves the index up by one if the current index is not the last index in the string
+                    if index + 1 != len(num):
+                        index +=1
+
+                    #if statement handles a case where the new index from above is the last index in the string
+                    if index + 1 == len(num):
                         next_num += str(val) + num[index]
 
-                        #reset the val to be zero
-                        val = 0
-
-                if num[index] != num[index + 1]:
-
-                    #add one to the counter val
-                    val += 1
-
-                    #if statement moves the index forward one if the current index is not the last index
-                    if index + 1 != len(num):
-                        index += 1
 
 
-
-
-    """
-    #initalize an empty string to hold the next term
-    new_num = ''
-
-    #initialize number counters and iterator
-    val_1 = 0
-    val_2 = 0
-    val_3 = 0
-    index = 0
-    l = 0
-
-    while l < limit:
-        #create if statement for case where the number is the first term in the sequence
-        if num == '2':
-
-            num = '1' + num
+            #assign the next term to the current term, then yield
+            num = next_num
             yield num
 
-        else:
+            #set next_num to be empty string, index to be zero
+            next_num = ''
+            index = 0
+
+            l +=1
 
 
-
-            while index + 1 != len(num):
-
-                if num[index] == '1':
-                    val_1 += 1
-
-                    if index + 1 != len(num):
-                        index += 1
-
-                    if index + 1 == len(num) or num[index] != '1':
-                        new_num += str(val_1) + '1'
-                        val_1 = 0
-
-                if num[index] == '2':
-                    val_2 += 1
-
-                    if index + 1 != len(num):
-                        index += 1
-
-                    if index + 1 == len(num) or num[index] != '2':
-                        new_num += str(val_2) + '2'
-                        val_2 = 0
-
-                if num[index] == '3':
-                    val_3 += 1
-
-                    if index + 1 != len(num):
-                        index += 1
-
-                    if index + 1 == len(num) or num[index] != '3':
-                        new_num += str(val_3) + '3'
-                        val_3 = 0
-
-            num = new_num
-
-            yield num
-            l += 1
-            """
-
-
-
-# create first term in the sequence and an empty string to reassign to the num var
-num = '1113122112'
+seq = count_seq()
+for i in seq:
+    print(i)
+"""
+num = ''
 next_num = ''
 
-# initialize iterator
+#initialize iterator and number counter
 index = 0
-
-# initialize number counters
 val = 1
 
 l = 0
 
-# create while loop
-while l < 5:
+#create indefinite while loop
+while l < 10:
+    # if statement for first term
+    if num == '':
+        # create first term and assign it to num, then yield
+        num = '2'
+        print(num)
 
-    # while loop to iterate through the number without running out of indices
-    while index + 1 != len(num):
+    #if statement for first term
+    elif num == '2':
 
-        # if statement handles a case where the currently indexed value is the same as the next one
-        if num[index] == num[index + 1]:
+        #create second term and assign it to num
+        num = '1' + num
 
-            # add one to the counter val
-            val += 1
+        print(num)
 
-            # if statement moves the index forward one if the current index is not the last index
-            if index + 1 != len(num):
-                index += 1
+        
 
-            # if statement handles a case where the end of the string is reached or the next number in the
-            # string is not equal to the current number
-            if index + 1 == len(num) or num[index] != num[index + 1]:
-                # assign to the next term of the sequence the val (number of times the current number has been
-                # repeated concatenated with the current number
+    else:
+
+        #while loop to iterate through num without raising IndexError
+        while index + 1 != len(num):
+
+            #if statement handles a case where the currently indexed value is the same as the next one
+            if num[index] == num[index + 1]:
+
+                #add one to the counter val
+                val += 1
+
+                #if statement moves the index forward one if the current index is not the last index
+                if index + 1 != len(num):
+                    index += 1
+
+
+            #if statement handles a case where the currently indexed value is not the same as the next one or
+            #the currently indexed value is the last value in num
+            if num[index] != num[index + 1] or index + 1 == len(num):
+
+                #assign to the next term of the sequence itself concatenated with the val (number of times the
+                #current number has been repeated) concatenated with the current value indexed
                 next_num += str(val) + num[index]
 
-                # reset the val to be one
+                #reset the val to be one
                 val = 1
 
-        if num[index] != num[index + 1]:
+                #if statement moves the index up by one if the current index is not the last index in the string
+                if index + 1 != len(num):
+                    index +=1
 
-
-            #move the index forward one if the current index is not the last index
-            if index + 1 != len(num):
-                index += 1
-
-            # if statement to handle case where the current index is the last index
-            if index + 2 == len(num):
-                next_num += str(val) + num[index + 1]
-
-            else:
-                next_num += str(val) + num[index]
-
-            # reset the val to be one
-            val = 1
+                #if statement handles a case where the new index from above is the last index in the string
+                if index + 1 == len(num):
+                    next_num += str(val) + num[index]
 
 
 
-    l += 1
+        num = next_num
+        print(num)
+        index = 0
+        next_num = ''
+        val = 1
 
-    print(next_num)
-
-
-
+        l +=1
+"""
