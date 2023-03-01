@@ -145,8 +145,14 @@ def compare_sorts(ins_sort, bub_sort):
         #add the time to sort the list paired with the key in the list_dict to the bub_sort_time list
         bub_sort_time.append(bub_sort(list_dict_2[key]))
 
-
-
+    #make the graph
+    plt.plot(num_list, ins_sort_time, 'ro--', linewidth=2, label='Insertion Sort')
+    plt.plot(num_list, bub_sort_time, 'go--', linewidth=2, label='Bubble Sort')
+    plt.grid()
+    plt.xlabel("Number of Sorted Elements")
+    plt.ylabel("Time (seconds)")
+    plt.legend(loc='upper left')
+    plt.show()
 
 
 
