@@ -14,6 +14,9 @@ def sort_timer(func):
     @functools.wraps(func)
 
     def wrapper(*args, **kwargs):
+        """This wrapper function modifies the function passed into it by returning the time it takes to run the
+        function. It does so by recording the time before the function call, then calling the  function, then recording
+        the time after the function call, then returning the difference between those two times."""
 
         #define start time
         t_start = time.perf_counter()
@@ -119,6 +122,28 @@ def compare_sorts(ins_sort, bub_sort):
         #add the newly created list of random numbers (rand_list) and its copy to the list_dict_1 and list_dict_2
         list_dict_1[key] = rand_list_1
         list_dict_2[key] = rand_list_2
+
+    #initialize 3 lists: a list of the amount of values in each of the randomly generated lists, a list of the time
+    #to sort each list (1000 val, 2000 val, etc.) using insertion sort, and a list of the time to sort each list
+    #using bubble sort.
+    num_list = [] #this will act as the graph's x axis
+    ins_sort_time = []
+    bub_sort_time = []
+
+    #loop through keys of the list_dict_1 to record time to sort with insertion sort (ins_sort)
+    for key in list_dict_1:
+
+        #add the key*1000 to the num_list list
+        num_list.append(key*1000)
+
+        #add the time to sort the list paired with the key in the list_dict to the ins_sort_time list
+        ins_sort_time.append(ins_sort(list_dict_1[key]))
+
+    #loop through keys of the list_dict_2 to record time to sort with bubble sort (bub_sort)
+    for key in list_dict_2:
+
+        #add the time to sort the list paired with the key in the list_dict to the bub_sort_time list
+        bub_sort_time.append(bub_sort(list_dict_2[key]))
 
 
 
