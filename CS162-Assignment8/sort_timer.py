@@ -1,7 +1,15 @@
 #Author : Gabriel Rodgers
 #GitHub Username : trashcoder8
-#Date : 3/1/23
-#Description :
+#Date : 2/28/23
+#Description : This program takes two sorting methods, insertion sort and bubble sort and randomly generates lists
+#containing integers between 1 and 10000 of lengths 1000, 2000, all the way to 10000. The program decorates both
+#sorting functions with a timer that counts the time it takes to run the sort function in the sort_timer function, and
+#then uses those previously generated lists to find the time it takes for each sorting function to sort each of the
+#lists of randomly generated integers (with 10 lists ranging from 1000 to 10000 values in increments of 1000). Finally,
+#the program graphs the time it takes for each sorting function to sort each list (y value) against the amount of
+#elements in each list (x axis) using the compare_sorts function. The list_gen function generates a generator object
+#of a specified length containing random integers ranging from 1 to 10000. This generator object is used in the
+#sorts_counts function to create a list of specified length with random integers in it.
 
 import time, random, functools
 from matplotlib import pyplot as plt
@@ -155,8 +163,8 @@ def compare_sorts(ins_sort, bub_sort):
     plt.show()
 
 
-
-
+#call compare_sorts to create graph
+compare_sorts(insertion_sort, bubble_sort)
 
 
 
