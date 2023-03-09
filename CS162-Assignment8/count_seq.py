@@ -82,4 +82,3 @@ def count_seq():
 
             #reset index value
             index = 0
-
