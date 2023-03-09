@@ -247,3 +247,40 @@ pos_lst.reverse()
 pos_lst.display()
 
 
+class Square():
+    """This class represents a square on the checkers board that has several private data members:
+    the square color (string with value 'dark' or 'light'), its location as a tuple of integers, and the piece that
+    is on the square object (None, 'Black', or 'White'). The square at location (0,0) is a light square that is the top
+    left-most square on the board, and the square at location (7,7) is a light square that is the bottom right-most
+    square on the board. The location tuple is in the following order: (row_number, column_number). """
+
+    """This class will be used in a dictionary representing a board in the checkers() class, where the dictionary
+    will hold 8 key-value pairs, with the keys representing the row numbers and the values representing a list of 
+    Square objects of length 8 that can be used to retrieve any square on the board's location, color, or the 
+    piece on that square."""
+
+    def __init__(self, square_color, square_location, square_piece=None):
+        """initializes the square object with the passed in variables: the square color, the square location,
+        and the piece that is on the square (default set to None). """
+        self._square_color = square_color
+        self._square_location = square_location
+        self._square_piece = square_piece
+
+    def get_square_color(self):
+        """This get method returns the color of the square"""
+        return self._square_color
+
+    def get_square_location(self):
+        """This get method returns the location of the square"""
+        return self._square_location
+
+    def get_square_piece(self):
+        """This get method returns the piece on the square"""
+        return self._square_piece
+
+    def set_square_piece(self, square_piece):
+        """This set method allows the piece on the square to be changed."""
+        self._square_piece = square_piece
+
+
+
