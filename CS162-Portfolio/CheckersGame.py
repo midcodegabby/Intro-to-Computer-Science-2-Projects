@@ -269,7 +269,35 @@ class Checkers():
         """This method creates a player object by calling the Player class and passing in the relevant variables,
         then returns that player object and adds that player object to the players dictionary of this class.
         The piece_color parameter must be a string of value 'Black' or 'White'"""
-        pass
+
+        #if statement to handle invalid color parameter
+        if piece_color != "Black" or "White":
+
+            return "Invalid piece color: can only choose 'Black' or 'White', not ", piece_color
+
+        #this elif statement handles the creation of the first player
+        elif len(self._player_dict) == 0:
+
+            return Player(player_name, piece_color)
+
+        #create conditional statements to prevent more than two players being created or other edge cases
+        elif len(self._player_dict) == 1:
+
+            #nested if statements to prevent a player object being created that has the same color as the other player
+            if next(iter(self._player_dict.values())) == piece_color:
+
+                return "Your opponent has already chosen that color!"
+
+            else:
+
+                return Player(player_name, piece_color)
+
+        else:
+
+            return "There are already 2 players in this game!"
+
+
+
 
     def play_game(self, player_name, starting_square_location, destination_square_location):
         """This method takes as parameters the player's name, the location of the starting square and ending square.
@@ -342,9 +370,5 @@ class Checkers():
 
 
 game = Checkers()
-
-
-
-
 
 
