@@ -133,17 +133,6 @@ def generate_pieces(row=0):
                 yield None
 
             row += 1
-"""
-start = generate_pieces()
-
-for i in start:
-    if i != None:
-        print(i.get_piece_color())
-        print(i.get_location())
-
-    else:
-        print(i)
-"""
 
 class Board():
     """This class represents the board that the game checkers is played on, with 64 alternating light-dark squares in
@@ -300,7 +289,36 @@ class Checkers():
 
     def print_board(self):
         """This method prints out the current board in the form of an array."""
-        pass
+
+        #get the board by calling the board object's get_board() method
+        board_dict = self._checkers_board.get_board()
+
+        #initialize an array that will hold strings and None values instead of piece objects
+        board_array = []
+
+        #for loop to loop through all 'rows' in the board_dict
+        for key in board_dict:
+
+            #for loop to loop through all values in the row values in the value list corresponding to the current key
+            for index in range(8):
+
+
+                if board_dict[key][index] == None:
+
+                    board_array.append(None)
+
+                else:
+
+                    board_array.append(board_dict[key][index].get_piece_color())
+
+
+        print(board_array)
+
+
+
+
+
+
 
     def game_winner(self):
         """This method returns the name of the player that won the game, and returns 'Game has not ended' if there has
@@ -309,7 +327,8 @@ class Checkers():
 
 
 
+game = Checkers()
 
-
+game.print_board()
 
 
