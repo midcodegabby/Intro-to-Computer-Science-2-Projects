@@ -133,9 +133,9 @@ def generate_pieces(row=0):
                 yield None
 
             row += 1
-
-start = generate_pieces()
 """
+start = generate_pieces()
+
 for i in start:
     if i != None:
         print(i.get_piece_color())
@@ -152,35 +152,43 @@ class Board():
     def __init__(self):
         """This initializing method creates a Board object with the set requirements for starting:
         64 squares, with a white square in the top left and bottom right, alternating light-dark-light in a 8x8 matrix,
-        the starting positions for all pieces (starting pieces are created in this method by iterating over a generator
-        object that creates the objects), and the following syntax for empty squares: dark and light empty squares
-        both contain the value None.
+        with empty squares of either color holding a value of None. The values in the squares of the board are
+        created by creating a generator object of the entire contents of a board (includes empty None squares and
+        piece objects in non-empty squares) by calling the generate_pieces() generator function. This method then
+        iterates over all the values in that generator objects and adds all the values to the board.
         The Board has a private data member, board_dict that represents the physical checkerboard.
         This board_dict has 8 key value pairs, with each key representing the row numbers (0-7), and each associated
         value being a list for that row containing piece objects or None. Example 0th row upon initializing the
         board object, with Piece_object referring to a unique piece object:
         [None, Piece_object, None, Piece_object, None, Piece_object, None, Piece_object]
         """
+        #create variables to dictate the range of iteration
+        high = 8
+        low = 0
 
         #initialize the dictionary with keys being the row number on the board and corresponding values being empty
         #lists to store row contents
-        self._board_dict = {0:[], 1:[], 2:[], 3:[], 4:[], 5:[], 6:[], 7:[]}
+        self._board_dict = {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: []}
 
-        #initialize a generator object containing all starting pieces by calling the generate_pieces() function
+        # initialize a generator object containing all values in the checkerboard by calling generate_pieces()
         initial_pieces = generate_pieces()
 
         #create for loop to populate the board_dict
-        for index in range(64):
-            print(1)
+        for key in self._board_dict:
 
+            #loop through the range of iteration for a specific key and add each value of the generator object to the
+            #list value in the board_dict
+            for index in range(low, high):
 
+                self._board_dict[key].append(next(initial_pieces))
 
-
-
+            #shift range of iteration up by one row
+            low += 8
+            high += 8
 
     def get_board(self):
         """This method returns the board_dict"""
-        pass
+        return self._board_dict
 
     def move(self, piece, location):
         """This method allows for a piece to be moved, given the piece object and the specified moved to location.
@@ -298,4 +306,10 @@ class Checkers():
         """This method returns the name of the player that won the game, and returns 'Game has not ended' if there has
         not been a winner yet. There are two ways to win: either capture all opponent pieces or block all opponent
         pieces from moving."""
+
+
+
+
+
+
 
