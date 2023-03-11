@@ -44,40 +44,65 @@ class Piece():
         """This get method returns the location of the piece."""
         return self._location
 
-def generate_pieces(index=0, row=0):
+def generate_pieces(row=0):
     """This generator function creates 24 pieces divided among two colors for the start of a checkers game, with
     the appropriate starting locations. The generator object created by this function will be used in the __init__
     method of the Board class, where the pieces will be created and stored inside the Board object."""
 
-    val = 100
-
     #create while loop to loop stuff
-    while index < val:
+    while row <= 7:
 
         #if statement to filter out rows in the checkerboard that do not have starting white pieces
-        if 0 <= row <= 2 :
+        if 0 <= row <= 2:
 
             #create another if/else statement to filter out odd vs even rows
             if row%2 == 0:
-                print(1)
+
+                #for loop will iterate starting at 1 going to 7 in increments of 2
+                for idx in range(1, 8, 2):
+
+                    #yield each new white piece in the given even row
+                    yield Piece("White", (row, idx))
+
+                row += 1
 
             else:
-                print(2)
 
+                #for loop will iterate starting at 0 going to 7 in increments of 2
+                for idx in range(0, 8, 2):
 
+                    #yield each new white piece in the given odd row
+                    yield Piece("White", (row, idx))
+
+                row += 1
 
         #if statement to filter out rows in the checkerboard that do not have starting black pieces
         elif 5 <= row <= 7:
 
             #create another if/else statement to filter out odd vs even rows
-            if row % 2 != 0:
-                print(1)
+            if row%2 != 0:
+
+                #for loop will iterate starting at 0 going to 7 in increments of 2
+                for idx in range(0, 8, 2):
+
+                    #yield each new black piece in the given odd row
+                    yield Piece("Black", (row, idx))
+
+                row += 1
 
             else:
-                print(2)
 
+                #for loop will iterate starting at 1 going to 7 in increments of 2
+                for idx in range(1, 8, 2):
 
+                    #yield each new black piece in the given even row
+                    yield Piece("Black", (row, idx))
 
+                row += 1
+
+        #else statement moves the row from 3 to 5 so that the generator doesn't keep looping forever
+        else:
+            row += 1
 
 class Board():
     """This class represents the board that the game checkers is played on, with 64 alternating light-dark squares in
@@ -95,7 +120,7 @@ class Board():
         board object, with Piece_object referring to a unique piece object:
         [None, Piece_object, None, Piece_object, None, Piece_object, None, Piece_object]
         """
-        pass
+
 
     def get_board(self):
         """This method returns the board_dict"""
