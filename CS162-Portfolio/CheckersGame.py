@@ -296,21 +296,31 @@ class Checkers():
         #initialize an array that will hold strings and None values instead of piece objects
         board_array = []
 
+        #initalize a temporary array to hold a row's contents
+        temp_array = []
+
         #for loop to loop through all 'rows' in the board_dict
         for key in board_dict:
 
             #for loop to loop through all values in the row values in the value list corresponding to the current key
             for index in range(8):
 
-
+                #conditional statement to handle None valued squares
                 if board_dict[key][index] == None:
 
-                    board_array.append(None)
+                    temp_array.append(None) #add the None value to the temporary array
 
+                #else statement to handle squares that are not empty
                 else:
 
-                    board_array.append(board_dict[key][index].get_piece_color())
+                    #add the piece color to the temporary array
+                    temp_array.append(board_dict[key][index].get_piece_color())
 
+            #append the temporary array to the board_array
+            board_array.append(temp_array)
+
+            #clear the temp_array
+            temp_array = []
 
         print(board_array)
 
