@@ -1,8 +1,7 @@
 #Author : Gabriel Rodgers
 #GitHub Username : trashcoder8
-#Date : 3/8/23
-#Description : outline for the CheckersGame portfolio project, with psuedocode, explanations, docstrings, and classes
-#(with methods) explained in the following code.
+#Date : 3/19/23
+#Description :
 
 #exception for a player trying to play the game out of turn
 class OutOfTurn(Exception):
@@ -22,14 +21,8 @@ class Piece():
     the piece color ('Black', 'White', 'Black_king', 'Black_Triple_King', etc.) and the piece's location as a tuple
     (row_number, column_number). If the piece has been captured then the piece object is deleted."""
 
-    """The piece class communicates with the board class, where the board class stores all the pieces in a game of 
-    checkers, the generator function generate_pieces(), which creates a generator object of starting pieces, and
-    the checkers class which will call on piece object methods to change the piece color or location when pieces
-    move or are captured or are promoted."""
-
     def __init__(self, piece_color, location):
-        """initializing method that sets the piece object's piece color and location to the arguments passed in and
-        sets the affiliation to 'on_board'."""
+        """initializing method that sets the piece object's piece color and location to the arguments passed in."""
         self._piece_color = piece_color
         self._location = location
 
@@ -51,19 +44,44 @@ class Piece():
         """This get method returns the location of the piece."""
         return self._location
 
-def generate_pieces():
+def generate_pieces(index=0, row=0):
     """This generator function creates 24 pieces divided among two colors for the start of a checkers game, with
     the appropriate starting locations. The generator object created by this function will be used in the __init__
     method of the Board class, where the pieces will be created and stored inside the Board object."""
-    pass
+
+    val = 100
+
+    #create while loop to loop stuff
+    while index < val:
+
+        #if statement to filter out rows in the checkerboard that do not have starting white pieces
+        if 0 <= row <= 2 :
+
+            #create another if/else statement to filter out odd vs even rows
+            if row%2 == 0:
+                print(1)
+
+            else:
+                print(2)
+
+
+
+        #if statement to filter out rows in the checkerboard that do not have starting black pieces
+        elif 5 <= row <= 7:
+
+            #create another if/else statement to filter out odd vs even rows
+            if row % 2 != 0:
+                print(1)
+
+            else:
+                print(2)
+
+
+
 
 class Board():
     """This class represents the board that the game checkers is played on, with 64 alternating light-dark squares in
     an 8 by 8 matrix. It has several private data members, including a board_dict representing the board."""
-
-    """This class communicates with the checkers class and the piece class, where the checkers class calls on the 
-    board class to move and remove pieces, while the board class uses piece objects in its board_dict, and also
-    initializes a full starting set of pieces in the __init__ method."""
 
     def __init__(self):
         """This initializing method creates a Board object with the set requirements for starting:
@@ -100,9 +118,6 @@ class Board():
 class Player():
     """This class represents a player in the checkers game/class that has several private data members:
     the player name and the player piece color"""
-
-    """This class is used by the checkers() class to keep track of the amount of pieces each player has captured and
-    their pieces' locations."""
 
     def __init__(self, player_name, piece_color):
         """initializing method for creating a Player object with a player's name, piece color, None captured pieces,
@@ -156,8 +171,6 @@ class Player():
 class Checkers():
     """This is a class representing a game of checkers with 2 people, and completes checker moves."""
 
-    """this class interacts and calls the board, player, and piece classes in its methods."""
-
     def __init__(self):
         """Initializing method to create a turn variable, an empty dictionary of the game's players
          ((keys) player names and (values) player objects) and a board object"""
@@ -204,75 +217,4 @@ class Checkers():
         """This method returns the name of the player that won the game, and returns 'Game has not ended' if there has
         not been a winner yet. There are two ways to win: either capture all opponent pieces or block all opponent
         pieces from moving."""
-
-
-#DETAILED TEXT DESCRIPTIONS OF HOW TO HANDLE THE SCENARIOS
-"""
-1. Initializing the Checkers and Player classes:
-When the checkers class is initialized, the checkers() __init__ method causes the turn variable to be set to None,
-initializes the player_dict to be an empty dictionary and 
-creates a new Board() object by assigning the Board call to a private data member called checkers_board. By doing this, 
-the new board object initializes (through the board() __init__ method) the starting pieces by creating a generator
-object of the starting pieces by calling the generate_pieces() function and iterating over the pieces, adding those
-pieces to a board_dict that will contain all the squares in a checkerboard (each square either has its color ('dark'
-or 'light') as its value in the board_dict or a piece object), with the board_dict key-value pairs consisting of 
-(key) row number, 0-7 and (value) list of values in that row (either square color or piece object). When the Player
-class is initialized (player object is created) through the player() __init__ method, the player's name and color are
-passed in and allocated to private data members within the player object, a list of a player's pieces is set to an empty
-list (and then the relevant pieces of the player's color are added to that list), and the number of captured pieces
-for that player is set to 0.
-
-2. Determining how to implement create_player method
-The create_player method first checks if there are already 2 players; if there is then the create_player method does 
-not allow a new player to be created; if there is not then the create_player method adds a new entry to the player_dict
-dictionary with key being the argument player_name, and the value being a player object created from a call to the 
-player class with the given parameters in the create_player method. 
-
-3. Determining how to implement print_board method
-The board being used in the Checkers class is a Board object, where the board object contains a dictionary board_dict
-that contains 8 key value pairs of (key: row number, 0-7 and value: list of row contents). Given this information, the 
-print_board method calls the board object's get_board() method (which returns the board_dict), then prints out each 
-value in the dictionary (each value is a list of the board contents for a specific row) separated by line, but 
-each value in that list that is not None has the piece method get_color() called on it then printed out (because
-each non-None value in the list for a value in the dictionary is a piece object). The line separation will not 
-occur if I misread the instructions and all board values must be printed out in one array. 
-
-4. Determining how to implement game_winner method and how to check the winning condition
-The game_winner method first checks if any one player has 12 captured pieces; if one does, then the game_winner 
-method returns that player's name by calling the get_player_name() on that player object. If neither player has 12
-captured pieces then the game_winner method checks if any one player is unable to move any of their pieces 
-(although I have not figured out how to test for this yet). If any player is unable to make a move then the other 
-player's name is returned as the winner. If neither of these situations happen a string is returned with value 
-"Game has not ended". 
-
-5. Determining how to implement play_game method; how to validate a move. Determine how to identify the promotion to 
--king or triple king. Determine how to handle pieces being captured.
-Captured pieces are handled by the following: The player that had the piece has the piece removed from their piece_list, 
-the piece that has been captured has its location set to None, the board object has its remove() method called using 
-the captured piece, therefore removing it from the board, and the player that captured the piece has a 1 added to their
-captured_pieces data member. Moves are validated inside the move() method in the Board object, by using a large amount
-of conditionals that filter out different piece colors/statuses and check the move according to the rules governing
-regular, king, and triple king pieces. Promotions are done by the following: in the play_game method there will be 
-conditional statements for checking if a regular piece has gotten to the other side of the board; if it has then the 
-piece's piece_color is changed by calling the set_piece_color() method on that piece object and changing its value to 
-be king, and a different conditional checks for if a king piece has reached its initial side and modifies its 
-piece_color data member in the same process as in the regular-king piece promotion process. The play_game method will
-first check for do exception handling for if a player_name argument is invalid, if a player does not own the piece
-designated by the starting_square_location or if the starting or destination square locations are invalid. Then the
-play_game method will call on the board object move() method to complete the move inside the board_dict and update
-the relevant piece locations or whatever else.
-
-6. Determine how to implement get_checker_details method
-The get_checker_details first checks if the square_location parameter is on the board; if it is not then it raises
-the InvalidSquare exception. Then the get_checker_details method
-calls the board object get_piece() method (on the passed in location), which will return 
-None if no piece is at that location, or return the piece at that location. Now that the piece object has been found,
-the get_checker_details method returns a call to that piece object's get_piece_color() method, which will return 
-the piece string value ('Black', 'White', 'White_Triple_King', etc.).
-
-7. Initializing exception classes 
-The Exception classes are already initialized under the description portion of this code.
-
-"""
-
 
