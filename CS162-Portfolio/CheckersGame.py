@@ -15,26 +15,25 @@ class InvalidSquare(Exception):
 class InvalidPlayer(Exception):
     pass
 
-
 class Piece():
     """This class represents a piece on the checkers board that has several private data members:
     the piece color ('Black', 'White', 'Black_king', 'Black_Triple_King', etc.) and the piece's location as a tuple
     (row_number, column_number). If the piece has been captured then the piece object is deleted."""
 
-    def __init__(self, piece_color, location):
+    def __init__(self, piece_color, square_location):
         """initializing method that sets the piece object's piece color and location to the arguments passed in."""
         self._piece_color = piece_color
-        self._location = location
+        self._square_location = square_location
 
     def set_piece_color(self, piece_color):
         """This set method allows the piece color to be changed. For example, this method allows a 'Black' piece
         to be turned into a 'Black_king' piece. No return value."""
         self._piece_color = piece_color
 
-    def set_location(self, location):
+    def set_location(self, square_location):
         """This set method allows the location of the piece to be modified. In the event that a piece is captured,
         this method would be called to set its location to None. No return value."""
-        self._location = location
+        self._square_location = square_location
 
     def get_piece_color(self):
         """This get method returns the color of the piece."""
@@ -42,7 +41,7 @@ class Piece():
 
     def get_location(self):
         """This get method returns the location of the piece."""
-        return self._location
+        return self._square_location
 
 def generate_pieces(row=0):
     """This generator function creates 24 pieces divided among two colors for the start of a checkers game, with
@@ -179,7 +178,7 @@ class Board():
         """This method returns the board_dict"""
         return self._board_dict
 
-    def move(self, piece, location):
+    def move(self, piece, square_location):
         """This method allows for a piece to be moved, given the piece object and the specified moved to location.
         This method will have nested conditionals to prevent invalid moves. After a move is complete, the affected
         piece object data members will be updated. No return value."""
@@ -190,8 +189,18 @@ class Board():
         This method will call on the player object's (that did the capturing). No return value."""
         pass
 
-    def get_piece(self, location):
+    def get_piece(self, square_location):
         """This method returns the piece object that is at the passed in location."""
+
+        #split the tuple square_location into two different variables
+        row, col = square_location
+
+        #create conditional statements to seperate None valued squares and squares that have a piece object in them
+        if self._board_dict[row][col] == None:
+            return None
+
+        else:
+            return self._board_dict[row][col].get_piece_color()
 
 class Player():
     """This class represents a player in the checkers game/class that has several private data members:
@@ -284,8 +293,9 @@ class Checkers():
         """This method takes as parameter a square location and returns the checker details present in that square.
         checker details can be either None (no checker in that square), 'White', 'Black', 'Black_king', 'White_king',
         'Black_Triple_King', or 'White_Triple_King'. This method works by passing the square_location argument into
-        a call to the board class method get_piece, then returning the returned piece's get_color method."""
-        pass
+        a call to the checkers_board object method get_piece, then returning the returned piece's get_color method."""
+
+        return self._checkers_board.get_piece(square_location)
 
     def print_board(self):
         """This method prints out the current board in the form of an array."""
@@ -324,12 +334,6 @@ class Checkers():
 
         print(board_array)
 
-
-
-
-
-
-
     def game_winner(self):
         """This method returns the name of the player that won the game, and returns 'Game has not ended' if there has
         not been a winner yet. There are two ways to win: either capture all opponent pieces or block all opponent
@@ -339,6 +343,8 @@ class Checkers():
 
 game = Checkers()
 
-game.print_board()
+
+
+
 
 
