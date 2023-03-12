@@ -15,6 +15,9 @@ reaches row 0
 - "Black_King"
 reaches row 7
 
+GENERAL MOVEMENT RULES
+- destination square must hold None value
+
 NON-CAPTURE MOVEMENT RULES
 - "White"
 (row, col) --> (row+1, col+/-1)
@@ -26,7 +29,12 @@ NON-CAPTURE MOVEMENT RULES
 (row, col) --> (row+/-1, col+/-1)
 
 - "White_Triple_King" and "Black_Triple_King"
-(row, col) -->
+(row, col) --> (row+/-1, col+/-1)
+(row, col) over (row+1, col+1) --> (row+2, col+2)
+(row, col) over (row-1, col+1) --> (row-2, col+2)
+(row, col) over (row+1, col-1) --> (row+2, col-2)
+(row, col) over (row-1, col-1) --> (row-2, col-2)
+*if and only if the moving piece has the over piece_color in it (same team)
 
 CAPTURE MOVEMENT RULES
 - "White"
@@ -46,12 +54,23 @@ CAPTURE MOVEMENT RULES
 (row, col) over (row-x, col-x) --> (row-y, col-y) y>x
 #if and only if over the diagonal has only one piece that has a different color than the moving piece
 
+-"White_Triple_King" and "Black_Triple_King"
+(row, col) over (row+x, col+x) --> (row+y, col+y) y>x
+(row, col) over (row+x, col-x) --> (row+y, col-y) y>x
+(row, col) over (row-x, col+x) --> (row-y, col+y) y>x
+(row, col) over (row-x, col-x) --> (row-y, col-y) y>x
+#if and only if over the diagonal has only one piece that has a different color than the moving piece
+
+
+
+
+
 seems like using a while loop will be the best idea for this, and we can use a rule method just for rules
 to filter out invalid moves!
 
-
-
-
+TURN
+- if move had no captures, switch turn to other color.
+- if move had captures, do not change turn.
 """
 
 
