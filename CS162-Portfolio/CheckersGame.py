@@ -30,7 +30,7 @@ class Piece():
         to be turned into a 'Black_king' piece. No return value."""
         self._piece_color = piece_color
 
-    def set_location(self, square_location):
+    def set_square_location(self, square_location):
         """This set method allows the location of the piece to be modified. In the event that a piece is captured,
         this method would be called to set its location to None. No return value."""
         self._square_location = square_location
@@ -39,7 +39,7 @@ class Piece():
         """This get method returns the color of the piece."""
         return self._piece_color
 
-    def get_location(self):
+    def get_square_location(self):
         """This get method returns the location of the piece."""
         return self._square_location
 
@@ -210,6 +210,7 @@ class Player():
         """initializing method for creating a Player object with a player's name, piece color, None captured pieces,
         and an empty list representing the pieces (and each location) that a player has on the board. Then the
         same colored pieces as the player's piece_color are added to the piece_list."""
+
         #initialize the player name and piece color
         self._player_name = player_name
         self._checker_color = checker_color
@@ -217,8 +218,28 @@ class Player():
         #initialize the number of captured pieces as 0
         self._captured_pieces = 0
 
+        #call a generator object to add each starting piece to the player list
+        initial_pieces = generate_pieces()
+
         #initialize a list to store all of a player's pieces (piece objects)
         self._piece_list = []
+
+        #insert the pieces into the piece_list by looping through all generator object values
+        for index in initial_pieces:
+
+            #if statement to filter out None valued squares in the generator object
+            if index == None:
+                pass
+
+            #elif statement to filter out pieces that are not the player's checker color
+            elif index.get_piece_color() != self._checker_color:
+                pass
+
+            #else statement handles all pieces that are the same color as the player's checker color
+            else:
+
+                #append each piece object of the player's color to the player's piece_list
+                self._piece_list.append(index)
 
     def remove_piece(self, piece):
         """Takes a piece object as parameter.
@@ -238,6 +259,10 @@ class Player():
     def get_checker_color(self):
         """This get method returns the piece color of the player object"""
         return self._checker_color
+
+    def get_piece_list(self):
+        """This get method returns the entire list of the player's piece objects"""
+        return self._piece_list
 
     def get_king_count(self):
         """This get method returns the number of king pieces that the player has. This will be done by iterating over
@@ -304,7 +329,6 @@ class Checkers():
         else:
 
             return "Max player capacity reached for this game!"
-
 
     def get_players(self):
         """This get method returns the dictionary of player objects."""
@@ -378,10 +402,18 @@ class Checkers():
         not been a winner yet. There are two ways to win: either capture all opponent pieces or block all opponent
         pieces from moving."""
 
+        for key in self._player_dict:
+
+            for index in self._player_dict[key].get_piece_list():
+
+                print(index.get_square_location())
 
 
 cheek = Checkers()
 
-print(cheek.create_player("Gabe", "White"))
-print(cheek.create_player("Serena", "Black"))
+cheek.create_player("Gabe", "White")
+cheek.create_player("Serena", "Black")
+
+#cheek.game_winner()
+
 
