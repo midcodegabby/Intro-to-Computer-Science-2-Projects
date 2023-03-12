@@ -158,7 +158,7 @@ class Board():
         #lists to store row contents
         self._board_dict = {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: []}
 
-        # initialize a generator object containing all values in the checkerboard by calling generate_pieces()
+        #initialize a generator object containing all values in the checkerboard by calling generate_pieces()
         initial_pieces = generate_pieces()
 
         #create for loop to populate the board_dict
@@ -186,8 +186,24 @@ class Board():
 
     def remove(self, piece):
         """This method allows for a piece to be removed from the board in the event of a capture.
-        This method will call on the player object's (that did the capturing). No return value."""
-        pass
+        No return value."""
+
+        #remove the piece from the board by looping through all values inside the board_dict and removing the piece
+        for key in self._board_dict:
+
+            for index in self._board_dict[key]:
+
+                #if statement handles the removal of the piece once the piece is reached
+                if index == piece:
+
+                    #unpack the square_location to use
+                    row, col = piece.get_square_location
+
+                    #set the piece to be removed location on the board to be None
+                    self._board_dict[row][col] = None
+
+                    #call on the piece object's set_square_location to chang its location to None
+                    piece.set_square_location = None
 
     def get_square_details(self, square_location):
         """This method returns the piece object that is at the passed in location."""
@@ -215,8 +231,7 @@ class Player():
 
     def __init__(self, player_name, checker_color):
         """initializing method for creating a Player object with a player's name, piece color, None captured pieces,
-        and an empty list representing the pieces (and each location) that a player has on the board. Then the
-        same colored pieces as the player's piece_color are added to the piece_list."""
+        and an empty list representing the pieces (and each location) that a player has on the board."""
 
         #initialize the player name and piece color
         self._player_name = player_name
@@ -225,28 +240,32 @@ class Player():
         #initialize the number of captured pieces as 0
         self._captured_pieces = 0
 
-        #call a generator object to add each starting piece to the player list
-        initial_pieces = generate_pieces()
-
         #initialize a list to store all of a player's pieces (piece objects)
         self._piece_list = []
 
-        #insert the pieces into the piece_list by looping through all generator object values
-        for index in initial_pieces:
+    def initialize_pieces(self, board_dict):
+        """This method initializes the pieces of the player object without creating an entirely new generator object
+        that has different piece objects than the pieces on the board by being called in the create_player() method of
+        the Checkers object and using the board_dict in that checker_board object in the checkers object."""
 
-            #if statement to filter out None valued squares in the generator object
-            if index == None:
-                pass
+        #create for loop to loop through all pieces in the board_dict
+        for key in board_dict:
 
-            #elif statement to filter out pieces that are not the player's checker color
-            elif index.get_piece_color() != self._checker_color:
-                pass
+            for index in board_dict[key]:
 
-            #else statement handles all pieces that are the same color as the player's checker color
-            else:
+                #if statement to filter out None valued squares in the board_dict
+                if index == None:
+                    pass
 
-                #append each piece object of the player's color to the player's piece_list
-                self._piece_list.append(index)
+                #elif statement to filter out pieces that are not the player's checker color
+                elif index.get_piece_color() != self._checker_color:
+                    pass
+
+                #else statement handles all pieces that are the same color as the player's checker color
+                else:
+
+                    #append each piece object of the player's color to the player's piece_list
+                    self._piece_list.append(index)
 
     def remove_piece(self, piece):
         """Takes a piece object as parameter.
@@ -259,7 +278,7 @@ class Player():
             #if statement removes the piece in the player's piece_list that is the same as the parameter piece
             if index == piece:
 
-                self._piece_list.remove(index)
+                self._piece_list.remove(piece)
 
     def add_captured_piece(self):
         """This method adds 1 to the captured_pieces variable for every time the method is called, or every time
@@ -346,6 +365,10 @@ class Checkers():
 
             #add the new player to the player_dict then return the player object
             self._player_dict[player_name] = Player(player_name, checker_color)
+
+            #initialize the player's initial pieces by using the same pieces that are in the board object
+            self._player_dict[player_name].initialize_pieces(self._checkers_board.get_board())
+
             return self._player_dict[player_name]
 
         #create conditional statements to prevent more than two players being created or other edge cases
@@ -365,6 +388,10 @@ class Checkers():
 
                 #add the new player to the player_dict then return the player object
                 self._player_dict[player_name] = Player(player_name, checker_color)
+
+                #initialize the player's initial pieces by using the same pieces that are in the board object
+                self._player_dict[player_name].initialize_pieces(self._checkers_board.get_board())
+
                 return self._player_dict[player_name]
 
         else:
@@ -391,7 +418,6 @@ class Checkers():
         captured then the turn variable stays as the same player, if not then the turn variable changes to be the
         opponent player
         """
-        pass
 
     def get_checker_details(self, square_location):
         """This method takes as parameter a square location and returns the checker details present in that square.
@@ -456,9 +482,9 @@ cheek = Checkers()
 cheek.create_player("Gabe", "White")
 cheek.create_player("Serena", "Black")
 
-#dict = cheek.get_players()
+dict = cheek.get_players()
 
-#for key in dict:
-    #print(dict[key].get_piece_list())
-    #print(dict[key].get_checker_color())
+for key in dict:
+    print(dict[key].get_piece_list())
+    print(dict[key].get_checker_color())
 
