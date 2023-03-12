@@ -469,13 +469,29 @@ class Checkers():
         """This method returns the name of the player that won the game, and returns 'Game has not ended' if there has
         not been a winner yet. There are two ways to win: either capture all opponent pieces or block all opponent
         pieces from moving."""
+        #initialize a random value to be used to count the number of iterations
+        val = 0
 
+        #first test for a game winner conventionally, using the amount of captured pieces:
+        #use for loop to accomplish the above
         for key in self._player_dict:
 
-            for index in self._player_dict[key].get_piece_list():
+            #if statement handles if the currently indexed player has captured all 12 opponent pieces
+            if self._player_dict[key].get_captured_pieces_count() == 12:
 
-                print(index.get_square_location())
+                return self._player_dict[key].get_player_name()
 
+            #add one to the random val for every time the currently indexed player has not captured all 12 opponent
+            #pieces
+            else:
+                val += 1
+
+        #if statement to handle if val == 2, or if both players have not captured all 12 pieces
+        if val == 2:
+
+            #create more if statements to test for the second possible win condition, which is if one player cannot
+            #make any moves
+            print("Not done with this part")
 
 cheek = Checkers()
 
@@ -483,8 +499,8 @@ cheek.create_player("Gabe", "White")
 cheek.create_player("Serena", "Black")
 
 dict = cheek.get_players()
-
+"""
 for key in dict:
     print(dict[key].get_piece_list())
     print(dict[key].get_checker_color())
-
+"""
