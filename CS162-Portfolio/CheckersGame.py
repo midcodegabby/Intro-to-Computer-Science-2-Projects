@@ -180,9 +180,15 @@ class Board():
 
     def move(self, piece, square_location):
         """This method allows for a piece to be moved, given the piece object and the specified moved to location.
-        This method will have nested conditionals to prevent invalid moves. After a move is complete, the affected
+        This method will have nested conditionals to prevent invalid moves. This method will also do piece promotions.
+        After a move is complete, the affected
         piece and player object data members will be updated. returns the number of captured pieces."""
-        pass
+
+        #define the piece's type
+        piece_type = piece.get_piece_color()
+
+
+
 
     def remove(self, piece):
         """This method allows for a piece to be removed from the board in the event of a capture.
@@ -547,6 +553,4 @@ for key in dict:
     print(dict[key].get_piece_list())
     print(dict[key].get_checker_color())
 """
-
-
 

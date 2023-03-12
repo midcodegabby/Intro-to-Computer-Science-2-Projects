@@ -4,6 +4,61 @@
 #Description : outline for the CheckersGame portfolio project, with psuedocode, explanations, docstrings, and classes
 #(with methods) explained in the following code.
 
+"""Rules for checker moves:
+PROMOTIONS
+- "White"
+reaches row 7
+- "Black"
+reaches row 0
+- "White_King"
+reaches row 0
+- "Black_King"
+reaches row 7
+
+NON-CAPTURE MOVEMENT RULES
+- "White"
+(row, col) --> (row+1, col+/-1)
+
+- "Black"
+(row, col) --> (row-1, col+/-1)
+
+- "White_King" and "Black_King"
+(row, col) --> (row+/-1, col+/-1)
+
+- "White_Triple_King" and "Black_Triple_King"
+(row, col) -->
+
+CAPTURE MOVEMENT RULES
+- "White"
+(row, col) over (row+1, col+1) --> (row+2, col+2)
+(row, col) over (row+1, col-1) --> (row+2, col-2)
+*if and only if over piece_color has different color
+
+- "Black"
+(row, col) over (row-1, col+1) --> (row-2, col+2)
+(row, col) over (row-1, col-1) --> (row-2, col-2)
+*if and only if over piece_color has different color
+
+- "White_King" and "Black_King"
+(row, col) over (row+x, col+x) --> (row+y, col+y) y>x
+(row, col) over (row+x, col-x) --> (row+y, col-y) y>x
+(row, col) over (row-x, col+x) --> (row-y, col+y) y>x
+(row, col) over (row-x, col-x) --> (row-y, col-y) y>x
+#if and only if over the diagonal has only one piece that has a different color than the moving piece
+
+seems like using a while loop will be the best idea for this, and we can use a rule method just for rules
+to filter out invalid moves!
+
+
+
+
+"""
+
+
+
+
+
+
 #exception for a player trying to play the game out of turn
 class OutOfTurn(Exception):
     pass
