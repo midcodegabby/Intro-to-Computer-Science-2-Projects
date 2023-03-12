@@ -202,7 +202,7 @@ class Board():
                     #set the piece to be removed location on the board to be None
                     self._board_dict[row][col] = None
 
-                    #call on the piece object's set_square_location to chang its location to None
+                    #call on the piece object's set_square_location to change its location to None
                     piece.set_square_location = None
 
     def get_square_details(self, square_location):
@@ -486,12 +486,12 @@ class Checkers():
             else:
                 val += 1
 
-        #if statement to handle if val == 2, or if both players have not captured all 12 pieces
+        #if statement to handle if val == 2 (if both players have not captured all 12 pieces)
         if val == 2:
 
-            #create more if statements to test for the second possible win condition, which is if one player cannot
-            #make any moves
-            print("Not done with this part")
+            return "Game has not ended"
+
+
 
 cheek = Checkers()
 
@@ -504,3 +504,4 @@ for key in dict:
     print(dict[key].get_piece_list())
     print(dict[key].get_checker_color())
 """
+
