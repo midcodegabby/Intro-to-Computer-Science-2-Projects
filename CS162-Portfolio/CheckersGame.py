@@ -206,13 +206,13 @@ class Player():
     """This class represents a player in the checkers game/class that has several private data members:
     the player name and the player piece color"""
 
-    def __init__(self, player_name, piece_color):
+    def __init__(self, player_name, checker_color):
         """initializing method for creating a Player object with a player's name, piece color, None captured pieces,
         and an empty list representing the pieces (and each location) that a player has on the board. Then the
         same colored pieces as the player's piece_color are added to the piece_list."""
         #initialize the player name and piece color
         self._player_name = player_name
-        self._piece_color = piece_color
+        self._checker_color = checker_color
 
         #initialize the number of captured pieces as 0
         self._captured_pieces = 0
@@ -231,13 +231,13 @@ class Player():
         the player captures an opponent piece. No return value."""
         self._captured_pieces =+ 1
 
-    def get_name(self):
+    def get_player_name(self):
         """This get method returns the name of the player object"""
         return self._player_name
 
-    def get_color(self):
+    def get_checker_color(self):
         """This get method returns the piece color of the player object"""
-        return self._piece_color
+        return self._checker_color
 
     def get_king_count(self):
         """This get method returns the number of king pieces that the player has. This will be done by iterating over
@@ -265,39 +265,50 @@ class Checkers():
         self._checkers_board = Board()
         self._player_dict = {}
 
-    def create_player(self, player_name, piece_color):
+    def create_player(self, player_name, checker_color):
         """This method creates a player object by calling the Player class and passing in the relevant variables,
         then returns that player object and adds that player object to the players dictionary of this class.
         The piece_color parameter must be a string of value 'Black' or 'White'"""
 
         #if statement to handle invalid color parameter
-        if piece_color != "Black" or "White":
+        if checker_color != "Black" and checker_color != "White":
 
-            return "Invalid piece color: can only choose 'Black' or 'White', not ", piece_color
+            return "Invalid checker color: can only choose 'Black' or 'White', not " + checker_color
 
         #this elif statement handles the creation of the first player
         elif len(self._player_dict) == 0:
 
-            return Player(player_name, piece_color)
+            #add the new player to the player_dict then return the player object
+            self._player_dict[player_name] = Player(player_name, checker_color)
+            return self._player_dict[player_name]
 
         #create conditional statements to prevent more than two players being created or other edge cases
         elif len(self._player_dict) == 1:
 
             #nested if statements to prevent a player object being created that has the same color as the other player
-            if next(iter(self._player_dict.values())) == piece_color:
+            if next(iter(self._player_dict.values())).get_checker_color() == checker_color:
 
-                return "Your opponent has already chosen that color!"
+                return "Checker color taken, please choose the other color!"
+
+            #nested elif statement to prevent duplicate names
+            elif next(iter(self._player_dict.values())).get_player_name() == player_name:
+
+                return "Name taken, please choose a different name!"
 
             else:
 
-                return Player(player_name, piece_color)
+                #add the new player to the player_dict then return the player object
+                self._player_dict[player_name] = Player(player_name, checker_color)
+                return self._player_dict[player_name]
 
         else:
 
-            return "There are already 2 players in this game!"
+            return "Max player capacity reached for this game!"
 
 
-
+    def get_players(self):
+        """This get method returns the dictionary of player objects."""
+        return self._player_dict
 
     def play_game(self, player_name, starting_square_location, destination_square_location):
         """This method takes as parameters the player's name, the location of the starting square and ending square.
@@ -369,6 +380,8 @@ class Checkers():
 
 
 
-game = Checkers()
+cheek = Checkers()
 
+print(cheek.create_player("Gabe", "White"))
+print(cheek.create_player("Serena", "Black"))
 
