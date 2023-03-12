@@ -181,7 +181,7 @@ class Board():
     def move(self, piece, square_location):
         """This method allows for a piece to be moved, given the piece object and the specified moved to location.
         This method will have nested conditionals to prevent invalid moves. After a move is complete, the affected
-        piece object data members will be updated. No return value."""
+        piece and player object data members will be updated. returns the number of captured pieces."""
         pass
 
     def remove(self, piece):
@@ -344,9 +344,9 @@ class Checkers():
     """This is a class representing a game of checkers with 2 people, and completes checker moves."""
 
     def __init__(self):
-        """Initializing method to create a turn variable, an empty dictionary of the game's players
+        """Initializing method to create a turn variable (set to "Black") an empty dictionary of the game's players
          ((keys) player names and (values) player objects) and a board object"""
-        self._turn = None
+        self._turn = "Black"
         self._checkers_board = Board()
         self._player_dict = {}
 
@@ -418,6 +418,48 @@ class Checkers():
         captured then the turn variable stays as the same player, if not then the turn variable changes to be the
         opponent player
         """
+
+        #unpack starting_square_location and destination_square_location tuples
+        start_row, start_col = starting_square_location
+        destination_row, destination_col = destination_square_location
+
+        #if statement handles invalid player_name
+        if player_name not in self._player_dict:
+
+            raise InvalidPlayer
+
+        #elif statement handles player trying to move when not their turn
+        elif self._turn != self._player_dict[player_name].get_checker_color():
+
+            raise OutOfTurn
+
+        else:
+
+            #check if the starting_square_location and destination_square_location are valid using conditionals
+            if 0 <= start_row <= 7 and 0 <= start_col <= 7 and 0 <= destination_row <= 7 and 0 <= destination_col <= 7:
+
+                #check if the piece at the location is not None
+                if self._checkers_board.get_board()[start_row][start_col] == None:
+
+                    raise InvalidSquare
+
+                #use elif statement to check if the piece on the start_square is not the same color as the player's
+                #checker color:
+                elif self._player_dict[player_name].get_checker_color() not in self._checkers_board.get_board()[start_row][start_col].get_piece_color():
+
+                    raise InvalidSquare
+
+                #else statement handles a situation where the player's checker color is the same as the piece in the
+                #given starting location
+                else:
+
+                    #call the move() method of the checkers_board object
+                    self._checkers_board.move(self._checkers_board.get_board()[start_row][start_col], destination_square_location)
+
+            #else statement handles invalid parameter square
+            else:
+
+                raise InvalidSquare
 
     def get_checker_details(self, square_location):
         """This method takes as parameter a square location and returns the checker details present in that square.
@@ -498,10 +540,13 @@ cheek = Checkers()
 cheek.create_player("Gabe", "White")
 cheek.create_player("Serena", "Black")
 
+
 dict = cheek.get_players()
 """
 for key in dict:
     print(dict[key].get_piece_list())
     print(dict[key].get_checker_color())
 """
+
+
 
