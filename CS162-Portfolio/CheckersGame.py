@@ -189,18 +189,25 @@ class Board():
         This method will call on the player object's (that did the capturing). No return value."""
         pass
 
-    def get_piece(self, square_location):
+    def get_square_details(self, square_location):
         """This method returns the piece object that is at the passed in location."""
 
         #split the tuple square_location into two different variables
         row, col = square_location
 
-        #create conditional statements to seperate None valued squares and squares that have a piece object in them
-        if self._board_dict[row][col] == None:
-            return None
+        #use conditional statements to prevent invalid square_locations from being used
+        if 0 <= row <= 7 and 0 <= col <= 7:
+
+            #create conditional statements to seperate None valued squares and squares that have a piece object in them
+            if self._board_dict[row][col] == None:
+                return None
+
+            else:
+                return self._board_dict[row][col].get_piece_color()
 
         else:
-            return self._board_dict[row][col].get_piece_color()
+
+            raise InvalidSquare
 
 class Player():
     """This class represents a player in the checkers game/class that has several private data members:
@@ -245,7 +252,14 @@ class Player():
         """Takes a piece object as parameter.
         This method allows the checkers class to remove a piece from the player's possession if it is captured
         by a different player by removing the captured piece from the player's piece_list. No returns."""
-        pass
+
+        #loop through the player's piece_list to find the piece to be removed
+        for index in self._piece_list:
+
+            #if statement removes the piece in the player's piece_list that is the same as the parameter piece
+            if index == piece:
+
+                self._piece_list.remove(index)
 
     def add_captured_piece(self):
         """This method adds 1 to the captured_pieces variable for every time the method is called, or every time
@@ -268,13 +282,40 @@ class Player():
         """This get method returns the number of king pieces that the player has. This will be done by iterating over
         the piece_list and adding 1 to a counter for every king in the list. The final counter value will be returned.
         """
-        pass
+        #initialize a counter variable for king pieces
+        king_count = 0
+
+        #initialize a string with value "checkercolor_King"
+        king_str = self._checker_color + "_King"
+
+        #loop through the pieces in the player's piece_list
+        for index in self._piece_list:
+
+            #if statement adds one to the king counter every time the indexed piece has a king piece_color value
+            if index.get_piece_color() == king_str:
+
+                king_count += 1
+
+        return king_count
 
     def get_triple_king_count(self):
         """This get method returns the number of triple king pieces that the player has This will be done by iterating
         over the piece_list and adding 1 to a counter for every triple king in the list. The final counter value will
         be returned."""
-        pass
+        #initialize a counter variable for triple king pieces
+        triple_king_count = 0
+
+        #initialize a string with value "checkercolor_Triple_King"
+        triple_king_str = self._checker_color + "_Triple_King"
+
+        #loop through the pieces in the player's piece_list
+        for index in self._piece_list:
+
+            #if statement adds one to the king counter every time the indexed piece has a triple king piece_color value
+            if index.get_piece_color() == triple_king_str:
+                triple_king_count += 1
+
+        return triple_king_count
 
     def get_captured_pieces_count(self):
         """This get method returns the number of opponent pieces the player has captured"""
@@ -356,9 +397,10 @@ class Checkers():
         """This method takes as parameter a square location and returns the checker details present in that square.
         checker details can be either None (no checker in that square), 'White', 'Black', 'Black_king', 'White_king',
         'Black_Triple_King', or 'White_Triple_King'. This method works by passing the square_location argument into
-        a call to the checkers_board object method get_piece, then returning the returned piece's get_color method."""
-
-        return self._checkers_board.get_piece(square_location)
+        a call to the checkers_board object method get_piece, then returning the returned piece's get_color method.
+        The exception handling is done in the get_piece() method where an invalid square location raises the
+        InvalidSquare exception"""
+        return self._checkers_board.get_square_details(square_location)
 
     def print_board(self):
         """This method prints out the current board in the form of an array."""
@@ -414,6 +456,9 @@ cheek = Checkers()
 cheek.create_player("Gabe", "White")
 cheek.create_player("Serena", "Black")
 
-#cheek.game_winner()
+#dict = cheek.get_players()
 
+#for key in dict:
+    #print(dict[key].get_piece_list())
+    #print(dict[key].get_checker_color())
 
