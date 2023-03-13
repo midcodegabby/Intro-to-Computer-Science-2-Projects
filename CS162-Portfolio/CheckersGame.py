@@ -15,6 +15,10 @@ class InvalidSquare(Exception):
 class InvalidPlayer(Exception):
     pass
 
+#exception for an invalid move
+class InvalidMove(Exception):
+    pass
+
 class Piece():
     """This class represents a piece on the checkers board that has several private data members:
     the piece color ('Black', 'White', 'Black_king', 'Black_Triple_King', etc.) and the piece's location as a tuple
@@ -178,21 +182,28 @@ class Board():
         """This method returns the board_dict"""
         return self._board_dict
 
-    def move(self, piece, square_location):
+    def move(self, piece, destination_square_location):
         """This method allows for a piece to be moved, given the piece object and the specified moved to location.
         This method will have nested conditionals to prevent invalid moves. This method will also do piece promotions.
         After a move is complete, the affected
-        piece and player object data members will be updated. returns the number of captured pieces."""
+        piece and player object data members will be updated."""
 
-        #define the piece's type
-        piece_type = piece.get_piece_color()
+        #unpack the piece's starting and destination location
+        start_row, start_col = piece.get_square_location()
+        destination_row, destination_col = destination_square_location
 
+        #reassign piece's location to be the destination_square_location
+        piece.set_square_location(destination_square_location)
 
+        #change the piece's start location on the board to None
+        self._board_dict[start_row][start_col] = None
 
+        #change the piece's destination location on the board to be the piece object
+        self._board_dict[destination_row][destination_col] = piece
 
     def remove(self, piece):
         """This method allows for a piece to be removed from the board in the event of a capture.
-        No return value."""
+        no returns."""
 
         #remove the piece from the board by looping through all values inside the board_dict and removing the piece
         for key in self._board_dict:
@@ -408,6 +419,50 @@ class Checkers():
         """This get method returns the dictionary of player objects."""
         return self._player_dict
 
+    def promote(self, piece, piece_color):
+        """Takes a piece object and its piece_color data member as parameter, this method allows other checkers methods
+        to call this method to perform a promotion. This method assumes that the piece is only promoted or this method is only called
+        when the sufficient conditions for the piece's promotion are met"""
+
+        #create if statement to do different promotions based on what level the piece is
+        if "King" not in piece_color:
+
+            piece.set_piece_color(piece_color + "_King")
+
+        elif piece_color == "Black_King":
+
+            piece.set_piece_color("Black_Triple_King")
+
+        else:
+
+            piece.set_piece_color("White_Triple_King")
+
+    def capture(self, piece):
+        """This method allows other checkers methods to call this function to capture a piece and update the captured
+        piece's location, the checkers_board's piece location, and the player's piece_list"""
+
+        #simplify the piece's color
+        piece_color = piece.get_piece_color()
+
+        #remove the piece from their respective player's piece list and add to the other player's captured_pieces
+        #data member
+        for key in self._player_dict:
+
+            #remove the piece from the same colored player
+            if self._player_dict[key].get_checker_color() in piece_color:
+
+                #remove the piece from the player's piece list by calling the remove_piece() method of the player object
+                self._player_dict[key].remove_piece(piece)
+
+            #add to the captured_pieces data member of the player that did the capturing
+            else:
+
+                self._player_dict[key].add_captured_piece()
+
+        #remove the piece from the checkers_board object (calling the remove() method also sets the piece's location
+        #to None hence why we do not set it equal to None in this method
+        self._checkers_board.remove(piece)
+
     def play_game(self, player_name, starting_square_location, destination_square_location):
         """This method takes as parameters the player's name, the location of the starting square and ending square.
         Then this method passes the player_name through a conditional to see if the player is allowed to make a move
@@ -441,17 +496,24 @@ class Checkers():
 
         else:
 
+            #define player object to shorten code
+            player = self._player_dict[player_name]
+
             #check if the starting_square_location and destination_square_location are valid using conditionals
             if 0 <= start_row <= 7 and 0 <= start_col <= 7 and 0 <= destination_row <= 7 and 0 <= destination_col <= 7:
 
+                #define positions on the board to shorten code
+                start_square = self._checkers_board.get_board()[start_row][start_col]
+                destination_square = self._checkers_board.get_board()[destination_row][destination_col]
+
                 #check if the piece at the location is not None
-                if self._checkers_board.get_board()[start_row][start_col] == None:
+                if start_square == None:
 
                     raise InvalidSquare
 
                 #use elif statement to check if the piece on the start_square is not the same color as the player's
                 #checker color:
-                elif self._player_dict[player_name].get_checker_color() not in self._checkers_board.get_board()[start_row][start_col].get_piece_color():
+                elif player.get_checker_color() not in start_square.get_piece_color():
 
                     raise InvalidSquare
 
@@ -459,8 +521,55 @@ class Checkers():
                 #given starting location
                 else:
 
-                    #call the move() method of the checkers_board object
-                    self._checkers_board.move(self._checkers_board.get_board()[start_row][start_col], destination_square_location)
+                    #use if statement to prevent moves from happening that have a non-None destination square location
+                    if destination_square == None:
+
+                        #create conditionals to filter different piece_types (i.e. kings, triple kings, and color)
+                        if start_square.get_piece_color() == "White":
+
+
+                            #if statement handles a non-capture moves
+                            if destination_row == start_row+1 and (destination_col == start_col+1 or destination_col == start_col-1):
+
+                                #call the move() method on the checkers_board object
+                                self._checkers_board.move(start_square, destination_square_location)
+
+                            #elif statement handles capture moves to the right
+                            elif destination_row == start_row+2 and destination_col == start_col+2:
+
+                                #conditional handles if the jumped over square is empty
+                                if self._checkers_board.get_board()[start_row+1][start_col+1] == None:
+
+                                    raise InvalidMove
+
+                                #conditional statement handles if the jumped over square has a friendly piece
+                                elif player.get_checker_color() in self._checkers_board.get_board()[start_row + 1][start_col + 1].get_piece_color():
+
+                                    raise InvalidMove
+
+                                #else statement handles a valid capture move to the right
+                                else:
+
+                                    #first we remove the captured piece from the board and from the player
+                                    print(1)
+
+
+
+                        elif start_square.get_piece_color() == "Black":
+                            print(1)
+
+                        #both colored king checkers have same movement rules
+                        elif start_square.get_piece_color() == "Black_King" or start_square.get_piece_color() == "White_King":
+                            print(1)
+
+                        #both colored king checkers have same movement rules
+                        elif start_square.get_piece_color() == "Black_Triple_King" or start_square.get_piece_color() == "White_Triple_King":
+                            print(1)
+
+
+                    else: #for destination square non-None valued
+
+                        raise InvalidSquare
 
             #else statement handles invalid parameter square
             else:
@@ -553,4 +662,3 @@ for key in dict:
     print(dict[key].get_piece_list())
     print(dict[key].get_checker_color())
 """
-
