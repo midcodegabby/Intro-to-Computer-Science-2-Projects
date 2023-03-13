@@ -687,7 +687,25 @@ class Checkers():
 
                         #both colored king checkers have same movement rules
                         elif start_square.get_piece_color() == "Black_King" or start_square.get_piece_color() == "White_King":
-                            print(1)
+
+                            #king pieces have the same non_capture move rules as regular pieces:
+                            if (destination_row == start_row + 1 or destination_row == start_row -1) and (destination_col == start_col + 1 or destination_col == start_col - 1):
+
+                                #call the move() method on the checkers_board object
+                                self._checkers_board.move(start_square, destination_square_location)
+
+                                # if statement to check if promotion is required
+                                if destination_row == 7:
+                                    # call the promote() method to perform the promotion, but this time
+                                    # call it on the destination_square since we did the movement before
+                                    self.promote(destination_square, destination_square.get_piece_color())
+
+                                # change the turn to the other player
+                                for key in self._player_dict:
+                                    if self._player_dict[key] != player:
+                                        self._turn = self._player_dict[key].get_checker_color()
+
+
 
                         #both colored king checkers have same movement rules
                         elif start_square.get_piece_color() == "Black_Triple_King" or start_square.get_piece_color() == "White_Triple_King":
