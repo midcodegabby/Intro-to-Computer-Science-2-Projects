@@ -611,7 +611,79 @@ class Checkers():
                                         self.promote(destination_square, destination_square.get_piece_color())
 
                         elif start_square.get_piece_color() == "Black":
-                            print(1)
+
+                            #if statement handles non-capture moves
+                            if destination_row == start_row - 1 and (destination_col == start_col + 1 or destination_col == start_col - 1):
+
+                                #call the move() method on the checkers_board object
+                                self._checkers_board.move(start_square, destination_square_location)
+
+                                #if statement to check if promotion is required
+                                if destination_row == 0:
+                                    #call the promote() method to perform the promotion, but this time
+                                    #call it on the destination_square since we did the movement before
+                                    self.promote(destination_square, destination_square.get_piece_color())
+
+                                #change the turn to the other player
+                                for key in self._player_dict:
+                                    if self._player_dict[key] != player:
+                                        self._turn = self._player_dict[key].get_checker_color()
+
+                            #elif statement handles capture moves to the right
+                            elif destination_row == start_row - 2 and destination_col == start_col + 2:
+
+                                #conditional handles if the jumped over square is empty
+                                if board_dict[start_row - 1][start_col + 1] == None:
+
+                                    raise InvalidMove
+
+                                #conditional statement handles if the jumped over square has a friendly piece
+                                elif player.get_checker_color() in board_dict[start_row - 1][start_col + 1].get_piece_color():
+
+                                    raise InvalidMove
+
+                                #else statement handles a valid capture move to the right
+                                else:
+
+                                    #complete a capture by calling the capture() method on the captured piece
+                                    self.capture(board_dict[start_row - 1][start_col + 1])
+
+                                    #complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                                    # if statement to check if promotion is required
+                                    if destination_row == 0:
+                                        #call the promote() method to perform the promotion, but this time
+                                        #call it on the destination_square since we did the movement before
+                                        self.promote(destination_square, destination_square.get_piece_color())
+
+                            #elif statement handles capture moves to the left
+                            elif destination_row == start_row - 2 and destination_col == start_col - 2:
+
+                                #conditional handles if the jumped over square is empty
+                                if board_dict[start_row - 1][start_col - 1] == None:
+
+                                    raise InvalidMove
+
+                                #conditional statement handles if the jumped over square has a friendly piece
+                                elif player.get_checker_color() in board_dict[start_row - 1][start_col - 1].get_piece_color():
+
+                                    raise InvalidMove
+
+                                #else statement handles a valid capture move to the left
+                                else:
+
+                                    #complete a capture by calling the capture() method on the captured piece
+                                    self.capture(board_dict[start_row - 1][start_col - 1])
+
+                                    #complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                                    #if statement to check if promotion is required
+                                    if destination_row == 0:
+                                        #call the promote() method to perform the promotion, but this time
+                                        #call it on the destination_square since we did the movement before
+                                        self.promote(destination_square, destination_square.get_piece_color())
 
                         #both colored king checkers have same movement rules
                         elif start_square.get_piece_color() == "Black_King" or start_square.get_piece_color() == "White_King":
@@ -669,13 +741,15 @@ class Checkers():
                     #add the piece color to the temporary array
                     temp_array.append(board_dict[key][index].get_piece_color())
 
+            print(temp_array)
+
             #append the temporary array to the board_array
             board_array.append(temp_array)
 
             #clear the temp_array
             temp_array = []
 
-        print(board_array)
+        #print(board_array)
 
     def game_winner(self):
         """This method returns the name of the player that won the game, and returns 'Game has not ended' if there has
@@ -705,15 +779,23 @@ class Checkers():
 
 
 
-cheek = Checkers()
+ch = Checkers()
 
-cheek.create_player("Gabe", "White")
-cheek.create_player("Serena", "Black")
+ch.create_player("Gabe", "White")
+ch.create_player("Serena", "Black")
+
+#ch.print_board()
+
+ch.play_game("Serena", (5,0), (4,1))
+
+#ch.print_board()
+
+ch.play_game("Gabe", (2,1), (3,0))
+
+#ch.print_board()
+
+ch.play_game("Serena", (5,2), (4,3))
+
+#ch.print_board()
 
 
-dict = cheek.get_players()
-"""
-for key in dict:
-    print(dict[key].get_piece_list())
-    print(dict[key].get_checker_color())
-"""
