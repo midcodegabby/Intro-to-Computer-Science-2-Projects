@@ -700,7 +700,7 @@ class Checkers():
                                     # call it on the destination_square since we did the movement before
                                     self.promote(destination_square, destination_square.get_piece_color())
 
-                                # change the turn to the other player
+                                #change the turn to the other player
                                 for key in self._player_dict:
                                     if self._player_dict[key] != player:
                                         self._turn = self._player_dict[key].get_checker_color()
