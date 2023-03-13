@@ -61,9 +61,11 @@ CAPTURE MOVEMENT RULES
 (row, col) over (row-x, col-x) --> (row-y, col-y) y>x
 #if and only if over the diagonal has only one piece that has a different color than the moving piece
 
-
-
-
+(row, col) over (row+x, col+x) AND (row+x+1, col+x+1) --> (row+y, col+y) y>x+1
+(row, col) over (row+x, col-x) AND (row+x+1, col-x-1) --> (row+y, col-y) y>x+1
+(row, col) over (row-x, col+x) AND (row-x-1, col+x+1) --> (row-y, col+y) y>x+1
+(row, col) over (row-x, col-x) AND (row-x-1, col-x-1) --> (row-y, col-y) y>x+1
+#if and only if both over pieces are adjacent and have different color than the moving piece
 
 seems like using a while loop will be the best idea for this, and we can use a rule method just for rules
 to filter out invalid moves!
