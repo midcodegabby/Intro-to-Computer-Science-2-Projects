@@ -713,7 +713,7 @@ class Checkers():
 
                                 #if statement to check if promotion is required
                                 #this if statement handles black king promotions
-                                if "Black" in destination_square.get_piece_color():
+                                if "Black" in start_square.get_piece_color():
 
                                     if destination_row == 7:
 
@@ -791,7 +791,7 @@ class Checkers():
 
                                 #lastly, check for promotions
                                 #this if statement handles black king promotions
-                                if "Black" in destination_square.get_piece_color():
+                                if "Black" in start_square.get_piece_color():
 
                                     if destination_row == 7:
 
@@ -853,7 +853,7 @@ class Checkers():
 
                                 # lastly, check for promotions
                                 # this if statement handles black king promotions
-                                if "Black" in destination_square.get_piece_color():
+                                if "Black" in start_square.get_piece_color():
 
                                     if destination_row == 7:
 
@@ -916,7 +916,7 @@ class Checkers():
 
                                 # lastly, check for promotions
                                 # this if statement handles black king promotions
-                                if "Black" in destination_square.get_piece_color():
+                                if "Black" in start_square.get_piece_color():
 
                                     if destination_row == 7:
 
@@ -979,7 +979,7 @@ class Checkers():
 
                                 # lastly, check for promotions
                                 # this if statement handles black king promotions
-                                if "Black" in destination_square.get_piece_color():
+                                if "Black" in start_square.get_piece_color():
 
                                     if destination_row == 7:
 
@@ -1491,8 +1491,8 @@ ch.play_game("Serena", (4,1), (3,2))
 ch.play_game("Gabe", (0,1), (1,2))
 ch.play_game("Serena", (1,0), (0,1))
 ch.play_game("Gabe", (2,3), (4,1))
-
-
+ch.play_game("Gabe", (2,1), (3,2))
+ch.play_game("Serena", (0,1), (2,3))
 
 
 
