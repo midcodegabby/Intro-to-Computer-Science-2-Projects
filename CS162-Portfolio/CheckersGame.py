@@ -487,6 +487,19 @@ class Checkers():
         start_row, start_col = starting_square_location
         destination_row, destination_col = destination_square_location
 
+        #define a temporary row and column number for use in iteration that "start" at the
+        #start position of the piece
+        temp_row = start_row
+        temp_col = start_col
+
+        #create an empty list to store the enemy pieces between the start and
+        #destination squares
+        enemy_pieces = []
+
+        #create space-saving booleans:
+        row_diff = destination_row - start_row
+        col_diff = destination_col - start_col
+
         #if statement handles invalid player_name
         if player_name not in self._player_dict:
 
@@ -688,7 +701,7 @@ class Checkers():
                         #both colored king checkers have same movement rules
                         elif start_square.get_piece_color() == "Black_King" or start_square.get_piece_color() == "White_King":
 
-                            #non capture move
+                            #non capture move code
                             if (destination_row == start_row + 1 or destination_row == start_row - 1) and (destination_col == start_col + 1 or destination_col == start_col - 1):
 
                                 #call the move() method on the checkers_board object
@@ -718,10 +731,6 @@ class Checkers():
 
                             #else statement handles capture moves
                             else:
-
-                                #create space saving booleans:
-                                row_diff = destination_row-start_row
-                                col_diff = destination_col-start_col
 
                                 #if statement handles capture moves down and to the right:
                                 if row_diff == col_diff and row_diff > 0 and col_diff > 0:
@@ -766,6 +775,10 @@ class Checkers():
                                     #after the while loop has terminated (without raising the InvalidMove exception),
                                     #we can now complete the capture and move
 
+                                    # create if statement to check if the move had no enemy pieces across it
+                                    if len(enemy_pieces) == 0:
+                                        raise InvalidMove
+
                                     #get the enemy piece location in row, col form
                                     enemy_row, enemy_col = enemy_pieces[0].get_square_location()
 
@@ -794,15 +807,6 @@ class Checkers():
 
                                 #if statement handles capture moves down and to the left:
                                 elif row_diff == -col_diff and row_diff > 0 and col_diff < 0:
-
-                                    # define a temporary row and column number for use in iteration that "start" at the
-                                    # start position of the piece
-                                    temp_row = start_row
-                                    temp_col = start_col
-
-                                    # create an empty list to store the enemy pieces between the start and
-                                    # destination squares
-                                    enemy_pieces = []
 
                                     # use while loop to iterate through the movement
                                     while temp_row < destination_row:
@@ -833,6 +837,9 @@ class Checkers():
 
                                     # after the while loop has terminated (without raising the InvalidMove exception),
                                     # we can now complete the capture and move
+                                    # create if statement to check if the move had no enemy pieces across it
+                                    if len(enemy_pieces) == 0:
+                                        raise InvalidMove
 
                                     # get the enemy piece location in row, col form
                                     enemy_row, enemy_col = enemy_pieces[0].get_square_location()
@@ -862,15 +869,6 @@ class Checkers():
 
                                 # if statement handles capture moves up and to the right:
                                 elif row_diff == -col_diff and row_diff < 0 and col_diff > 0:
-
-                                    # define a temporary row and column number for use in iteration that "start" at the
-                                    # start position of the piece
-                                    temp_row = start_row
-                                    temp_col = start_col
-
-                                    # create an empty list to store the enemy pieces between the start and
-                                    # destination squares
-                                    enemy_pieces = []
 
                                     # use while loop to iterate through the movement
                                     while temp_row > destination_row:
@@ -902,6 +900,10 @@ class Checkers():
                                     # after the while loop has terminated (without raising the InvalidMove exception),
                                     # we can now complete the capture and move
 
+                                    # create if statement to check if the move had no enemy pieces across it
+                                    if len(enemy_pieces) == 0:
+                                        raise InvalidMove
+
                                     # get the enemy piece location in row, col form
                                     enemy_row, enemy_col = enemy_pieces[0].get_square_location()
 
@@ -930,15 +932,6 @@ class Checkers():
 
                                 # if statement handles capture moves up and to the left:
                                 elif row_diff == col_diff and row_diff < 0 and col_diff < 0:
-
-                                    # define a temporary row and column number for use in iteration that "start" at the
-                                    # start position of the piece
-                                    temp_row = start_row
-                                    temp_col = start_col
-
-                                    # create an empty list to store the enemy pieces between the start and
-                                    # destination squares
-                                    enemy_pieces = []
 
                                     # use while loop to iterate through the movement
                                     while temp_row > destination_row:
@@ -970,6 +963,10 @@ class Checkers():
                                     # after the while loop has terminated (without raising the InvalidMove exception),
                                     # we can now complete the capture and move
 
+                                    #create if statement to check if the move had no enemy pieces across it
+                                    if len(enemy_pieces) == 0:
+                                        raise InvalidMove
+
                                     # get the enemy piece location in row, col form
                                     enemy_row, enemy_col = enemy_pieces[0].get_square_location()
 
@@ -995,6 +992,11 @@ class Checkers():
                                             # call the promote() method to perform the promotion, but this time
                                             # call it on the destination_square since we did the movement before
                                             self.promote(destination_square,destination_square.get_piece_color())
+
+                                #else statement handles a case where the move is not diagonal
+                                else:
+
+                                    raise InvalidMove
 
                         #both colored triple king checkers have same movement rules
                         elif start_square.get_piece_color() == "Black_Triple_King" or start_square.get_piece_color() == "White_Triple_King":
@@ -1118,9 +1120,262 @@ class Checkers():
                                     #complete the move by calling the move() method on the checkers_board object
                                     self._checkers_board.move(start_square, destination_square_location)
 
-                            #a capture move up and to the right
-                            elif 1:
-                                print(1)
+                            #code for capture moves over more than one square:
+                            #elif statement handles capture moves down and to the right:
+                            elif row_diff == col_diff and row_diff > 0 and col_diff > 0:
+
+                                # use while loop to iterate through the movement
+                                while temp_row < destination_row:
+
+                                    # move one square diagonally
+                                    temp_row += 1
+                                    temp_col += 1
+
+                                    # check if the new square is empty
+                                    if board_dict[temp_row][temp_col] == None:
+                                        pass
+
+                                    # check if the new square has a friendly piece in it
+                                    elif player.get_checker_color() in board_dict[temp_row][temp_col].get_piece_color():
+
+                                        raise InvalidMove
+
+                                    # this elif statement handles cases where the new square has an enemy piece in it
+                                    else:
+
+                                        # add the enemy piece to the enemy_pieces list
+                                        enemy_pieces.append(board_dict[temp_row][temp_col])
+
+                                    # create else statement to raise an error if the number of enemy pieces on the
+                                    # move is greater than two
+                                    if len(enemy_pieces) > 2:
+                                        raise InvalidMove
+
+                                # after the while loop has terminated (without raising the InvalidMove exception),
+                                # we can now complete the capture and move
+
+                                # create if statement to check if the move had no enemy pieces across it
+                                if len(enemy_pieces) == 0:
+                                    raise InvalidMove
+
+                                #elif statement completes the necessary actions for a move that captures one piece
+                                elif len(enemy_pieces) == 1:
+
+                                    #unpack the enemy square location in row, col format
+                                    enemy_row, enemy_col = enemy_pieces[0].get_square_location()
+
+                                    # complete a capture by calling the capture() method on the enemy piece
+                                    self.capture(board_dict[enemy_row][enemy_col])
+
+                                    # complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                                #elif statement completes the necessary actions for a move that captures two pieces
+                                elif len(enemy_pieces) == 2:
+
+                                    # unpack the both enemy square locations in row, col format
+                                    enemy_row_1, enemy_col_1 = enemy_pieces[0].get_square_location()
+                                    enemy_row_2, enemy_col_2 = enemy_pieces[1].get_square_location()
+
+                                    # complete two captures by calling the capture() method on the enemy pieces
+                                    self.capture(board_dict[enemy_row_1][enemy_col_1])
+                                    self.capture(board_dict[enemy_row_2][enemy_col_2])
+
+                                    # complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                            # elif statement handles capture moves down and to the left:
+                            elif row_diff == -col_diff and row_diff > 0 and col_diff < 0:
+
+                                # use while loop to iterate through the movement
+                                while temp_row < destination_row:
+
+                                    # move one square diagonally
+                                    temp_row += 1
+                                    temp_col -= 1
+
+                                    # check if the new square is empty
+                                    if board_dict[temp_row][temp_col] == None:
+                                        pass
+
+                                    # check if the new square has a friendly piece in it
+                                    elif player.get_checker_color() in board_dict[temp_row][temp_col].get_piece_color():
+
+                                        raise InvalidMove
+
+                                    # this elif statement handles cases where the new square has an enemy piece in it
+                                    else:
+
+                                        # add the enemy piece to the enemy_pieces list
+                                        enemy_pieces.append(board_dict[temp_row][temp_col])
+
+                                    # create else statement to raise an error if the number of enemy pieces on the
+                                    # move is greater than two
+                                    if len(enemy_pieces) > 2:
+                                        raise InvalidMove
+
+                                # after the while loop has terminated (without raising the InvalidMove exception),
+                                # we can now complete the capture and move
+
+                                # create if statement to check if the move had no enemy pieces across it
+                                if len(enemy_pieces) == 0:
+                                    raise InvalidMove
+
+                                # elif statement completes the necessary actions for a move that captures one piece
+                                elif len(enemy_pieces) == 1:
+
+                                    # unpack the enemy square location in row, col format
+                                    enemy_row, enemy_col = enemy_pieces[0].get_square_location()
+
+                                    # complete a capture by calling the capture() method on the enemy piece
+                                    self.capture(board_dict[enemy_row][enemy_col])
+
+                                    # complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                                # elif statement completes the necessary actions for a move that captures two pieces
+                                elif len(enemy_pieces) == 2:
+
+                                    # unpack the both enemy square locations in row, col format
+                                    enemy_row_1, enemy_col_1 = enemy_pieces[0].get_square_location()
+                                    enemy_row_2, enemy_col_2 = enemy_pieces[1].get_square_location()
+
+                                    # complete two captures by calling the capture() method on the enemy pieces
+                                    self.capture(board_dict[enemy_row_1][enemy_col_1])
+                                    self.capture(board_dict[enemy_row_2][enemy_col_2])
+
+                                    # complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                            # elif statement handles capture moves up and to the right:
+                            elif row_diff == -col_diff and row_diff < 0 and col_diff > 0:
+
+                                # use while loop to iterate through the movement
+                                while temp_row > destination_row:
+
+                                    # move one square diagonally
+                                    temp_row -= 1
+                                    temp_col += 1
+
+                                    # check if the new square is empty
+                                    if board_dict[temp_row][temp_col] == None:
+                                        pass
+
+                                    # check if the new square has a friendly piece in it
+                                    elif player.get_checker_color() in board_dict[temp_row][temp_col].get_piece_color():
+
+                                        raise InvalidMove
+
+                                    # this elif statement handles cases where the new square has an enemy piece in it
+                                    else:
+
+                                        # add the enemy piece to the enemy_pieces list
+                                        enemy_pieces.append(board_dict[temp_row][temp_col])
+
+                                    # create else statement to raise an error if the number of enemy pieces on the
+                                    # move is greater than two
+                                    if len(enemy_pieces) > 2:
+                                        raise InvalidMove
+
+                                # after the while loop has terminated (without raising the InvalidMove exception),
+                                # we can now complete the capture and move
+
+                                # create if statement to check if the move had no enemy pieces across it
+                                if len(enemy_pieces) == 0:
+                                    raise InvalidMove
+
+                                # elif statement completes the necessary actions for a move that captures one piece
+                                elif len(enemy_pieces) == 1:
+
+                                    # unpack the enemy square location in row, col format
+                                    enemy_row, enemy_col = enemy_pieces[0].get_square_location()
+
+                                    # complete a capture by calling the capture() method on the enemy piece
+                                    self.capture(board_dict[enemy_row][enemy_col])
+
+                                    # complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                                # elif statement completes the necessary actions for a move that captures two pieces
+                                elif len(enemy_pieces) == 2:
+
+                                    # unpack the both enemy square locations in row, col format
+                                    enemy_row_1, enemy_col_1 = enemy_pieces[0].get_square_location()
+                                    enemy_row_2, enemy_col_2 = enemy_pieces[1].get_square_location()
+
+                                    # complete two captures by calling the capture() method on the enemy pieces
+                                    self.capture(board_dict[enemy_row_1][enemy_col_1])
+                                    self.capture(board_dict[enemy_row_2][enemy_col_2])
+
+                                    # complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                            # elif statement handles capture moves up and to the left:
+                            elif row_diff == -col_diff and row_diff < 0 and col_diff < 0:
+
+                                # use while loop to iterate through the movement
+                                while temp_row > destination_row:
+
+                                    # move one square diagonally
+                                    temp_row -= 1
+                                    temp_col -= 1
+
+                                    # check if the new square is empty
+                                    if board_dict[temp_row][temp_col] == None:
+                                        pass
+
+                                    # check if the new square has a friendly piece in it
+                                    elif player.get_checker_color() in board_dict[temp_row][temp_col].get_piece_color():
+
+                                        raise InvalidMove
+
+                                    # this elif statement handles cases where the new square has an enemy piece in it
+                                    else:
+
+                                        # add the enemy piece to the enemy_pieces list
+                                        enemy_pieces.append(board_dict[temp_row][temp_col])
+
+                                    # create else statement to raise an error if the number of enemy pieces on the
+                                    # move is greater than two
+                                    if len(enemy_pieces) > 2:
+                                        raise InvalidMove
+
+                                # after the while loop has terminated (without raising the InvalidMove exception),
+                                # we can now complete the capture and move
+
+                                # create if statement to check if the move had no enemy pieces across it
+                                if len(enemy_pieces) == 0:
+                                    raise InvalidMove
+
+                                # elif statement completes the necessary actions for a move that captures one piece
+                                elif len(enemy_pieces) == 1:
+
+                                    # unpack the enemy square location in row, col format
+                                    enemy_row, enemy_col = enemy_pieces[0].get_square_location()
+
+                                    # complete a capture by calling the capture() method on the enemy piece
+                                    self.capture(board_dict[enemy_row][enemy_col])
+
+                                    # complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                                # elif statement completes the necessary actions for a move that captures two pieces
+                                elif len(enemy_pieces) == 2:
+
+                                    # unpack the both enemy square locations in row, col format
+                                    enemy_row_1, enemy_col_1 = enemy_pieces[0].get_square_location()
+                                    enemy_row_2, enemy_col_2 = enemy_pieces[1].get_square_location()
+
+                                    # complete two captures by calling the capture() method on the enemy pieces
+                                    self.capture(board_dict[enemy_row_1][enemy_col_1])
+                                    self.capture(board_dict[enemy_row_2][enemy_col_2])
+
+                                    # complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                            #else statement handles cases where the move is not diagonal
+                            else:
+                                raise InvalidMove
 
                     else: #for destination square non-None valued
 
@@ -1216,18 +1471,11 @@ ch = Checkers()
 
 ch.create_player("Gabe", "White")
 ch.create_player("Serena", "Black")
-
 #ch.print_board()
-
 ch.play_game("Serena", (5,0), (4,1))
-
 #ch.print_board()
-
 ch.play_game("Gabe", (2,1), (3,0))
-
 #ch.print_board()
-
 ch.play_game("Serena", (5,2), (4,3))
-
-#ch.print_board()
+ch.print_board()
 
