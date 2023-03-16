@@ -502,7 +502,7 @@ class Checkers():
             #define player object to shorten code
             player = self._player_dict[player_name]
 
-            #store the initial number of captured pieces that player has
+            #store the initial number of captured pieces that a player has
             initial_cap = player.get_captured_pieces_count()
 
             #check if the starting_square_location and destination_square_location are valid using conditionals
@@ -756,6 +756,11 @@ class Checkers():
                                     #complete the move
                                     self._checkers_board.move(start_square, destination_square_location)
 
+                                    #change the turn to the other player
+                                    for key in self._player_dict:
+                                        if self._player_dict[key] != player:
+                                            self._turn = self._player_dict[key].get_checker_color()
+
                                 #else statement handles cases where the jumped square has an enemy piece in it
                                 else:
                                     #complete a capture by calling the capture() method on the captured piece
@@ -777,6 +782,11 @@ class Checkers():
 
                                     #complete the move
                                     self._checkers_board.move(start_square, destination_square_location)
+
+                                    #change the turn to the other player
+                                    for key in self._player_dict:
+                                        if self._player_dict[key] != player:
+                                            self._turn = self._player_dict[key].get_checker_color()
 
                                 #else statement handles cases where the jumped square has an enemy piece in it
                                 else:
@@ -800,6 +810,11 @@ class Checkers():
                                     #complete the move
                                     self._checkers_board.move(start_square, destination_square_location)
 
+                                    #change the turn to the other player
+                                    for key in self._player_dict:
+                                        if self._player_dict[key] != player:
+                                            self._turn = self._player_dict[key].get_checker_color()
+
                                 #else statement handles cases where the jumped square has an enemy piece in it
                                 else:
                                     #complete a capture by calling the capture() method on the captured piece
@@ -822,6 +837,11 @@ class Checkers():
                                     #complete the move
                                     self._checkers_board.move(start_square, destination_square_location)
 
+                                    #change the turn to the other player
+                                    for key in self._player_dict:
+                                        if self._player_dict[key] != player:
+                                            self._turn = self._player_dict[key].get_checker_color()
+
                                 #else statement handles cases where the jumped square has an enemy piece in it
                                 else:
                                     #complete a capture by calling the capture() method on the captured piece
@@ -843,7 +863,7 @@ class Checkers():
 
                 raise InvalidSquare
 
-            #store the final number of captured pieces that player has
+            #store the final number of captured pieces that a player has
             final_cap = player.get_captured_pieces_count()
 
             return final_cap - initial_cap
