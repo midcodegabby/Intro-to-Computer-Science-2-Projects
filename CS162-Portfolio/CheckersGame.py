@@ -421,8 +421,8 @@ class Checkers():
 
     def promote(self, piece, piece_color):
         """Takes a piece object and its piece_color data member as parameter, this method allows other checkers methods
-        to call this method to perform a promotion. This method assumes that the piece is only promoted or this method is only called
-        when the sufficient conditions for the piece's promotion are met"""
+        to call this method to perform a promotion. This method assumes that the piece is only promoted or this method
+        is only called when the sufficient conditions for the piece's promotion are met"""
 
         #create if statement to do different promotions based on what level the piece is
         if "King" not in piece_color:
@@ -651,7 +651,7 @@ class Checkers():
                                     #complete the move by calling the move() method on the checkers_board object
                                     self._checkers_board.move(start_square, destination_square_location)
 
-                                    # if statement to check if promotion is required
+                                    #if statement to check if promotion is required
                                     if destination_row == 0:
                                         #call the promote() method to perform the promotion, but this time
                                         #call it on the destination_square since we did the movement before
@@ -688,16 +688,15 @@ class Checkers():
                         #both colored king checkers have same movement rules
                         elif start_square.get_piece_color() == "Black_King" or start_square.get_piece_color() == "White_King":
 
-                            #non capture move code
-                            #king pieces have the same non_capture move rules as regular pieces:
-                            if (destination_row == start_row + 1 or destination_row == start_row -1) and (destination_col == start_col + 1 or destination_col == start_col - 1):
+                            #non capture move
+                            if (destination_row == start_row + 1 or destination_row == start_row - 1) and (destination_col == start_col + 1 or destination_col == start_col - 1):
 
                                 #call the move() method on the checkers_board object
                                 self._checkers_board.move(start_square, destination_square_location)
 
                                 #if statement to check if promotion is required
                                 #this if statement handles black king promotions
-                                if "Black" in start_square.get_piece_color():
+                                if "Black" in destination_square.get_piece_color():
 
                                     if destination_row == 7:
                                         #call the promote() method to perform the promotion, but this time
@@ -717,17 +716,123 @@ class Checkers():
                                     if self._player_dict[key] != player:
                                         self._turn = self._player_dict[key].get_checker_color()
 
-                            #if statements for capture moves to the right:
+                            #else statement handles capture moves
+                            else:
 
+                                #if statement handles capture moves to the right:
+                                if int(destination_row/start_row) == int(destination_col/start_col):
+                                    print(1)
 
-                            #if statements for capture moves to the left:
-
+                                #if statement handles capture moves to the left:
+                                if int(destination_row/start_row) == int(destination_col/start_col):
+                                    print(1)
 
 
                         #both colored triple king checkers have same movement rules
                         elif start_square.get_piece_color() == "Black_Triple_King" or start_square.get_piece_color() == "White_Triple_King":
-                            print(1)
 
+                            #non capture move of one diagonal square
+                            if (destination_row == start_row + 1 or destination_row == start_row - 1) and (destination_col == start_col + 1 or destination_col == start_col - 1):
+
+                                #call the move() method on the checkers_board object
+                                self._checkers_board.move(start_square, destination_square_location)
+
+                                #change the turn to the other player
+                                for key in self._player_dict:
+                                    if self._player_dict[key] != player:
+                                        self._turn = self._player_dict[key].get_checker_color()
+
+                            #a capture or non-capture move down and to the right depending on jumped square/piece
+                            elif destination_row == start_row + 2 and destination_col == start_col + 2:
+
+                                #check if the jumped square has a value of None in it
+                                if board_dict[start_row+1][start_col+1] == None:
+
+                                    raise InvalidMove
+
+                                #check if jumped square has a friendly piece in it
+                                elif player.get_checker_color() in board_dict[start_row + 1][start_col + 1].get_piece_color():
+
+                                    #complete the move
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                                #else statement handles cases where the jumped square has an enemy piece in it
+                                else:
+                                    #complete a capture by calling the capture() method on the captured piece
+                                    self.capture(board_dict[start_row + 1][start_col + 1])
+
+                                    #complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                            #a capture or non-capture move down and to the left depending on jumped square/piece
+                            elif destination_row == start_row + 2 and destination_col == start_col - 2:
+
+                                #check if the jumped square has a value of None in it
+                                if board_dict[start_row + 1][start_col - 1] == None:
+
+                                    raise InvalidMove
+
+                                #check if jumped square has a friendly piece in it
+                                elif player.get_checker_color() in board_dict[start_row + 1][start_col - 1].get_piece_color():
+
+                                    #complete the move
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                                #else statement handles cases where the jumped square has an enemy piece in it
+                                else:
+                                    #complete a capture by calling the capture() method on the captured piece
+                                    self.capture(board_dict[start_row + 1][start_col - 1])
+
+                                    #complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                            #a capture or non-capture move up and to the right depending on jumped square/piece
+                            elif destination_row == start_row - 2 and destination_col == start_col + 2:
+
+                                #check if the jumped square has a value of None in it
+                                if board_dict[start_row - 1][start_col + 1] == None:
+
+                                    raise InvalidMove
+
+                                #check if jumped square has a friendly piece in it
+                                elif player.get_checker_color() in board_dict[start_row - 1][start_col + 1].get_piece_color():
+
+                                    #complete the move
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                                #else statement handles cases where the jumped square has an enemy piece in it
+                                else:
+                                    #complete a capture by calling the capture() method on the captured piece
+                                    self.capture(board_dict[start_row - 1][start_col + 1])
+
+                                    #complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                            #a capture or non-capture move up and to the left depending on jumped square/piece
+                            elif destination_row == start_row - 2 and destination_col == start_col - 2:
+
+                                #check if the jumped square has a value of None in it
+                                if board_dict[start_row - 1][start_col - 1] == None:
+
+                                    raise InvalidMove
+
+                                #check if jumped square has a friendly piece in it
+                                elif player.get_checker_color() in board_dict[start_row - 1][start_col - 1].get_piece_color():
+
+                                    #complete the move
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                                #else statement handles cases where the jumped square has an enemy piece in it
+                                else:
+                                    #complete a capture by calling the capture() method on the captured piece
+                                    self.capture(board_dict[start_row - 1][start_col - 1])
+
+                                    #complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                            #a capture move up and to the right
+                            elif 1:
+                                print(1)
 
                     else: #for destination square non-None valued
 
@@ -737,6 +842,11 @@ class Checkers():
             else:
 
                 raise InvalidSquare
+
+            #store the final number of captured pieces that player has
+            final_cap = player.get_captured_pieces_count()
+
+            return final_cap - initial_cap
 
     def get_checker_details(self, square_location):
         """This method takes as parameter a square location and returns the checker details present in that square.
