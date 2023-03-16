@@ -719,8 +719,12 @@ class Checkers():
                             #else statement handles capture moves
                             else:
 
+                                #create space saving booleans:
+                                row_diff = destination_row-start_row
+                                col_diff = destination_col-start_col
+
                                 #if statement handles capture moves down and to the right:
-                                if int(destination_row/start_row) == int(destination_col/start_col):
+                                if row_diff == col_diff and row_diff > 0 and col_diff > 0:
 
                                     #define a temporary row and column number for use in iteration that "start" at the
                                     #start position of the piece
@@ -788,13 +792,209 @@ class Checkers():
                                             #call it on the destination_square since we did the movement before
                                             self.promote(destination_square, destination_square.get_piece_color())
 
+                                #if statement handles capture moves down and to the left:
+                                elif row_diff == -col_diff and row_diff > 0 and col_diff < 0:
 
+                                    # define a temporary row and column number for use in iteration that "start" at the
+                                    # start position of the piece
+                                    temp_row = start_row
+                                    temp_col = start_col
 
+                                    # create an empty list to store the enemy pieces between the start and
+                                    # destination squares
+                                    enemy_pieces = []
 
+                                    # use while loop to iterate through the movement
+                                    while temp_row < destination_row:
 
-                                #if statement handles capture moves to the left:
-                                if int(destination_row/start_row) == int(destination_col/start_col):
-                                    print(1)
+                                        # move one square diagonally
+                                        temp_row += 1
+                                        temp_col -= 1
+
+                                        # check if the new square is empty
+                                        if board_dict[temp_row][temp_col] == None:
+                                            pass
+
+                                        # check if the new square has a friendly piece in it
+                                        elif player.get_checker_color() in board_dict[temp_row][temp_col].get_piece_color():
+
+                                            raise InvalidMove
+
+                                        # this elif statement handles cases where the new square has an enemy piece in it
+                                        else:
+
+                                            # add the enemy piece to the enemy_pieces list
+                                            enemy_pieces.append(board_dict[temp_row][temp_col])
+
+                                        # create else statement to raise an error if the number of enemy pieces on the
+                                        # move is greater than one
+                                        if len(enemy_pieces) > 1:
+                                            raise InvalidMove
+
+                                    # after the while loop has terminated (without raising the InvalidMove exception),
+                                    # we can now complete the capture and move
+
+                                    # get the enemy piece location in row, col form
+                                    enemy_row, enemy_col = enemy_pieces[0].get_square_location()
+
+                                    # complete a capture by calling the capture() method on the enemy piece
+                                    self.capture(board_dict[enemy_row][enemy_col])
+
+                                    # complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                                    # lastly, check for promotions
+                                    # this if statement handles black king promotions
+                                    if "Black" in destination_square.get_piece_color():
+
+                                        if destination_row == 7:
+                                            # call the promote() method to perform the promotion, but this time
+                                            # call it on the destination_square since we did the movement before
+                                            self.promote(destination_square,destination_square.get_piece_color())
+
+                                    #this else statement handles white king promotions
+                                    else:
+
+                                        if destination_row == 0:
+                                            # call the promote() method to perform the promotion, but this time
+                                            # call it on the destination_square since we did the movement before
+                                            self.promote(destination_square,destination_square.get_piece_color())
+
+                                # if statement handles capture moves up and to the right:
+                                elif row_diff == -col_diff and row_diff < 0 and col_diff > 0:
+
+                                    # define a temporary row and column number for use in iteration that "start" at the
+                                    # start position of the piece
+                                    temp_row = start_row
+                                    temp_col = start_col
+
+                                    # create an empty list to store the enemy pieces between the start and
+                                    # destination squares
+                                    enemy_pieces = []
+
+                                    # use while loop to iterate through the movement
+                                    while temp_row > destination_row:
+
+                                        # move one square diagonally
+                                        temp_row -= 1
+                                        temp_col += 1
+
+                                        # check if the new square is empty
+                                        if board_dict[temp_row][temp_col] == None:
+                                            pass
+
+                                        # check if the new square has a friendly piece in it
+                                        elif player.get_checker_color() in board_dict[temp_row][temp_col].get_piece_color():
+
+                                            raise InvalidMove
+
+                                        # this elif statement handles cases where the new square has an enemy piece in it
+                                        else:
+
+                                            # add the enemy piece to the enemy_pieces list
+                                            enemy_pieces.append(board_dict[temp_row][temp_col])
+
+                                        # create else statement to raise an error if the number of enemy pieces on the
+                                        # move is greater than one
+                                        if len(enemy_pieces) > 1:
+                                            raise InvalidMove
+
+                                    # after the while loop has terminated (without raising the InvalidMove exception),
+                                    # we can now complete the capture and move
+
+                                    # get the enemy piece location in row, col form
+                                    enemy_row, enemy_col = enemy_pieces[0].get_square_location()
+
+                                    # complete a capture by calling the capture() method on the enemy piece
+                                    self.capture(board_dict[enemy_row][enemy_col])
+
+                                    # complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                                    # lastly, check for promotions
+                                    # this if statement handles black king promotions
+                                    if "Black" in destination_square.get_piece_color():
+
+                                        if destination_row == 7:
+                                            # call the promote() method to perform the promotion, but this time
+                                            # call it on the destination_square since we did the movement before
+                                            self.promote(destination_square,destination_square.get_piece_color())
+
+                                    # this else statement handles white king promotions
+                                    else:
+
+                                        if destination_row == 0:
+                                            # call the promote() method to perform the promotion, but this time
+                                            # call it on the destination_square since we did the movement before
+                                            self.promote(destination_square,destination_square.get_piece_color())
+
+                                # if statement handles capture moves up and to the left:
+                                elif row_diff == col_diff and row_diff < 0 and col_diff < 0:
+
+                                    # define a temporary row and column number for use in iteration that "start" at the
+                                    # start position of the piece
+                                    temp_row = start_row
+                                    temp_col = start_col
+
+                                    # create an empty list to store the enemy pieces between the start and
+                                    # destination squares
+                                    enemy_pieces = []
+
+                                    # use while loop to iterate through the movement
+                                    while temp_row > destination_row:
+
+                                        # move one square diagonally
+                                        temp_row -= 1
+                                        temp_col -= 1
+
+                                        # check if the new square is empty
+                                        if board_dict[temp_row][temp_col] == None:
+                                            pass
+
+                                        # check if the new square has a friendly piece in it
+                                        elif player.get_checker_color() in board_dict[temp_row][temp_col].get_piece_color():
+
+                                            raise InvalidMove
+
+                                        # this elif statement handles cases where the new square has an enemy piece in it
+                                        else:
+
+                                            # add the enemy piece to the enemy_pieces list
+                                            enemy_pieces.append(board_dict[temp_row][temp_col])
+
+                                        # create else statement to raise an error if the number of enemy pieces on the
+                                        # move is greater than one
+                                        if len(enemy_pieces) > 1:
+                                            raise InvalidMove
+
+                                    # after the while loop has terminated (without raising the InvalidMove exception),
+                                    # we can now complete the capture and move
+
+                                    # get the enemy piece location in row, col form
+                                    enemy_row, enemy_col = enemy_pieces[0].get_square_location()
+
+                                    # complete a capture by calling the capture() method on the enemy piece
+                                    self.capture(board_dict[enemy_row][enemy_col])
+
+                                    # complete the move by calling the move() method on the checkers_board object
+                                    self._checkers_board.move(start_square, destination_square_location)
+
+                                    # lastly, check for promotions
+                                    # this if statement handles black king promotions
+                                    if "Black" in destination_square.get_piece_color():
+
+                                        if destination_row == 7:
+                                            # call the promote() method to perform the promotion, but this time
+                                            # call it on the destination_square since we did the movement before
+                                            self.promote(destination_square,destination_square.get_piece_color())
+
+                                    # this else statement handles white king promotions
+                                    else:
+
+                                        if destination_row == 0:
+                                            # call the promote() method to perform the promotion, but this time
+                                            # call it on the destination_square since we did the movement before
+                                            self.promote(destination_square,destination_square.get_piece_color())
 
                         #both colored triple king checkers have same movement rules
                         elif start_square.get_piece_color() == "Black_Triple_King" or start_square.get_piece_color() == "White_Triple_King":
