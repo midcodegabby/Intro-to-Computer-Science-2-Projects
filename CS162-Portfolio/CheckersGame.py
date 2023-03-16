@@ -300,7 +300,7 @@ class Player():
     def add_captured_piece(self):
         """This method adds 1 to the captured_pieces variable for every time the method is called, or every time
         the player captures an opponent piece. No return value."""
-        self._captured_pieces =+ 1
+        self._captured_pieces += 1
 
     def get_player_name(self):
         """This get method returns the name of the player object"""
@@ -454,9 +454,9 @@ class Checkers():
                 #remove the piece from the player's piece list by calling the remove_piece() method of the player object
                 self._player_dict[key].remove_piece(piece)
 
-            #add to the captured_pieces data member of the player that did the capturing
             else:
 
+                #add to the captured_pieces data member of the player that did the capturing
                 self._player_dict[key].add_captured_piece()
 
         #remove the piece from the checkers_board object (calling the remove() method also sets the piece's location
@@ -1490,6 +1490,9 @@ ch.play_game("Gabe", (1,2), (2,1))
 ch.play_game("Serena", (4,1), (3,2))
 ch.play_game("Gabe", (0,1), (1,2))
 ch.play_game("Serena", (1,0), (0,1))
+ch.play_game("Gabe", (2,3), (4,1))
+
+
 
 
 
@@ -1499,5 +1502,5 @@ ch.play_game("Serena", (1,0), (0,1))
 ch.print_board()
 players = ch.get_players()
 for key in players:
-    print(key, players[key].get_captured_pieces_count(), players[key].get_king_count())
+    print(key, players[key].get_captured_pieces_count(), players[key].get_king_count(), players[key].get_triple_king_count())
 
