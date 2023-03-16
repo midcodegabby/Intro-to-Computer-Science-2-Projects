@@ -1493,6 +1493,10 @@ ch.play_game("Serena", (1,0), (0,1))
 ch.play_game("Gabe", (2,3), (4,1))
 ch.play_game("Gabe", (2,1), (3,2))
 ch.play_game("Serena", (0,1), (2,3))
+ch.play_game("Serena", (2,3), (4,5))
+
+
+
 
 
 
