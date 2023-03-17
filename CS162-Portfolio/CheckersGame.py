@@ -734,7 +734,7 @@ class Checkers():
                                         self._turn = self._player_dict[key].get_checker_color()
 
                             #if statement handles capture moves down and to the right:
-                            if row_diff == col_diff and row_diff > 0 and col_diff > 0:
+                            elif row_diff == col_diff and row_diff > 0 and col_diff > 0:
 
                                 #define a temporary row and column number for use in iteration that "start" at the
                                 #start position of the piece
@@ -1465,46 +1465,4 @@ class Checkers():
         if val == 2:
 
             return "Game has not ended"
-
-
-
-ch = Checkers()
-
-ch.create_player("Gabe", "White")
-ch.create_player("Serena", "Black")
-
-ch.play_game("Serena", (5,0), (4,1))
-ch.play_game("Gabe", (2,1), (3,0))
-ch.play_game("Serena", (5,2), (4,3))
-ch.play_game("Gabe", (3,0), (5,2))
-ch.play_game("Gabe", (1,0), (2,1))
-ch.play_game("Serena", (6,3), (4,1))
-ch.play_game("Serena", (6,1), (5,0))
-ch.play_game("Gabe", (2,7), (3,6))
-ch.play_game("Serena", (4,3), (3,2))
-ch.play_game("Gabe", (2,1), (3,0))
-ch.play_game("Serena", (3,2), (2,1))
-ch.play_game("Gabe", (2,5), (3,4))
-ch.play_game("Serena", (2,1), (1,0))
-ch.play_game("Gabe", (1,2), (2,1))
-ch.play_game("Serena", (4,1), (3,2))
-ch.play_game("Gabe", (0,1), (1,2))
-ch.play_game("Serena", (1,0), (0,1))
-ch.play_game("Gabe", (2,3), (4,1))
-ch.play_game("Gabe", (2,1), (3,2))
-ch.play_game("Serena", (0,1), (2,3))
-ch.play_game("Serena", (2,3), (4,5))
-
-
-
-
-
-
-
-
-
-ch.print_board()
-players = ch.get_players()
-for key in players:
-    print(key, players[key].get_captured_pieces_count(), players[key].get_king_count(), players[key].get_triple_king_count())
 
