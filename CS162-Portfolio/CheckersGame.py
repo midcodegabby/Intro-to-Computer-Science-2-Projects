@@ -1,7 +1,15 @@
 #Author : Gabriel Rodgers
 #GitHub Username : trashcoder8
 #Date : 3/19/23
-#Description :
+#Description : This program allows two people to play a game of Checkers. The program uses exceptions to prevent
+#invalid moves, a Piece class that represents each piece on the checker board, a generator function generate_pieces()
+#that creates a generator object containing all the starting values in the checker board at the start of the game
+#(including initial pieces and None values for empty squares), a Player class that represents one of two people
+#playing checkers, a Board class that represents the checker board and keeps track of all the locations of the
+#pieces, and finally a Checkers class that represents the actual game being played, which uses all the other classes
+#within itself to successfully allow the checkers game to be played. While the ReadMe for this project specified
+#only 3 exception classes, I added another one called InvalidMove that is raised when a player makes a move that cannot
+#be made with the piece chosen (for example, a king trying to capture 2 enemy pieces in one move).
 
 #exception for a player trying to play the game out of turn
 class OutOfTurn(Exception):
@@ -20,9 +28,10 @@ class InvalidMove(Exception):
     pass
 
 class Piece():
-    """This class represents a piece on the checkers board that has several private data members:
+    """This class represents a piece on the checkers board that has 2 private data members:
     the piece color ('Black', 'White', 'Black_king', 'Black_Triple_King', etc.) and the piece's location as a tuple
-    (row_number, column_number). If the piece has been captured then the piece object is deleted."""
+    (row_number, column_number). If the piece has been captured then the piece object's location is set to None.
+    The piece object is initialized with a passed in piece_color and square_location."""
 
     def __init__(self, piece_color, square_location):
         """initializing method that sets the piece object's piece color and location to the arguments passed in."""
@@ -51,7 +60,8 @@ def generate_pieces(row=0):
     """This generator function creates 24 pieces divided among two colors for the start of a checkers game, with
     the appropriate starting locations, and the value None in all other empty squares on the board, in correct order to
     be loaded onto a board later. The generator object created by this function will be used in the __init__
-    method of the Board class, where the pieces/None values will be created and stored inside the Board object."""
+    method of the Board class, where the piece objects and None values will be created and stored inside the Board
+    object."""
 
     #create while loop to loop stuff
     while row <= 7:
@@ -138,8 +148,8 @@ def generate_pieces(row=0):
             row += 1
 
 class Board():
-    """This class represents the board that the game checkers is played on, with 64 alternating light-dark squares in
-    an 8 by 8 matrix. It has several private data members, including a board_dict representing the board."""
+    """This class represents the board that the game of checkers is played on, with 64 alternating light-dark squares in
+    an 8 by 8 matrix. It has one private data member, which is a board_dict representing the board."""
 
     def __init__(self):
         """This initializing method creates a Board object with the set requirements for starting:
@@ -179,14 +189,13 @@ class Board():
             high += 8
 
     def get_board(self):
-        """This method returns the board_dict"""
+        """This method returns the board_dict and takes no parameters"""
         return self._board_dict
 
     def move(self, piece, destination_square_location):
-        """This method allows for a piece to be moved, given the piece object and the specified moved to location.
-        This method will have nested conditionals to prevent invalid moves. This method will also do piece promotions.
-        After a move is complete, the affected
-        piece and player object data members will be updated."""
+        """This method takes a piece object and a destination square location as parameters and
+        allows for a piece to be moved on the board_dict, given the piece object and the specified moved
+        to location. After a move is complete, the affected piece and player object data members will be updated."""
 
         #unpack the piece's starting and destination location
         start_row, start_col = piece.get_square_location()
@@ -202,7 +211,9 @@ class Board():
         self._board_dict[destination_row][destination_col] = piece
 
     def remove(self, piece):
-        """This method allows for a piece to be removed from the board in the event of a capture.
+        """This method allows for a piece to be removed from the board in the event of a capture and takes the piece
+        object that will be removed as parameter. This method updates the piece's square_location data member and
+        where the piece is on the board_dict.
         no returns."""
 
         #remove the piece from the board by looping through all values inside the board_dict and removing the piece
@@ -243,8 +254,9 @@ class Board():
             raise InvalidSquare
 
 class Player():
-    """This class represents a player in the checkers game/class that has several private data members:
-    the player name and the player piece color"""
+    """This class represents a player in the checkers game/class that has 4 private data members:
+    the player name, the player piece color, a value of how many pieces the player has captured, and a list of all
+    the player's pieces. The Player object takes a string name and checker_color as parameters upon initialization."""
 
     def __init__(self, player_name, checker_color):
         """initializing method for creating a Player object with a player's name, piece color, None captured pieces,
@@ -263,7 +275,8 @@ class Player():
     def initialize_pieces(self, board_dict):
         """This method initializes the pieces of the player object without creating an entirely new generator object
         that has different piece objects than the pieces on the board by being called in the create_player() method of
-        the Checkers object and using the board_dict in that checker_board object in the checkers object."""
+        the Checkers object and using the board_dict in that checker_board object in the checkers object. This
+        method takes the board_dict being used in the checkers object as parameter. No returns."""
 
         #create for loop to loop through all pieces in the board_dict
         for key in board_dict:
@@ -299,24 +312,25 @@ class Player():
 
     def add_captured_piece(self):
         """This method adds 1 to the captured_pieces variable for every time the method is called, or every time
-        the player captures an opponent piece. No return value."""
+        the player captures an opponent piece. No return value. Takes no parameters."""
         self._captured_pieces += 1
 
     def get_player_name(self):
-        """This get method returns the name of the player object"""
+        """This get method returns the name of the player object. Takes no parameters."""
         return self._player_name
 
     def get_checker_color(self):
-        """This get method returns the piece color of the player object"""
+        """This get method returns the piece color of the player object. Takes no parameters."""
         return self._checker_color
 
     def get_piece_list(self):
-        """This get method returns the entire list of the player's piece objects"""
+        """This get method returns the entire list of the player's piece objects. Takes no parameters."""
         return self._piece_list
 
     def get_king_count(self):
         """This get method returns the number of king pieces that the player has. This will be done by iterating over
         the piece_list and adding 1 to a counter for every king in the list. The final counter value will be returned.
+        Takes no parameters.
         """
         #initialize a counter variable for king pieces
         king_count = 0
@@ -335,9 +349,10 @@ class Player():
         return king_count
 
     def get_triple_king_count(self):
-        """This get method returns the number of triple king pieces that the player has This will be done by iterating
+        """This get method returns the number of triple king pieces that the player has. This will be done by iterating
         over the piece_list and adding 1 to a counter for every triple king in the list. The final counter value will
-        be returned."""
+        be returned. Takes no parameters."""
+
         #initialize a counter variable for triple king pieces
         triple_king_count = 0
 
@@ -354,15 +369,19 @@ class Player():
         return triple_king_count
 
     def get_captured_pieces_count(self):
-        """This get method returns the number of opponent pieces the player has captured"""
+        """This get method returns the number of opponent pieces the player has captured. Takes no parameters."""
         return self._captured_pieces
 
 class Checkers():
-    """This is a class representing a game of checkers with 2 people, and completes checker moves."""
+    """This is a class representing a game of checkers with 2 people, and completes checker moves. It has
+    3 private data members, a turn variable that holds a string of value "Black", or "White", a board object
+    called checkers_board, and a dictionary containing 2 Player names and their corresponding Player objects.
+    No parameters are needed for initialization. """
 
     def __init__(self):
         """Initializing method to create a turn variable (set to "Black") an empty dictionary of the game's players
          ((keys) player names and (values) player objects) and a board object"""
+
         self._turn = "Black"
         self._checkers_board = Board()
         self._player_dict = {}
@@ -370,7 +389,8 @@ class Checkers():
     def create_player(self, player_name, checker_color):
         """This method creates a player object by calling the Player class and passing in the relevant variables,
         then returns that player object and adds that player object to the players dictionary of this class.
-        The piece_color parameter must be a string of value 'Black' or 'White'"""
+        The piece_color parameter must be a string of value 'Black' or 'White'. Takes a player_name and
+        a checker_color as parameters."""
 
         #if statement to handle invalid color parameter
         if checker_color != "Black" and checker_color != "White":
@@ -416,15 +436,16 @@ class Checkers():
             return "Max player capacity reached for this game!"
 
     def get_players(self):
-        """This get method returns the dictionary of player objects."""
+        """This get method returns the dictionary of player objects. Takes no parameters."""
         return self._player_dict
 
     def promote(self, piece, piece_color):
-        """Takes a piece object and its piece_color data member as parameter, this method allows other checkers methods
-        to call this method to perform a promotion. This method assumes that the piece is only promoted or this method
-        is only called when the sufficient conditions for the piece's promotion are met"""
+        """This method takes a piece object and its piece_color data member as parameters. This method allows other
+        checkers methods (specifically play_game()) to call this method to perform a promotion. This method assumes that
+        the piece is only promoted or this method is only called when the sufficient conditions for the piece's
+        promotion are met. No return value."""
 
-        #create if statement to do different promotions based on what level the piece is
+        #create if/elif statements to do different promotions based on what level the piece is
         if "King" not in piece_color:
 
             piece.set_piece_color(piece_color + "_King")
@@ -439,7 +460,8 @@ class Checkers():
 
     def capture(self, piece):
         """This method allows other checkers methods to call this function to capture a piece and update the captured
-        piece's location, the checkers_board's piece location, and the player's piece_list"""
+        piece's location, the checkers_board's piece location, and the player's piece_list. No returns and takes
+        a piece object to be captured as parameter."""
 
         #simplify the piece's color
         piece_color = piece.get_piece_color()
@@ -464,20 +486,21 @@ class Checkers():
         self._checkers_board.remove(piece)
 
     def play_game(self, player_name, starting_square_location, destination_square_location):
-        """This method takes as parameters the player's name, the location of the starting square and ending square.
+        """This method takes as parameters the player's name and the location of the starting square and ending square.
         Then this method passes the player_name through a conditional to see if the player is allowed to make a move
         or not (if it is the player's turn). If it is not the player's turn, then the OutOfTurn exception is raised.
         Then this method uses another conditional to check if the piece object in the starting_square_location has
         the same color as the player; if it does not, then the InvalidSquare exception is raised. If the starting or
         destination square locations are invalid (any integer in the tuple is under 0 or above 7), then the
         InvalidSquare exception is called. Also, if the player_name is not valid then the InvalidPlayer exception is
-        raised.
-        Then the method calls on the board object's (checkers_board) move method to complete the necessary move passed
-        into the play_game method as parameters. The board object's move method determines if the move is legal or not
-        and raises the relevant exceptions if it is not legal. Lastly, after the play_game method is called successfully
-        the number of captured pieces in the move and updates the self._turn variable accordingly (if any pieces are
-        captured then the turn variable stays as the same player, if not then the turn variable changes to be the
-        opponent player
+        raised. There are numerous nested conditionals in this method to determine if a move is legal or not and
+        raise the InvalidMove exception accordingly, as well as move a piece in accordance to its status in color or
+        regular/king/triple king. Then this method calls the move() method from the checkers_board object, which
+        makes the move on the board_dict and updates the piece's location data member. Lastly, after the play_game
+        method is called successfully, the number of captured pieces in the move is returned and the method updates the
+        self._turn variable accordingly (if any pieces are captured then the turn variable stays as the same player,
+        if not then the turn variable changes to be the opponent player). If the piece needs to be promoted then the
+        method also calls the promote() method on the to be promoted piece.
         """
 
         #define the board_dict in the checkers_board object to shorten lines
@@ -1396,9 +1419,9 @@ class Checkers():
         """This method takes as parameter a square location and returns the checker details present in that square.
         checker details can be either None (no checker in that square), 'White', 'Black', 'Black_king', 'White_king',
         'Black_Triple_King', or 'White_Triple_King'. This method works by passing the square_location argument into
-        a call to the checkers_board object method get_piece, then returning the returned piece's get_color method.
-        The exception handling is done in the get_piece() method where an invalid square location raises the
-        InvalidSquare exception"""
+        a call to the checkers_board object's method get_square_details(), then returning the returned piece's
+        get_color() method's result. The exception handling is done in the get_square_details() method where an invalid
+        square location raises the InvalidSquare exception."""
         return self._checkers_board.get_square_details(square_location)
 
     def print_board(self):
@@ -1430,20 +1453,19 @@ class Checkers():
                     #add the piece color to the temporary array
                     temp_array.append(board_dict[key][index].get_piece_color())
 
-            print(temp_array)
-
             #append the temporary array to the board_array
             board_array.append(temp_array)
 
             #clear the temp_array
             temp_array = []
 
-        #print(board_array)
+        print(board_array)
 
     def game_winner(self):
         """This method returns the name of the player that won the game, and returns 'Game has not ended' if there has
         not been a winner yet. There are two ways to win: either capture all opponent pieces or block all opponent
-        pieces from moving."""
+        pieces from moving. Only the former condition is checked in this method."""
+
         #initialize a random value to be used to count the number of iterations
         val = 0
 
