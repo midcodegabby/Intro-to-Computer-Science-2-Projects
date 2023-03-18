@@ -12,7 +12,7 @@
 #be made with the piece chosen (for example, a king trying to capture 2 enemy pieces in one move).
 
 #exception for a player trying to play the game out of turn
-class OutOfTurn(Exception):
+class OutofTurn(Exception):
     pass
 
 #exception for a player trying to use an invalid square or an invalid checker (not the player's checker)
@@ -535,7 +535,7 @@ class Checkers():
         #elif statement handles player trying to move when not their turn
         elif self._turn != self._player_dict[player_name].get_checker_color():
 
-            raise OutOfTurn
+            raise OutofTurn
 
         else:
 

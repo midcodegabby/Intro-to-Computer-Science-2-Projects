@@ -4,7 +4,7 @@
 #Description : This program is designed to test the CheckersGame.py program's functionality using unit tests.
 
 import unittest
-from CheckersGame import Piece, Player, Board, Checkers, InvalidMove, InvalidPlayer, InvalidSquare, OutOfTurn, generate_pieces
+from CheckersGame import Piece, Player, Board, Checkers, InvalidMove, InvalidPlayer, InvalidSquare, OutofTurn, generate_pieces
 
 
 class TestingCheckersGame(unittest.TestCase):
@@ -78,7 +78,7 @@ class TestingCheckersGame(unittest.TestCase):
             #test invalid turn
             game.play_game("Gabe", (2,1), (3,0))
 
-        except OutOfTurn:
+        except OutofTurn:
             print("If you can see this message then this test successfully raised the OutOfTurn Exception")
 
         try:
