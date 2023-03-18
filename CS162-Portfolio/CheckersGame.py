@@ -11,6 +11,13 @@
 #only 3 exception classes, I added another one called InvalidMove that is raised when a player makes a move that cannot
 #be made with the piece chosen (for example, a king trying to capture 2 enemy pieces in one move).
 
+#IMPORTANT NOTE: I coded in the InvalidMove exception, along with a massive amount of if/else statements in
+#the play_game() method to ensure that players cannot make an invalid move (say, try to jump 2 consecutive friendly
+#pieces with a triple king piece). This is definitely overkill, as according to the readme the program assumes that
+#players play according to the rules and that we only need to handle InvalidSquares, InvalidPlayers, and OutofTurn.
+#however, I felt that I wanted to make a completely fool-proof checker game program, and this is what I ended up with.
+#please enjoy my hard work and overkill!
+
 #exception for a player trying to play the game out of turn
 class OutofTurn(Exception):
     pass
