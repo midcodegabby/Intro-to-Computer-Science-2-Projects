@@ -593,11 +593,6 @@ class Checkers():
                                     #call the promote() method to perform the promotion
                                     self.promote(start_square, start_square.get_piece_color())
 
-                                #change the turn to the other player
-                                for key in self._player_dict:
-                                    if key != player_name:
-                                        self._turn = self._player_dict[key].get_checker_color()
-
                             #elif statement handles capture moves to the right
                             elif destination_row == start_row+2 and destination_col == start_col+2:
 
@@ -670,11 +665,6 @@ class Checkers():
 
                                     #call the promote() method to perform the promotion
                                     self.promote(start_square, start_square.get_piece_color())
-
-                                #change the turn to the other player
-                                for key in self._player_dict:
-                                    if key != player_name:
-                                        self._turn = self._player_dict[key].get_checker_color()
 
                             #elif statement handles capture moves to the right
                             elif destination_row == start_row - 2 and destination_col == start_col + 2:
@@ -761,11 +751,6 @@ class Checkers():
 
                                         # call the promote() method to perform the promotion
                                         self.promote(start_square, start_square.get_piece_color())
-
-                                #change the turn to the other player
-                                for key in self._player_dict:
-                                    if key != player_name:
-                                        self._turn = self._player_dict[key].get_checker_color()
 
                             #if statement handles capture moves down and to the right:
                             elif row_diff == col_diff and row_diff > 0 and col_diff > 0:
@@ -1042,11 +1027,6 @@ class Checkers():
                                 #call the move() method on the checkers_board object
                                 self._checkers_board.move(start_square, destination_square_location)
 
-                                #change the turn to the other player
-                                for key in self._player_dict:
-                                    if key != player_name:
-                                        self._turn = self._player_dict[key].get_checker_color()
-
                             #a capture or non-capture move down and to the right depending on jumped square/piece
                             elif destination_row == start_row + 2 and destination_col == start_col + 2:
 
@@ -1060,11 +1040,6 @@ class Checkers():
 
                                     #complete the move
                                     self._checkers_board.move(start_square, destination_square_location)
-
-                                    #change the turn to the other player
-                                    for key in self._player_dict:
-                                        if key != player_name:
-                                            self._turn = self._player_dict[key].get_checker_color()
 
                                 #else statement handles cases where the jumped square has an enemy piece in it
                                 else:
@@ -1088,11 +1063,6 @@ class Checkers():
                                     #complete the move
                                     self._checkers_board.move(start_square, destination_square_location)
 
-                                    #change the turn to the other player
-                                    for key in self._player_dict:
-                                        if key != player_name:
-                                            self._turn = self._player_dict[key].get_checker_color()
-
                                 #else statement handles cases where the jumped square has an enemy piece in it
                                 else:
                                     #complete a capture by calling the capture() method on the captured piece
@@ -1115,11 +1085,6 @@ class Checkers():
                                     #complete the move
                                     self._checkers_board.move(start_square, destination_square_location)
 
-                                    #change the turn to the other player
-                                    for key in self._player_dict:
-                                        if key != player_name:
-                                            self._turn = self._player_dict[key].get_checker_color()
-
                                 #else statement handles cases where the jumped square has an enemy piece in it
                                 else:
                                     #complete a capture by calling the capture() method on the captured piece
@@ -1141,11 +1106,6 @@ class Checkers():
 
                                     #complete the move
                                     self._checkers_board.move(start_square, destination_square_location)
-
-                                    #change the turn to the other player
-                                    for key in self._player_dict:
-                                        if key != player_name:
-                                            self._turn = self._player_dict[key].get_checker_color()
 
                                 #else statement handles cases where the jumped square has an enemy piece in it
                                 else:
@@ -1421,10 +1381,19 @@ class Checkers():
 
                 raise InvalidSquare
 
-            #store the final number of captured pieces that a player has
-            final_cap = player.get_captured_pieces_count()
+            #find the change in captured pieces, which is the same as the number of pieces captured in the move
+            captured_num = player.get_captured_pieces_count() - initial_cap
 
-            return final_cap - initial_cap
+            #complete the turn change if the number of captured pieces is zero
+            if captured_num == 0:
+
+                #change the turn to the other player
+                for key in self._player_dict:
+                    if key != player_name:
+                        self._turn = key
+
+            return captured_num
+
 
     def get_checker_details(self, square_location):
         """This method takes as parameter a square location and returns the checker details present in that square.
@@ -1499,3 +1468,96 @@ class Checkers():
 
             return "Game has not ended"
 
+ch = Checkers()
+
+ch.create_player("Gabe", "White")
+ch.create_player("Serena", "Black")
+
+ch.play_game("Serena", (5,0), (4,1))
+ch.play_game("Gabe", (2,1), (3,0))
+ch.play_game("Serena", (5,2), (4,3))
+ch.play_game("Gabe", (3,0), (5,2))
+ch.play_game("Gabe", (1,0), (2,1))
+ch.play_game("Serena", (6,3), (4,1))
+ch.play_game("Serena", (6,1), (5,0))
+ch.play_game("Gabe", (2,7), (3,6))
+ch.play_game("Serena", (4,3), (3,2))
+ch.play_game("Gabe", (2,1), (3,0))
+ch.play_game("Serena", (3,2), (2,1))
+ch.play_game("Gabe", (2,5), (3,4))
+ch.play_game("Serena", (2,1), (1,0))
+ch.play_game("Gabe", (1,2), (2,1))
+ch.play_game("Serena", (4,1), (3,2))
+ch.play_game("Gabe", (0,1), (1,2))
+ch.play_game("Serena", (1,0), (0,1))
+ch.play_game("Gabe", (2,3), (4,1))
+ch.play_game("Gabe", (2,1), (3,2))
+ch.play_game("Serena", (0,1), (2,3))
+ch.play_game("Serena", (2,3), (4,5))
+ch.play_game("Serena", (4,5), (2,7))
+ch.play_game("Serena", (5,4), (4,5))
+ch.play_game("Gabe", (4,1), (5,2))
+ch.play_game("Serena", (2,7), (3,6))
+ch.play_game("Gabe", (5,2), (6,3))
+ch.play_game("Serena", (7,2), (6,1))
+ch.play_game("Gabe", (6,3), (7,2))
+ch.play_game("Serena", (4,5), (3,4))
+ch.play_game("Gabe", (7,2), (6,3))
+ch.play_game("Serena", (3,6), (4,5))
+ch.play_game("Gabe", (6,3), (5,4))
+ch.play_game("Serena", (5,6), (4,7))
+ch.play_game("Gabe", (5,4), (4,3))
+ch.play_game("Serena", (4,5), (5,6))
+ch.play_game("Gabe", (1,4), (2,5))
+ch.play_game("Serena", (6,5), (5,4))
+ch.play_game("Gabe", (3,2), (4,1))
+ch.play_game("Serena", (5,6), (6,5))
+ch.play_game("Gabe", (4,3), (3,2))
+ch.play_game("Serena", (7,4), (6,3))
+ch.play_game("Gabe", (4,1), (5,2))
+ch.play_game("Serena", (6,5), (7,4))
+ch.play_game("Gabe", (2,5), (4,3))
+ch.play_game("Gabe", (4,3), (6,5))
+ch.play_game("Gabe", (3,2), (2,1))
+ch.play_game("Serena", (5,0), (4,1))
+ch.play_game("Gabe", (2,1), (1,0))
+ch.play_game("Serena", (6,1), (5,0))
+ch.play_game("Gabe", (5,2), (6,1))
+ch.play_game("Serena", (7,4), (5,2))
+ch.play_game("Gabe", (6,1), (7,2))
+ch.play_game("Serena", (6,3), (5,4))
+ch.play_game("Gabe", (1,0), (0,1))
+ch.play_game("Serena", (4,7), (3,6))
+ch.play_game("Gabe", (0,1), (1,2))
+ch.play_game("Serena", (5,4), (4,5))
+ch.play_game("Gabe", (1,2), (5,6))
+ch.play_game("Gabe", (1,6), (2,5))
+ch.play_game("Serena", (5,2), (4,3))
+ch.play_game("Gabe", (0,7), (1,6))
+ch.play_game("Serena", (7,6), (5,4))
+ch.play_game("Serena", (4,1), (3,2))
+ch.play_game("Gabe", (2,5), (3,4))
+ch.play_game("Serena", (4,3), (0,7))
+ch.play_game("Serena", (6,7), (4,5))
+ch.play_game("Serena", (3,2), (2,3))
+ch.play_game("Gabe", (0,5), (1,6))
+ch.play_game("Serena", (0,7), (6,1))
+ch.play_game("Serena", (3,6), (2,7))
+ch.play_game("Gabe", (3,0), (4,1))
+ch.play_game("Serena", (5,0), (3,2))
+ch.play_game("Serena", (6,1), (5,2))
+ch.play_game("Gabe", (0,3), (1,2))
+ch.play_game("Serena", (2,3), (0,1))
+ch.play_game("Serena", (0,1), (1,0))
+ch.play_game("Gabe", (7,2), (6,3))
+ch.play_game("Serena", (5,2), (7,4))
+
+
+
+
+ch.print_board()
+players = ch.get_players()
+for key in players:
+    print(key, players[key].get_captured_pieces_count(), players[key].get_king_count(), players[key].get_triple_king_count())
+
+print(ch.game_winner())
