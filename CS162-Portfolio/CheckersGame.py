@@ -386,6 +386,10 @@ class Checkers():
         self._checkers_board = Board()
         self._player_dict = {}
 
+    def get_board_object(self):
+        """This get method returns the board object used in this checkers object"""
+        return self._checkers_board
+
     def create_player(self, player_name, checker_color):
         """This method creates a player object by calling the Player class and passing in the relevant variables,
         then returns that player object and adds that player object to the players dictionary of this class.
@@ -433,7 +437,7 @@ class Checkers():
 
         else:
 
-            return "Max player capacity reached for this game!"
+            raise InvalidPlayer
 
     def get_players(self):
         """This get method returns the dictionary of player objects. Takes no parameters."""
@@ -1488,3 +1492,122 @@ class Checkers():
 
             return "Game has not ended"
 
+def main():
+    """This function will create a checkers object, two player objects, and all the relevant piece and board
+    objects that are initialized upon checkers object creation. Then this function will play a game between two players
+    and do exception handling using try/except blocks to test exceptions. This method will play a game to completion.
+    """
+
+    #create checkers object
+    game = Checkers()
+
+    #create players
+    player1 = game.create_player("Gabe", "White")
+    player2 = game.create_player("Serena", "Black")
+
+    #try/except blocks to test InvalidPlayer exception
+    try:
+        player3 = game.create_player("Billy", "White")
+
+    except InvalidPlayer:
+        print("There are already two players")
+
+
+    #playing game until completion
+    game.play_game("Serena", (5, 0), (4, 1))
+    game.play_game("Gabe", (2, 1), (3, 0))
+    game.play_game("Serena", (5, 2), (4, 3))
+    game.play_game("Gabe", (3, 0), (5, 2))
+    game.play_game("Gabe", (1, 0), (2, 1))
+    game.play_game("Serena", (6, 3), (4, 1))
+    game.play_game("Serena", (6, 1), (5, 0))
+    game.play_game("Gabe", (2, 7), (3, 6))
+    game.play_game("Serena", (4, 3), (3, 2))
+    game.play_game("Gabe", (2, 1), (3, 0))
+    game.play_game("Serena", (3, 2), (2, 1))
+    game.play_game("Gabe", (2, 5), (3, 4))
+    game.play_game("Serena", (2, 1), (1, 0))
+    game.play_game("Gabe", (1, 2), (2, 1))
+    game.play_game("Serena", (4, 1), (3, 2))
+    game.play_game("Gabe", (0, 1), (1, 2))
+    game.play_game("Serena", (1, 0), (0, 1))
+    game.play_game("Gabe", (2, 3), (4, 1))
+    game.play_game("Gabe", (2, 1), (3, 2))
+    game.play_game("Serena", (0, 1), (2, 3))
+    game.play_game("Serena", (2, 3), (4, 5))
+    game.play_game("Serena", (4, 5), (2, 7))
+    game.play_game("Serena", (5, 4), (4, 5))
+    game.play_game("Gabe", (4, 1), (5, 2))
+    game.play_game("Serena", (2, 7), (3, 6))
+    game.play_game("Gabe", (5, 2), (6, 3))
+    game.play_game("Serena", (7, 2), (6, 1))
+    game.play_game("Gabe", (6, 3), (7, 2))
+    game.play_game("Serena", (4, 5), (3, 4))
+    game.play_game("Gabe", (7, 2), (6, 3))
+    game.play_game("Serena", (3, 6), (4, 5))
+    game.play_game("Gabe", (6, 3), (5, 4))
+    game.play_game("Serena", (5, 6), (4, 7))
+    game.play_game("Gabe", (5, 4), (4, 3))
+    game.play_game("Serena", (4, 5), (5, 6))
+    game.play_game("Gabe", (1, 4), (2, 5))
+    game.play_game("Serena", (6, 5), (5, 4))
+    game.play_game("Gabe", (3, 2), (4, 1))
+    game.play_game("Serena", (5, 6), (6, 5))
+    game.play_game("Gabe", (4, 3), (3, 2))
+    game.play_game("Serena", (7, 4), (6, 3))
+    game.play_game("Gabe", (4, 1), (5, 2))
+    game.play_game("Serena", (6, 5), (7, 4))
+    game.play_game("Gabe", (2, 5), (4, 3))
+    game.play_game("Gabe", (4, 3), (6, 5))
+    game.play_game("Gabe", (3, 2), (2, 1))
+    game.play_game("Serena", (5, 0), (4, 1))
+    game.play_game("Gabe", (2, 1), (1, 0))
+    game.play_game("Serena", (6, 1), (5, 0))
+    game.play_game("Gabe", (5, 2), (6, 1))
+    game.play_game("Serena", (7, 4), (5, 2))
+    game.play_game("Gabe", (6, 1), (7, 2))
+    game.play_game("Serena", (6, 3), (5, 4))
+    game.play_game("Gabe", (1, 0), (0, 1))
+    game.play_game("Serena", (4, 7), (3, 6))
+    game.play_game("Gabe", (0, 1), (1, 2))
+    game.play_game("Serena", (5, 4), (4, 5))
+    game.play_game("Gabe", (1, 2), (5, 6))
+    game.play_game("Gabe", (1, 6), (2, 5))
+    game.play_game("Serena", (5, 2), (4, 3))
+    game.play_game("Gabe", (0, 7), (1, 6))
+    game.play_game("Serena", (7, 6), (5, 4))
+    game.play_game("Serena", (4, 1), (3, 2))
+    game.play_game("Gabe", (2, 5), (3, 4))
+    game.play_game("Serena", (4, 3), (0, 7))
+    game.play_game("Serena", (6, 7), (4, 5))
+    game.play_game("Serena", (3, 2), (2, 3))
+    game.play_game("Gabe", (0, 5), (1, 6))
+    game.play_game("Serena", (0, 7), (6, 1))
+    game.play_game("Serena", (3, 6), (2, 7))
+    game.play_game("Gabe", (3, 0), (4, 1))
+    game.play_game("Serena", (5, 0), (3, 2))
+    game.play_game("Serena", (6, 1), (5, 2))
+    game.play_game("Gabe", (0, 3), (1, 2))
+    game.play_game("Serena", (2, 3), (0, 1))
+    game.play_game("Serena", (0, 1), (1, 0))
+    game.play_game("Gabe", (7, 2), (6, 3))
+    game.play_game("Serena", (5, 2), (7, 4))
+
+
+
+
+    game.print_board()
+    players = game.get_players()
+    for key in players:
+        print(key, players[key].get_captured_pieces_count(), players[key].get_king_count(),
+              players[key].get_triple_king_count())
+
+    print(game.game_winner())
+
+
+
+
+#run the program, but include code that makes sure that the main() function only executes once
+#if the program is ran as a script or as an imported module
+if __name__ == '__main__':
+    main()
