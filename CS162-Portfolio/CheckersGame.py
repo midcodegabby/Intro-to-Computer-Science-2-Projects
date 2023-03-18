@@ -499,7 +499,7 @@ class Checkers():
     def play_game(self, player_name, starting_square_location, destination_square_location):
         """This method takes as parameters the player's name and the location of the starting square and ending square.
         Then this method passes the player_name through a conditional to see if the player is allowed to make a move
-        or not (if it is the player's turn). If it is not the player's turn, then the OutOfTurn exception is raised.
+        or not (if it is the player's turn). If it is not the player's turn, then the OutofTurn exception is raised.
         Then this method uses another conditional to check if the piece object in the starting_square_location has
         the same color as the player; if it does not, then the InvalidSquare exception is raised. If the starting or
         destination square locations are invalid (any integer in the tuple is under 0 or above 7), then the
@@ -595,7 +595,7 @@ class Checkers():
 
                                 #change the turn to the other player
                                 for key in self._player_dict:
-                                    if self._player_dict[key] != player:
+                                    if key != player_name:
                                         self._turn = self._player_dict[key].get_checker_color()
 
                             #elif statement handles capture moves to the right
@@ -673,7 +673,7 @@ class Checkers():
 
                                 #change the turn to the other player
                                 for key in self._player_dict:
-                                    if self._player_dict[key] != player:
+                                    if key != player_name:
                                         self._turn = self._player_dict[key].get_checker_color()
 
                             #elif statement handles capture moves to the right
@@ -764,7 +764,7 @@ class Checkers():
 
                                 #change the turn to the other player
                                 for key in self._player_dict:
-                                    if self._player_dict[key] != player:
+                                    if key != player_name:
                                         self._turn = self._player_dict[key].get_checker_color()
 
                             #if statement handles capture moves down and to the right:
@@ -1044,7 +1044,7 @@ class Checkers():
 
                                 #change the turn to the other player
                                 for key in self._player_dict:
-                                    if self._player_dict[key] != player:
+                                    if key != player_name:
                                         self._turn = self._player_dict[key].get_checker_color()
 
                             #a capture or non-capture move down and to the right depending on jumped square/piece
@@ -1063,7 +1063,7 @@ class Checkers():
 
                                     #change the turn to the other player
                                     for key in self._player_dict:
-                                        if self._player_dict[key] != player:
+                                        if key != player_name:
                                             self._turn = self._player_dict[key].get_checker_color()
 
                                 #else statement handles cases where the jumped square has an enemy piece in it
@@ -1090,7 +1090,7 @@ class Checkers():
 
                                     #change the turn to the other player
                                     for key in self._player_dict:
-                                        if self._player_dict[key] != player:
+                                        if key != player_name:
                                             self._turn = self._player_dict[key].get_checker_color()
 
                                 #else statement handles cases where the jumped square has an enemy piece in it
@@ -1117,7 +1117,7 @@ class Checkers():
 
                                     #change the turn to the other player
                                     for key in self._player_dict:
-                                        if self._player_dict[key] != player:
+                                        if key != player_name:
                                             self._turn = self._player_dict[key].get_checker_color()
 
                                 #else statement handles cases where the jumped square has an enemy piece in it
@@ -1144,7 +1144,7 @@ class Checkers():
 
                                     #change the turn to the other player
                                     for key in self._player_dict:
-                                        if self._player_dict[key] != player:
+                                        if key != player_name:
                                             self._turn = self._player_dict[key].get_checker_color()
 
                                 #else statement handles cases where the jumped square has an enemy piece in it
@@ -1487,7 +1487,7 @@ class Checkers():
             #if statement handles if the currently indexed player has captured all 12 opponent pieces
             if self._player_dict[key].get_captured_pieces_count() == 12:
 
-                return self._player_dict[key].get_player_name()
+                return key
 
             #add one to the random val for every time the currently indexed player has not captured all 12 opponent
             #pieces
