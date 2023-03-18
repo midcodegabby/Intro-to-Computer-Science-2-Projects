@@ -1,6 +1,6 @@
 #Author : Gabriel Rodgers
 #GitHub Username : trashcoder8
-#Date : 3/19/23
+#Date : 3/17/23
 #Description : This program is designed to test the CheckersGame.py program's functionality using unit tests.
 
 import unittest

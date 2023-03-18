@@ -1,6 +1,6 @@
 #Author : Gabriel Rodgers
 #GitHub Username : trashcoder8
-#Date : 3/19/23
+#Date : 3/17/23
 #Description : This program allows two people to play a game of Checkers. The program uses exceptions to prevent
 #invalid moves, a Piece class that represents each piece on the checker board, a generator function generate_pieces()
 #that creates a generator object containing all the starting values in the checker board at the start of the game
