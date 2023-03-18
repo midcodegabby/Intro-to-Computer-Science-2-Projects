@@ -1498,3 +1498,4 @@ class Checkers():
         if val == 2:
 
             return "Game has not ended"
+
