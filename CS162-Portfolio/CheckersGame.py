@@ -481,10 +481,8 @@ class Checkers():
         #data member
         for key in self._player_dict:
 
-            #remove the piece from the same colored player
-            if self._player_dict[key].get_checker_color() in piece_color:
+            if piece in self._player_dict[key].get_piece_list():
 
-                #remove the piece from the player's piece list by calling the remove_piece() method of the player object
                 self._player_dict[key].remove_piece(piece)
 
             else:
@@ -493,7 +491,7 @@ class Checkers():
                 self._player_dict[key].add_captured_piece()
 
         #remove the piece from the checkers_board object (calling the remove() method also sets the piece's location
-        #to None hence why we do not set it equal to None in this method
+        #to None hence why we do not set it equal to None in this method)
         self._checkers_board.remove(piece)
 
     def play_game(self, player_name, starting_square_location, destination_square_location):
@@ -1452,17 +1450,28 @@ class Checkers():
         #use for loop to accomplish the above
         for key in self._player_dict:
 
-            #if statement handles if the currently indexed player has captured all 12 opponent pieces
-            if self._player_dict[key].get_captured_pieces_count() == 12:
+            if val == 0:
 
-                return key
+                player1 = self._player_dict[key]
 
-            #add one to the random val for every time the currently indexed player has not captured all 12 opponent
-            #pieces
-            else:
                 val += 1
 
-        #if statement to handle if val == 2 (if both players have not captured all 12 pieces)
-        if val == 2:
+            elif val == 1:
+
+                player2 = self._player_dict[key]
+
+                val += 1
+
+        #use if statements to return either non-game winning message or game winner name
+        if len(player1.get_piece_list()) == 0:
+
+            return player2.get_player_name()
+
+        elif len(player2.get_piece_list()) == 0:
+
+            return player1.get_player_name()
+
+        else:
 
             return "Game has not ended"
+
